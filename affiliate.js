@@ -62,16 +62,30 @@
     }
 
     // ===== DATA LAYER =====
-    function getAffiliates() {
-        return getStorage(CONFIG.STORAGE_KEYS.AFFILIATES) || [];
+    // ===== DATA LAYER (SUPABASE) =====
+    const db = window.supabaseClient;
+
+    async function getAffiliateData(email) {
+        if (!db) return null;
+        const { data, error } = await db.from('affiliates').select('*').eq('email', email).single();
+        if (error) return null;
+        return data;
     }
 
-    function saveAffiliates(affiliates) {
-        setStorage(CONFIG.STORAGE_KEYS.AFFILIATES, affiliates);
+    async function saveAffiliateData(affiliate) {
+        if (!db) return;
+        const { error } = await db.from('affiliates').upsert(affiliate);
+        if (error) console.error('Error saving affiliate:', error);
     }
 
-    function getCurrentUser() {
-        return getStorage(CONFIG.STORAGE_KEYS.CURRENT_USER);
+    async function getCurrentUser() {
+        if (!db) return getStorage(CONFIG.STORAGE_KEYS.CURRENT_USER);
+        const { data: { user } } = await db.auth.getUser();
+        if (!user) return null;
+
+        // Fetch extra profile data from our affiliates table
+        const { data, error } = await db.from('affiliates').select('*').eq('id', user.id).single();
+        return data || null;
     }
 
     function setCurrentUser(user) {
@@ -80,22 +94,36 @@
 
     function clearCurrentUser() {
         localStorage.removeItem(CONFIG.STORAGE_KEYS.CURRENT_USER);
+        if (db) db.auth.signOut();
     }
 
-    function getReferrals(refCode) {
-        const all = getStorage(CONFIG.STORAGE_KEYS.REFERRALS) || {};
-        return all[refCode] || [];
+    async function getReferrals(refCode) {
+        if (!db) {
+            const all = getStorage(CONFIG.STORAGE_KEYS.REFERRALS) || {};
+            return all[refCode] || [];
+        }
+        const { data, error } = await db.from('referrals').select('*').eq('ref_code', refCode);
+        if (error) return [];
+        return data;
     }
 
-    function addReferral(refCode, referralData) {
-        const all = getStorage(CONFIG.STORAGE_KEYS.REFERRALS) || {};
-        if (!all[refCode]) all[refCode] = [];
-        all[refCode].push(referralData);
-        setStorage(CONFIG.STORAGE_KEYS.REFERRALS, all);
+    async function addReferral(refCode, referralData) {
+        if (!db) {
+            const all = getStorage(CONFIG.STORAGE_KEYS.REFERRALS) || {};
+            if (!all[refCode]) all[refCode] = [];
+            all[refCode].push(referralData);
+            setStorage(CONFIG.STORAGE_KEYS.REFERRALS, all);
+            return;
+        }
+        const { error } = await db.from('referrals').insert({
+            ref_code: refCode,
+            ...referralData
+        });
+        if (error) console.error('Error adding referral:', error);
     }
 
     // ===== REFERRAL TRACKING (runs on ALL pages) =====
-    function trackReferral() {
+    async function trackReferral() {
         const params = new URLSearchParams(window.location.search);
         const ref = params.get('ref');
         if (ref) {
@@ -108,11 +136,19 @@
             setStorage(CONFIG.STORAGE_KEYS.REFERRER, referrerData);
 
             // Increment click count for this affiliate
-            const affiliates = getAffiliates();
-            const aff = affiliates.find(a => a.refCode === ref);
-            if (aff) {
-                aff.clicks = (aff.clicks || 0) + 1;
-                saveAffiliates(affiliates);
+            if (db) {
+                // Fetch current clicks and increment
+                const { data, error } = await db.from('affiliates').select('clicks').eq('ref_code', ref).single();
+                if (data) {
+                    await db.from('affiliates').update({ clicks: (data.clicks || 0) + 1 }).eq('ref_code', ref);
+                }
+            } else {
+                const affiliates = getStorage(CONFIG.STORAGE_KEYS.AFFILIATES) || [];
+                const aff = affiliates.find(a => a.refCode === ref);
+                if (aff) {
+                    aff.clicks = (aff.clicks || 0) + 1;
+                    setStorage(CONFIG.STORAGE_KEYS.AFFILIATES, affiliates);
+                }
             }
 
             // Clean URL without reload
@@ -151,63 +187,131 @@
     });
 
     // ----- REGISTER -----
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const errorEl = document.getElementById('register-error');
         errorEl.textContent = '';
+        const submitBtn = registerForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
 
         const name = document.getElementById('reg-name').value.trim();
         const email = document.getElementById('reg-email').value.trim().toLowerCase();
         const password = document.getElementById('reg-password').value;
         const paypal = document.getElementById('reg-paypal').value.trim();
 
-        const affiliates = getAffiliates();
-        if (affiliates.find(a => a.email === email)) {
-            errorEl.textContent = 'An account with this email already exists. Please login instead.';
-            return;
+        if (db) {
+            const { data, error } = await db.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        full_name: name,
+                    }
+                }
+            });
+
+            if (error) {
+                errorEl.textContent = error.message;
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Save additional affiliate data to our public table
+            const newAffiliate = {
+                id: data.user.id,
+                name: name,
+                email: email,
+                paypal_email: paypal,
+                ref_code: generateRefCode(name),
+                clicks: 0,
+                created_at: new Date().toISOString()
+            };
+
+            const { error: dbError } = await db.from('affiliates').insert(newAffiliate);
+            if (dbError) {
+                errorEl.textContent = 'Auth successful but profile creation failed. Please contact support.';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            showDashboard(newAffiliate);
+        } else {
+            // Local fallback
+            const affiliates = getStorage(CONFIG.STORAGE_KEYS.AFFILIATES) || [];
+            if (affiliates.find(a => a.email === email)) {
+                errorEl.textContent = 'An account with this email already exists. Please login instead.';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            const newAffiliate = {
+                id: generateId(),
+                name: name,
+                email: email,
+                passwordHash: hashPassword(password),
+                paypal_email: paypal,
+                ref_code: generateRefCode(name),
+                clicks: 0,
+                created_at: new Date().toISOString()
+            };
+
+            affiliates.push(newAffiliate);
+            setStorage(CONFIG.STORAGE_KEYS.AFFILIATES, affiliates);
+            setCurrentUser(newAffiliate);
+            showDashboard(newAffiliate);
         }
-
-        const newAffiliate = {
-            id: generateId(),
-            name: name,
-            email: email,
-            passwordHash: hashPassword(password),
-            paypalEmail: paypal,
-            refCode: generateRefCode(name),
-            clicks: 0,
-            createdAt: new Date().toISOString()
-        };
-
-        affiliates.push(newAffiliate);
-        saveAffiliates(affiliates);
-        setCurrentUser(newAffiliate);
-        showDashboard(newAffiliate);
+        submitBtn.disabled = false;
     });
 
     // ----- LOGIN -----
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const errorEl = document.getElementById('login-error');
         errorEl.textContent = '';
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
 
         const email = document.getElementById('login-email').value.trim().toLowerCase();
         const password = document.getElementById('login-password').value;
 
-        const affiliates = getAffiliates();
-        const user = affiliates.find(a => a.email === email);
+        if (db) {
+            const { data, error } = await db.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
 
-        if (!user) {
-            errorEl.textContent = 'No account found with this email. Please register first.';
-            return;
+            if (error) {
+                errorEl.textContent = error.message;
+                submitBtn.disabled = false;
+                return;
+            }
+
+            const userProfile = await getAffiliateData(email);
+            if (userProfile) {
+                showDashboard(userProfile);
+            } else {
+                errorEl.textContent = 'Account found but profile data is missing.';
+            }
+        } else {
+            const affiliates = getStorage(CONFIG.STORAGE_KEYS.AFFILIATES) || [];
+            const user = affiliates.find(a => a.email === email);
+
+            if (!user) {
+                errorEl.textContent = 'No account found with this email. Please register first.';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            if (user.passwordHash !== hashPassword(password)) {
+                errorEl.textContent = 'Incorrect password. Please try again.';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            setCurrentUser(user);
+            showDashboard(user);
         }
-
-        if (user.passwordHash !== hashPassword(password)) {
-            errorEl.textContent = 'Incorrect password. Please try again.';
-            return;
-        }
-
-        setCurrentUser(user);
-        showDashboard(user);
+        submitBtn.disabled = false;
     });
 
     // ----- LOGOUT -----
@@ -222,24 +326,27 @@
         dashboardSection.style.display = 'none';
     }
 
-    function showDashboard(user) {
+    async function showDashboard(user) {
         authSection.style.display = 'none';
         dashboardSection.style.display = 'block';
 
-        // Refresh user data from storage (may have updated clicks)
-        const affiliates = getAffiliates();
-        const freshUser = affiliates.find(a => a.id === user.id) || user;
+        // Refresh user data from Supabase (or fallback)
+        let freshUser = user;
+        if (db) {
+            const { data, error } = await db.from('affiliates').select('*').eq('id', user.id).single();
+            if (data) freshUser = data;
+        }
 
         // Populate name
         document.getElementById('dash-name').textContent = freshUser.name.split(' ')[0];
 
         // Build referral link
         const baseUrl = CONFIG.SITE_URL.replace(/\/$/, '');
-        const refLink = baseUrl + '/index.html?ref=' + freshUser.refCode;
+        const refLink = baseUrl + '/index.html?ref=' + freshUser.ref_code;
         document.getElementById('referral-link').value = refLink;
 
         // Stats
-        const referrals = getReferrals(freshUser.refCode);
+        const referrals = await getReferrals(freshUser.ref_code);
         const totalEarnings = referrals.reduce((sum, r) => sum + (r.commission || 0), 0);
 
         document.getElementById('stat-clicks').textContent = freshUser.clicks || 0;
@@ -265,8 +372,8 @@
             referrals.forEach(ref => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${formatDate(ref.date)}</td>
-                    <td>${ref.clientName || 'Anonymous'}</td>
+                    <td>${formatDate(ref.created_at || ref.date)}</td>
+                    <td>${ref.client_name || ref.clientName || 'Anonymous'}</td>
                     <td>${ref.course || 'N/A'}</td>
                     <td>${formatCurrency(ref.amount || 0)}</td>
                     <td class="aff-commission">${formatCurrency(ref.commission || 0)}</td>
@@ -306,31 +413,40 @@
         return 'Transform your business skills with Nasiiba Coaching! Check it out:';
     }
 
-    document.getElementById('share-twitter').addEventListener('click', () => {
-        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(getShareText())}&url=${encodeURIComponent(getShareUrl())}`;
-        window.open(url, '_blank', 'width=550,height=420');
-    });
+    document.getElementById('share-twitter').addEventListener('click', socialShare);
+    document.getElementById('share-facebook').addEventListener('click', socialShare);
+    document.getElementById('share-linkedin').addEventListener('click', socialShare);
+    document.getElementById('share-whatsapp').addEventListener('click', socialShare);
+    document.getElementById('share-email').addEventListener('click', socialShare);
 
-    document.getElementById('share-facebook').addEventListener('click', () => {
-        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getShareUrl())}`;
-        window.open(url, '_blank', 'width=550,height=420');
-    });
+    function socialShare(e) {
+        const id = e.currentTarget.id;
+        const url = getShareUrl();
+        const text = getShareText();
+        let shareUrl = '';
 
-    document.getElementById('share-linkedin').addEventListener('click', () => {
-        const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getShareUrl())}`;
-        window.open(url, '_blank', 'width=550,height=420');
-    });
+        switch (id) {
+            case 'share-twitter':
+                shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                break;
+            case 'share-facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+                break;
+            case 'share-linkedin':
+                shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+                break;
+            case 'share-whatsapp':
+                shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`;
+                break;
+            case 'share-email':
+                const subject = encodeURIComponent('Check out Nasiiba Coaching!');
+                const body = encodeURIComponent(text + '\n\n' + url);
+                window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                return;
+        }
 
-    document.getElementById('share-whatsapp').addEventListener('click', () => {
-        const url = `https://wa.me/?text=${encodeURIComponent(getShareText() + ' ' + getShareUrl())}`;
-        window.open(url, '_blank');
-    });
-
-    document.getElementById('share-email').addEventListener('click', () => {
-        const subject = encodeURIComponent('Check out Nasiiba Coaching!');
-        const body = encodeURIComponent(getShareText() + '\n\n' + getShareUrl());
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    });
+        if (shareUrl) window.open(shareUrl, '_blank', 'width=550,height=420');
+    }
 
     // ----- FAQ ACCORDION -----
     document.querySelectorAll('.aff-faq__question').forEach(btn => {
@@ -347,35 +463,29 @@
     });
 
     // ----- SIMULATE A REFERRAL (for demo/testing) -----
-    // When someone lands with ?ref= and later "enrolls" (clicks an Enroll button),
-    // record it as a referral for the affiliate
     function setupEnrollTracking() {
-        // This runs on ALL pages
-        document.querySelectorAll('.btn--navy').forEach(btn => {
-            if (btn.textContent.trim() === 'Enroll') {
-                btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.btn--navy, .btn--sm').forEach(btn => {
+            if (btn.textContent.trim() === 'Enroll' || btn.getAttribute('data-i18n') === 'enroll') {
+                btn.addEventListener('click', async (e) => {
                     e.preventDefault();
                     const storedRef = getStorage(CONFIG.STORAGE_KEYS.REFERRER);
                     if (storedRef && new Date(storedRef.expires) > new Date()) {
-                        // Find the course info
                         const card = btn.closest('.course-card');
                         const courseName = card ? card.querySelector('.course-card__title').textContent : 'Unknown';
                         const priceText = card ? card.querySelector('.course-card__price').textContent : '$0';
                         const amount = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
                         const commission = amount * CONFIG.COMMISSION_RATE;
 
-                        addReferral(storedRef.refCode, {
+                        await addReferral(storedRef.refCode, {
                             date: new Date().toISOString(),
-                            clientName: 'Web Visitor',
+                            client_name: 'Web Visitor',
                             course: courseName,
                             amount: amount,
                             commission: commission,
                             status: 'confirmed'
                         });
 
-                        // Clear the referrer after conversion
                         localStorage.removeItem(CONFIG.STORAGE_KEYS.REFERRER);
-
                         alert(`🎉 Enrollment recorded!\n\nCourse: ${courseName}\nPrice: ${priceText}\n\nThank you for enrolling!`);
                     } else {
                         alert('🎉 Thank you for your interest! Enrollment system coming soon.');
@@ -385,13 +495,16 @@
         });
     }
 
-    // Run enroll tracking on page load (for index.html course cards)
     setupEnrollTracking();
 
     // ----- INIT: Check if already logged in -----
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-        showDashboard(currentUser);
+    async function init() {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+            showDashboard(currentUser);
+        }
     }
+
+    init();
 
 })();
