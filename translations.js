@@ -20,7 +20,7 @@ const TRANSLATIONS = {
         nav_resources: "Resources",
         nav_affiliate: "Affiliate",
         nav_contact: "Contact",
-        header_cta: "Book Free Consultation",
+        header_cta: "Book Sessions",
 
         // Hero
         hero_badge: "★ EXECUTIVE COACHING & CONSULTING",
@@ -30,7 +30,7 @@ const TRANSLATIONS = {
         hero_title_4: "Your Business.",
         hero_text: "Empowering top-performing teams and individuals to leverage expert strategies, business coaching and professional consulting services tailored for growth in today's market.",
         hero_btn_learn: "Start Learning",
-        hero_btn_consult: "Book Free Consultation",
+        hero_btn_consult: "Book Sessions",
 
         // Services
         services_label: "CORE EXPERTISE",
@@ -56,8 +56,17 @@ const TRANSLATIONS = {
         service4_details_features: ["Intensive staff training workshops", "Resource allocation strategy", "Long-term sustainability planning", "Culture and leadership integration"],
 
         learn_more: "Learn More",
-        modal_cta: "Consult with us",
+        modal_cta: "Book Session",
         modal_key_benefits: "Key Benefits",
+
+        // About Us
+        about_label: "OUR STORY",
+        about_title: "Empowering Minds, Elevating Lives",
+        about_text: "Nasiiba Coaching LLC is dedicated to helping individuals find confidence, clarity, and purpose. Our mission is to guide you on a journey of self-discovery, bridging the gap between who you are and who you want to be. We focus on balancing professional ambitions with inner well-being, ensuring holistic growth and sustainable success.",
+        about_item1: "Mindset Transformation",
+        about_item2: "Strategic Accountability",
+        about_item1_text: "Rewriting your story with confidence and inner peace.",
+        about_item2_text: "Custom roadmaps tailored to your unique journey.",
 
         // Courses
         courses_label: "SKILL MASTERY",
@@ -83,9 +92,9 @@ const TRANSLATIONS = {
         trust_item3_title: "Valued Professional Network",
         trust_item3_text: "— access to a curated community of high-performing leaders.",
 
-        // Testimonials
+        // Stories (Testimonials)
         testimonials_label: "TRUST WORTHY",
-        testimonials_title: "What Our Clients Say",
+        testimonials_title: "Success Stories",
         test1_role: "London",
         test2_role: "Muqdisho",
         test3_role: "Hargaisa",
