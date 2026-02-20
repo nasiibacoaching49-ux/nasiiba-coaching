@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nasiiba Coaching - Transform Your Skills. Elevate Your Business.</title>
+    <meta name="description"
+        content="Nasiiba Coaching offers executive coaching, professional consulting, and online courses to transform your skills and elevate your business.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <span class="logo-text">NASIIBA COACHING</span>
+            </a>
+            <nav class="header__nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link active" data-i18n="nav_home">Home</a></li>
+                    <li><a href="#services" class="nav__link" data-i18n="nav_services">Services</a></li>
+                    <li><a href="#courses" class="nav__link" data-i18n="nav_resources">Resources</a></li>
+                    <li><a href="affiliate.html" class="nav__link" data-i18n="nav_affiliate">Affiliate</a></li>
+                    <li><a href="#contact" class="nav__link" data-i18n="nav_contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header__actions">
+                <div class="lang-switcher" id="lang-switcher"></div>
+                <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
+                    class="btn btn--gold header__cta" data-i18n="header_cta">Book Free Consultation</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="hero">
+        <div class="container hero__inner">
+            <div class="hero__content">
+                <span class="hero__badge" data-i18n="hero_badge">★ EXECUTIVE COACHING & CONSULTING</span>
+                <h1 class="hero__title">
+                    <span data-i18n="hero_title_1">Transform Your</span><br><span
+                        data-i18n="hero_title_2">Skills.</span> <strong><span
+                            data-i18n="hero_title_3">Elevate</span><br><span data-i18n="hero_title_4">Your
+                            Business.</span></strong>
+                </h1>
+                <p class="hero__text" data-i18n="hero_text">
+                    Empowering top-performing teams and individuals to leverage
+                    expert strategies, business coaching and professional consulting
+                    services tailored for growth in today's market.
+                </p>
+                <div class="hero__buttons">
+                    <a href="#courses" class="btn btn--gold btn--lg">
+                        <span data-i18n="hero_btn_learn">Start Learning</span> <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
+                        class="btn btn--outline btn--lg" data-i18n="hero_btn_consult">
+                        Book Free Consultation
+                    </a>
+                </div>
+            </div>
+            <div class="hero__image-wrapper">
+                <img src="https://odixfybrnlbcgoceqsdc.supabase.co/storage/v1/object/public/hero-images/hero-1766914569806-DSC08310.JPG"
+                    alt="Al ustad Abdullahi Abu Hamza" class="hero__main-image" loading="eager">
+                <div class="hero__image-glow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES ========== -->
+    <section class="services" id="services">
+        <div class="container">
+            <p class="section__label" data-i18n="services_label">CORE EXPERTISE</p>
+            <h2 class="section__title" data-i18n="services_title">Our Professional Services</h2>
+            <div class="services__grid">
+                <div class="service-card">
+                    <div class="service-card__icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3 class="service-card__title" data-i18n="service1_title">Courses</h3>
+                    <p class="service-card__text" data-i18n="service1_text">Comprehensive learning programs and
+                        certifications to help you grow professionally in today's competitive market.</p>
+                    <a href="#" class="service-card__link" data-service="service1"><span data-i18n="learn_more">Learn
+                            More</span> <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__icon"><i class="fas fa-briefcase"></i></div>
+                    <h3 class="service-card__title" data-i18n="service2_title">Coaching</h3>
+                    <p class="service-card__text" data-i18n="service2_text">Customized coaching programs designed
+                        specifically to transform your business operations and achieve lasting results.</p>
+                    <a href="#" class="service-card__link" data-service="service2"><span data-i18n="learn_more">Learn
+                            More</span> <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="service-card__title" data-i18n="service3_title">Consulting</h3>
+                    <p class="service-card__text" data-i18n="service3_text">Expert consulting services tailored to your
+                        industry, structure, and goals for sustainable business outcomes.</p>
+                    <a href="#" class="service-card__link" data-service="service3"><span data-i18n="learn_more">Learn
+                            More</span> <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="service-card__icon"><i class="fas fa-users-cog"></i></div>
+                    <h3 class="service-card__title" data-i18n="service4_title">Capacity Building</h3>
+                    <p class="service-card__text" data-i18n="service4_text">Empowering organizations and individuals
+                        with the skills, tools, and resources needed to achieve sustainable growth.</p>
+                    <a href="#" class="service-card__link" data-service="service4"><span data-i18n="learn_more">Learn
+                            More</span> <i class="fas fa-arrow-right"></i></a>
+                    class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FEATURED COURSES ========== -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <div class="courses__header">
+                <div>
+                    <p class="section__label" data-i18n="courses_label">SKILL MASTERY</p>
+                    <h2 class="section__title section__title--left" data-i18n="courses_title">Featured Academy Courses
+                    </h2>
+                    <span id="geo-price-badge" class="geo-badge" style="display:none;"></span>
+                </div>
+                <a href="#" class="courses__view-all"><span data-i18n="courses_view_all">VIEW ALL COURSES</span> <i
+                        class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="courses__grid">
+                <!-- Course 1 -->
+                <div class="course-card" data-course-id="exec-leadership">
+                    <div class="course-card__image">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=250&fit=crop"
+                            alt="Executive Leadership Excellence">
+                        <span class="course-card__price-tag">$69</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title" data-i18n="course1_title">Executive Leadership Excellence</h3>
+                        <p class="course-card__desc" data-i18n="course1_desc">A master strategy for scaling leadership
+                            through modern coaching and management.</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$169.00</span>
+                            <a href="#" class="btn btn--navy btn--sm" data-i18n="enroll">Enroll</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 2 -->
+                <div class="course-card" data-course-id="business-scaling">
+                    <div class="course-card__image">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop"
+                            alt="Strategic Business Scaling">
+                        <span class="course-card__price-tag">$59</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title" data-i18n="course2_title">Strategic Business Scaling</h3>
+                        <p class="course-card__desc" data-i18n="course2_desc">Comprehensive blueprint for scaling
+                            operations, effective growth systems and frameworks.</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$159.00</span>
+                            <a href="#" class="btn btn--navy btn--sm" data-i18n="enroll">Enroll</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 3 -->
+                <div class="course-card" data-course-id="high-performance">
+                    <div class="course-card__image">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=250&fit=crop"
+                            alt="High Performance Teams">
+                        <span class="course-card__price-tag">$29</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title" data-i18n="course3_title">High Performance Teams</h3>
+                        <p class="course-card__desc" data-i18n="course3_desc">The blueprint to hire and retain
+                            high-performance teams to increase efficiency and output.</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$129.00</span>
+                            <a href="#" class="btn btn--navy btn--sm" data-i18n="enroll">Enroll</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== WHY TRUST ========== -->
+    <section class="trust" id="trust">
+        <div class="container trust__inner">
+            <div class="trust__image-wrapper">
+                <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=500&h=400&fit=crop"
+                    alt="Growth and trust" class="trust__img">
+                <div class="trust__stat">
+                    <span class="trust__stat-number">15+</span>
+                    <span class="trust__stat-label" data-i18n="trust_stat_label">Years of Business Excellence</span>
+                </div>
+            </div>
+            <div class="trust__content">
+                <p class="section__label" data-i18n="trust_label">PROVEN RESULTS</p>
+                <h2 class="section__title section__title--left" data-i18n="trust_title">Why Leaders Trust Nasiiba</h2>
+                <p class="trust__text" data-i18n="trust_text">We don't just teach theory. We deliver battle-tested
+                    strategies that have impacted hundreds of organizations across industries, driving outcomes at
+                    sustainable growth.</p>
+                <ul class="trust__list">
+                    <li><i class="fas fa-check-circle"></i><span><strong data-i18n="trust_item1_title">Personalized
+                                Strategic Roadmaps</strong> <span data-i18n="trust_item1_text">— custom plans designed
+                                for your unique position and goals.</span></span></li>
+                    <li><i class="fas fa-check-circle"></i><span><strong data-i18n="trust_item2_title">Measurable ROI
+                                Focus</strong> <span data-i18n="trust_item2_text">— clear metrics that demonstrate
+                                tangible business returns.</span></span></li>
+                    <li><i class="fas fa-check-circle"></i><span><strong data-i18n="trust_item3_title">Valued
+                                Professional Network</strong> <span data-i18n="trust_item3_text">— access to a curated
+                                community of high-performing leaders.</span></span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <p class="section__label" data-i18n="testimonials_label">TRUST WORTHY</p>
+            <h2 class="section__title" data-i18n="testimonials_title">What Our Clients Say</h2>
+            <div class="testimonials__grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-card__header">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face"
+                            alt="Ahmed ALi" class="testimonial-card__avatar">
+                        <div>
+                            <h4 class="testimonial-card__name">Ahmed ALi</h4>
+                            <p class="testimonial-card__role" data-i18n="test1_role">London</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-card__text" data-i18n="testimonial1_text">"By the grace of Allah, meeting Al
+                        Ustaad Abu Hamza in Istanbul in 2025 marked a turning point in my life. Before his guidance, my
+                        self-image was limited and unclear. Today, I carry confidence, clarity, and inner strength.
+                        Thank you for this powerful transformation. I highly recommend everyone to join Nasiiba
+                        Coaching."</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-card__header">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face"
+                            alt="Abdullahi Abdiqani" class="testimonial-card__avatar">
+                        <div>
+                            <h4 class="testimonial-card__name">Abdullahi Abdiqani</h4>
+                            <p class="testimonial-card__role" data-i18n="test2_role">Muqdisho</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-card__text" data-i18n="testimonial2_text">"Al Ustaad Abu Hamza has truly
+                        transformed my life by the grace of God. Before working with him, I had university degrees but
+                        no real income and a deep sense of frustration. Today, I live with stability, happiness, and
+                        true prosperity. Thank you for helping me rebuild my life with clarity and purpose."</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-card__header">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&h=60&fit=crop&crop=face"
+                            alt="Najax Ibrahim" class="testimonial-card__avatar">
+                        <div>
+                            <h4 class="testimonial-card__name">Najax Ibrahim</h4>
+                            <p class="testimonial-card__role" data-i18n="test3_role">Hargaisa</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-card__text" data-i18n="testimonial3_text">"I am grateful to Coach Abu Hamza.
+                        In less than 24 hours, his guidance elevated my awareness and reshaped my life, taking me from
+                        sadness, confusion, and feeling lost to joy, clarity, inner peace, and renewed purpose. This
+                        experience truly marked a powerful turning point in my personal journey."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA BANNER ========== -->
+    <section class="cta-banner" id="contact">
+        <div class="container cta-banner__inner">
+            <h2 class="cta-banner__title"><span data-i18n="cta_title_1">Ready to Take Your</span><br><span
+                    data-i18n="cta_title_2">Business to the Next Level?</span></h2>
+            <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
+                class="btn btn--gold btn--lg"><span data-i18n="cta_btn">Join Now</span> <i
+                    class="fas fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <span class="logo-text logo-text--white">NASIIBA COACHING</span>
+                <p class="footer__about" data-i18n="footer_about">Empowering results-driven coaching and consulting for
+                    leaders, executives, and businesses seeking to achieve competitive advantages in their industries.
+                </p>
+                <div class="footer__social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer__links">
+                <h4 data-i18n="footer_quick_links">QUICK LINKS</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                    <li><a href="#services" data-i18n="nav_services">Services</a></li>
+                    <li><a href="#courses" data-i18n="nav_resources">Resources</a></li>
+                    <li><a href="affiliate.html" data-i18n="nav_affiliate">Affiliate</a></li>
+                    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4 data-i18n="footer_services">SERVICES</h4>
+                <ul>
+                    <li><a href="#" data-i18n="service1_title">Courses</a></li>
+                    <li><a href="#" data-i18n="service2_title">Coaching</a></li>
+                    <li><a href="#" data-i18n="service3_title">Consulting</a></li>
+                    <li><a href="#" data-i18n="service4_title">Capacity Building</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h4 data-i18n="footer_contact_us">CONTACT US</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Ave, Suite 200</li>
+                    <li><i class="fas fa-envelope"></i> info@nasiibacoaching.com</li>
+                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/15155284209" target="_blank"
+                            rel="noopener noreferrer">+1 (515) 528-4209</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <div class="container">
+                <p data-i18n="footer_copyright">&copy; 2024 NASIIBA COACHING. ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== SERVICE MODAL ========== -->
+    <div class="modal-overlay" id="service-modal">
+        <div class="modal">
+            <button class="modal__close" id="modal-close" aria-label="Close modal"><i class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <div class="modal__icon" id="modal-icon"><i class="fas fa-briefcase"></i></div>
+                <h3 class="modal__title" id="modal-title">Service Title</h3>
+            </div>
+            <div class="modal__body">
+                <p class="modal__text" id="modal-text">Detailed description goes here.</p>
+                <div class="modal__features">
+                    <h4 data-i18n="modal_key_benefits">Key Benefits</h4>
+                    <ul class="modal__list" id="modal-list">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+                <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
+                    class="btn btn--gold btn--full" id="modal-cta"><span data-i18n="modal_cta">Consult
+                        with us</span> <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== WHATSAPP WIDGET ========== -->
+    <a href="https://wa.me/15155284209" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="geo-pricing.js"></script>
+    <script src="script.js"></script>
+    <script src="affiliate.js"></script>
+</body>
+
+</html>

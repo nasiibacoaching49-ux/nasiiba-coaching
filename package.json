@@ -1,0 +1,13 @@
+{
+  "name": "nasiiba-coaching",
+  "version": "1.0.0",
+  "description": "Nasiiba Coaching - Executive coaching, consulting, and online courses",
+  "scripts": {
+    "dev": "npx serve . -p 3000",
+    "start": "npx serve .",
+    "build": "echo 'Static site - no build step needed'"
+  },
+  "keywords": ["coaching", "consulting", "business"],
+  "author": "Nasiiba Coaching",
+  "license": "MIT"
+}
