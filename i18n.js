@@ -111,6 +111,8 @@
 
             if (toggle) {
                 e.stopPropagation();
+                // Find the dropdown relative to the clicked toggle or its container
+                const dropdown = toggle.closest('.lang-switcher').querySelector('.lang-switcher__dropdown');
                 dropdown.classList.toggle('open');
                 return;
             }
