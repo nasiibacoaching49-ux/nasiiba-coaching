@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Nasiiba Coaching</title>
+    <meta name="description"
+        content="Learn more about Nasiiba Coaching and our mission to empower minds and elevate lives.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <img src="images/logo.png" alt="NASIIBA COACHING" class="header__logo-img">
+            </a>
+            <nav class="header__nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="about.html" class="nav__link active" data-i18n="nav_about">About Us</a></li>
+                    <li><a href="index.html#services" class="nav__link" data-i18n="nav_services">Services</a></li>
+                    <li><a href="index.html#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
+                    <li><a href="student.html" class="nav__link" data-i18n="nav_student">Student Login</a></li>
+                </ul>
+            </nav>
+            <div class="header__actions">
+                <div class="lang-switcher" id="lang-switcher"></div>
+                <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
+                    class="btn btn--gold header__cta" data-i18n="header_cta">Book Sessions</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <section class="page-header">
+        <div class="container">
+            <h1 data-i18n="about_title">Empowering Minds, Elevating Lives</h1>
+            <p data-i18n="about_label">OUR STORY</p>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT CONTENT ========== -->
+    <section class="about-page-content" style="padding: 100px 0;">
+        <div class="container">
+            <div class="about__inner"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+                <div class="about__image">
+                    <div class="about__image-container">
+                        <img src="images/hero-coach.png" alt="Nasiiba Coaching" class="about__img">
+                        <div class="about__experience">
+                            <span class="exp-number">10+</span>
+                            <span class="exp-text">Years Experience</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about__content">
+                    <p class="about__text" data-i18n="about_text">
+                        Nasiiba Coaching LLC is dedicated to helping individuals find confidence, clarity, and purpose.
+                        Our mission is to guide you on a journey of self-discovery, bridging the gap between who you are
+                        and
+                        who you want to be.
+                    </p>
+                    <div class="about__features" style="margin-top: 30px;">
+                        <div class="about-feature"
+                            style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 25px;">
+                            <div class="about-feature__icon"><i class="fas fa-brain"></i></div>
+                            <div>
+                                <h4 class="about-feature__title" data-i18n="about_item1">Mindset Transformation</h4>
+                                <p class="about-feature__text" data-i18n="about_item1_text">Rewriting your story with
+                                    confidence and inner peace.</p>
+                            </div>
+                        </div>
+                        <div class="about-feature" style="display: flex; gap: 20px; align-items: flex-start;">
+                            <div class="about-feature__icon"><i class="fas fa-check-circle"></i></div>
+                            <div>
+                                <h4 class="about-feature__title" data-i18n="about_item2">Strategic Accountability</h4>
+                                <p class="about-feature__text" data-i18n="about_item2_text">Custom roadmaps tailored to
+                                    your
+                                    unique journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <img src="images/logo.png" alt="NASIIBA COACHING" class="footer__logo-img">
+                <p class="footer__about" data-i18n="footer_about">Empowering results-driven coaching and consulting for
+                    leaders, executives, and businesses seeking to achieve competitive advantages in their industries.
+                </p>
+                <div class="footer__social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer__links">
+                <h4 data-i18n="footer_quick_links">QUICK LINKS</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                    <li><a href="about.html" data-i18n="nav_about">About</a></li>
+                    <li><a href="index.html#services" data-i18n="nav_services">Services</a></li>
+                    <li><a href="index.html#courses" data-i18n="nav_resources">Resources</a></li>
+                    <li><a href="affiliate.html" data-i18n="nav_affiliate">Affiliate</a></li>
+                    <li><a href="student.html" data-i18n="nav_student">Student Login</a></li>
+                </ul>
+            </div>
+            <div class="footer__links">
+                <h4 data-i18n="footer_services">SERVICES</h4>
+                <ul>
+                    <li><a href="index.html#courses" data-i18n="service1_title">Courses</a></li>
+                    <li><a href="index.html#services" data-i18n="service2_title">Coaching</a></li>
+                    <li><a href="index.html#services" data-i18n="service3_title">Consulting</a></li>
+                    <li><a href="index.html#services" data-i18n="service4_title">Capacity Building</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h4 data-i18n="footer_contact_us">CONTACT US</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Ave, Suite 200</li>
+                    <li><i class="fas fa-envelope"></i> info@nasiibacoaching.com</li>
+                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/15155284209" target="_blank"
+                            rel="noopener noreferrer">+1 (515) 528-4209</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <div class="container">
+                <p data-i18n="footer_copyright">&copy; 2024 NASIIBA COACHING. ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="tracking.js"></script>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="geo-pricing.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
