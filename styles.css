@@ -1459,10 +1459,22 @@ ul {
 }
 
 @media (max-width: 768px) {
+    .header {
+        height: 80px;
+    }
+
+    .header__inner {
+        height: 80px;
+    }
+
+    .header__logo-img {
+        height: 65px;
+    }
+
     .header__nav {
         display: none;
         position: absolute;
-        top: 90px;
+        top: 80px;
         left: 0;
         width: 100%;
         background: rgba(14, 18, 43, 0.98);
@@ -1479,6 +1491,14 @@ ul {
     .header__nav .nav__list {
         flex-direction: column;
         gap: 16px;
+    }
+
+    .hero {
+        margin-top: 80px;
+    }
+
+    .aff-hero {
+        margin-top: 80px;
     }
 
     .header__cta {
