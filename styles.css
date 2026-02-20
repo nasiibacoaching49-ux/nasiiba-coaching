@@ -173,87 +173,54 @@ ul {
 }
 
 /* ===========================
-   TOP BAR
-   =========================== */
-.top-bar {
-    background: var(--navy-dark);
-    color: var(--white);
-    padding: 8px 0;
-    font-size: 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1001;
-    /* Higher than header */
-}
-
-.top-bar__inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.top-bar__contact {
-    display: flex;
-    gap: 20px;
-}
-
-.top-bar__contact a {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    opacity: 0.8;
-    transition: opacity var(--transition);
-}
-
-.top-bar__contact a:hover {
-    opacity: 1;
-}
-
-.top-bar__contact i {
-    color: var(--gold);
-}
-
-/* ===========================
    HEADER
    =========================== */
 .header {
     position: fixed;
-    top: 36px;
-    /* Below top-bar */
+    top: 0;
     left: 0;
     width: 100%;
-    background: rgba(30, 63, 111, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
-    height: 72px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 90px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     transition: all var(--transition);
+    display: flex;
+    align-items: center;
 }
 
 .header__inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 72px;
+    width: 100%;
+    height: 100%;
 }
 
 .header__logo-img {
-    height: 60px;
+    height: 80px;
     width: auto;
     display: block;
     object-fit: contain;
+    transition: transform var(--transition);
 }
 
+.header__logo-img:hover {
+    transform: scale(1.02);
+}
+
+/* ===========================
+   HEADER
+   =========================== */
 .footer__logo-img {
-    height: 70px;
+    height: 100px;
     width: auto;
     display: block;
     object-fit: contain;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    filter: brightness(1.2) contrast(1.1);
 }
 
 .logo-text {
@@ -261,7 +228,7 @@ ul {
     font-weight: 800;
     font-size: 1.125rem;
     letter-spacing: 1.5px;
-    color: var(--white);
+    color: var(--navy);
 }
 
 .header__nav .nav__list {
@@ -270,16 +237,19 @@ ul {
 }
 
 .nav__link {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.75);
-    transition: color var(--transition);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--navy-dark);
+    opacity: 0.8;
+    transition: all var(--transition);
     position: relative;
+    padding: 8px 0;
 }
 
 .nav__link:hover,
 .nav__link.active {
-    color: var(--white);
+    color: var(--navy);
+    opacity: 1;
 }
 
 .nav__link.active::after {
@@ -311,7 +281,7 @@ ul {
     display: block;
     width: 24px;
     height: 2px;
-    background: var(--white);
+    background: var(--navy);
     transition: all var(--transition);
 }
 
@@ -335,13 +305,13 @@ ul {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: 4px 10px;
-    color: var(--white);
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 8px 14px;
+    color: var(--navy-dark);
     font-family: var(--font-primary);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition);
@@ -349,7 +319,8 @@ ul {
 }
 
 .lang-switcher__btn:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background: var(--gray-100);
+    border-color: var(--gray-300);
 }
 
 .lang-switcher__btn i {
@@ -572,8 +543,7 @@ ul {
    HERO
    =========================== */
 .hero {
-    margin-top: 108px;
-    /* 36px top-bar + 72px header */
+    margin-top: 90px;
     background: linear-gradient(135deg, var(--gray-50) 0%, #eef1f6 100%);
     position: relative;
     padding: 80px 0 0;
@@ -1492,10 +1462,10 @@ ul {
     .header__nav {
         display: none;
         position: absolute;
-        top: 72px;
+        top: 90px;
         left: 0;
         width: 100%;
-        background: rgba(14, 18, 43, 0.95);
+        background: rgba(14, 18, 43, 0.98);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         padding: 20px 24px;
@@ -1645,7 +1615,7 @@ ul {
    AFFILIATE HERO
    =========================== */
 .aff-hero {
-    margin-top: 108px;
+    margin-top: 90px;
     background: linear-gradient(135deg, var(--gray-50) 60%, #dce3ed 100%);
     padding: 80px 0;
     overflow: hidden;
