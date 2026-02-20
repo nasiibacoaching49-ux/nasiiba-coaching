@@ -15,10 +15,12 @@ const TRANSLATIONS = {
         _flag: "🇬🇧",
 
         // Header
-        nav_home: "Home",
+        nav_about: "About",
         nav_services: "Services",
         nav_resources: "Resources",
+        nav_stories: "Stories",
         nav_affiliate: "Affiliate",
+        nav_student: "Login",
         nav_contact: "Contact",
         header_cta: "Book Sessions",
 
@@ -196,10 +198,12 @@ const TRANSLATIONS = {
         _dir: "ltr",
         _flag: "🇸🇴",
 
-        nav_home: "Hoyga",
+        nav_about: "Ku saabsan",
         nav_services: "Adeegyada",
         nav_resources: "Koorsooyinka",
+        nav_stories: "Sheekooyinka",
         nav_affiliate: "Wadaagga",
+        nav_student: "Gal",
         nav_contact: "Nala Soo Xiriir",
         header_cta: "Ballan Ka Samee",
 
@@ -359,10 +363,12 @@ const TRANSLATIONS = {
         _dir: "rtl",
         _flag: "🇸🇦",
 
-        nav_home: "الرئيسية",
+        nav_about: "عنا",
         nav_services: "الخدمات",
         nav_resources: "الدورات",
+        nav_stories: "قصصنا",
         nav_affiliate: "الشراكة",
+        nav_student: "دخول",
         nav_contact: "اتصل بنا",
         header_cta: "احجز استشارة مجانية",
 
@@ -522,10 +528,12 @@ const TRANSLATIONS = {
         _dir: "ltr",
         _flag: "🇫🇷",
 
-        nav_home: "Accueil",
+        nav_about: "À propos",
         nav_services: "Services",
         nav_resources: "Ressources",
+        nav_stories: "Histoires",
         nav_affiliate: "Affiliation",
+        nav_student: "Connexion",
         nav_contact: "Contact",
         header_cta: "Consultation Gratuite",
 
@@ -685,10 +693,12 @@ const TRANSLATIONS = {
         _dir: "ltr",
         _flag: "🇪🇸",
 
-        nav_home: "Inicio",
+        nav_about: "Acerca de",
         nav_services: "Servicios",
         nav_resources: "Recursos",
+        nav_stories: "Historias",
         nav_affiliate: "Afiliados",
+        nav_student: "Acceso",
         nav_contact: "Contacto",
         header_cta: "Consulta Gratuita",
 
