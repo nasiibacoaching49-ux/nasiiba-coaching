@@ -2,22 +2,22 @@
    CSS Custom Properties
    =========================== */
 :root {
-    --navy: #0e122b;
-    --navy-dark: #080a1c;
-    --navy-light: #161a38;
-    --gold: #d4a017;
-    --gold-hover: #b88a10;
-    --gold-light: #f5e6b8;
+    --navy: #234C84;
+    --navy-dark: #1E3F6F;
+    --navy-light: #3a69a8;
+    --gold: #F2B01E;
+    --gold-hover: #cf941a;
+    --gold-light: #fef1d6;
     --white: #ffffff;
-    --gray-50: #f8f9fa;
-    --gray-100: #f0f1f3;
-    --gray-200: #e2e4e8;
-    --gray-300: #c8cad0;
+    --gray-50: #F2F2F2;
+    --gray-100: #e8e8e8;
+    --gray-200: #dcdcdc;
+    --gray-300: #c0c0c0;
     --gray-400: #9a9da6;
     --gray-500: #6b6f7a;
     --gray-600: #4a4e59;
     --gray-700: #33363f;
-    --blue-accent: #2563eb;
+    --blue-accent: #234C84;
     --green-check: #22c55e;
 
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -55,7 +55,7 @@ body {
     font-family: var(--font-primary);
     color: var(--gray-700);
     line-height: 1.6;
-    background: var(--white);
+    background: var(--gray-50);
     overflow-x: hidden;
 }
 
@@ -137,7 +137,7 @@ ul {
     background: var(--gold-hover);
     border-color: var(--gold-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(212, 160, 23, 0.35);
+    box-shadow: 0 4px 12px rgba(242, 176, 30, 0.35);
 }
 
 .btn--navy {
@@ -180,7 +180,7 @@ ul {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(14, 18, 43, 0.85);
+    background: rgba(30, 63, 111, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     z-index: 1000;
