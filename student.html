@@ -25,6 +25,7 @@
             </a>
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
                     <li><a href="about.html" class="nav__link" data-i18n="nav_about">About</a></li>
                     <li><a href="index.html#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="index.html#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
@@ -32,6 +33,10 @@
                 </ul>
             </nav>
             <div class="header__actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
                 <div class="lang-switcher" id="lang-switcher"></div>
                 <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
                     class="btn btn--gold header__cta" data-i18n="header_cta">Book Sessions</a>
@@ -149,6 +154,7 @@
     <script src="supabase-config.js"></script>
     <script src="translations.js"></script>
     <script src="i18n.js"></script>
+    <script src="script.js"></script>
     <script src="student.js"></script>
     <script src="tracking.js"></script>
 

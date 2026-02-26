@@ -26,6 +26,7 @@
             </a>
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
                     <li><a href="about.html" class="nav__link active" data-i18n="nav_about">About</a></li>
                     <li><a href="index.html#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="index.html#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
@@ -33,6 +34,10 @@
                 </ul>
             </nav>
             <div class="header__actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
                 <div class="lang-switcher" id="lang-switcher"></div>
                 <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
                     class="btn btn--gold header__cta" data-i18n="header_cta">Book Sessions</a>
@@ -58,16 +63,16 @@
         <div class="container">
             <div class="about__inner"
                 style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-                <div class="about__image">
+                <div class="about__image reveal">
                     <div class="about__image-container">
                         <img src="images/hero-coach.png" alt="Nasiiba Coaching" class="about__img">
                         <div class="about__experience">
-                            <span class="exp-number">10+</span>
+                            <span class="exp-number">7+</span>
                             <span class="exp-text">Years Experience</span>
                         </div>
                     </div>
                 </div>
-                <div class="about__content">
+                <div class="about__content reveal stagger-2">
                     <p class="about__text" data-i18n="about_text">
                         Nasiiba Coaching LLC is dedicated to helping individuals find confidence, clarity, and purpose.
                         Our mission is to guide you on a journey of self-discovery, bridging the gap between who you are
@@ -75,7 +80,7 @@
                         who you want to be.
                     </p>
                     <div class="about__features" style="margin-top: 30px;">
-                        <div class="about-feature"
+                        <div class="about-feature reveal stagger-1"
                             style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 25px;">
                             <div class="about-feature__icon"><i class="fas fa-brain"></i></div>
                             <div>
@@ -84,7 +89,8 @@
                                     confidence and inner peace.</p>
                             </div>
                         </div>
-                        <div class="about-feature" style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div class="about-feature reveal stagger-2"
+                            style="display: flex; gap: 20px; align-items: flex-start;">
                             <div class="about-feature__icon"><i class="fas fa-check-circle"></i></div>
                             <div>
                                 <h4 class="about-feature__title" data-i18n="about_item2">Strategic Accountability</h4>
@@ -137,10 +143,10 @@
             <div class="footer__contact">
                 <h4 data-i18n="footer_contact_us">CONTACT US</h4>
                 <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Ave, Suite 200</li>
-                    <li><i class="fas fa-envelope"></i> info@nasiibacoaching.com</li>
-                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/15155284209" target="_blank"
-                            rel="noopener noreferrer">+1 (515) 528-4209</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> 1880 Old Hudson Rd, # 214, Saint Paul, MN</li>
+                    <li><i class="fas fa-envelope"></i> info@nasiiba.online</li>
+                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/252634499309" target="_blank"
+                            rel="noopener noreferrer">252 63 449 9309</a></li>
                 </ul>
             </div>
         </div>

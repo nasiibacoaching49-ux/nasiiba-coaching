@@ -26,30 +26,84 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Intersection Observer for fade-in animations
+    // Intersection Observer for reveal animations
     const observerOptions = {
         threshold: 0.15,
-        rootMargin: '0px 0px -40px 0px'
+        rootMargin: '0px 0px -50px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
+                // Optional: stop observing once visible
+                // observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Add fade-in class to animated elements
-    const animatedElements = document.querySelectorAll(
-        '.service-card, .course-card, .testimonial-card, .trust__image-wrapper, .trust__content'
-    );
-
-    animatedElements.forEach(el => {
-        el.classList.add('fade-in');
+    // Observe elements with .reveal class
+    document.querySelectorAll('.reveal').forEach(el => {
         observer.observe(el);
     });
+
+    // ===========================
+    // THEME SWITCHER
+    // ===========================
+    const themeToggle = document.getElementById('theme-toggle');
+    const storageKey = 'nasiiba_theme';
+
+    const getTheme = () => {
+        return localStorage.getItem(storageKey) || 'light';
+    };
+
+    const setTheme = (theme) => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem(storageKey, theme);
+    };
+
+    // Initialize theme
+    setTheme(getTheme());
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const newTheme = getTheme() === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+    }
+
+    // ===========================
+    // SWIPER TESTIMONIALS
+    // ===========================
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('.testimonial-swiper', {
+            loop: true,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 1,
+                },
+                1024: {
+                    slidesPerView: 1,
+                },
+            }
+        });
+    }
 
     // ===========================
     // SERVICE DETAILS MODAL LOGIC

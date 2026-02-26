@@ -13,6 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -26,6 +27,7 @@
             </a>
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
                     <li><a href="about.html" class="nav__link" data-i18n="nav_about">About</a></li>
                     <li><a href="#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
@@ -33,6 +35,10 @@
                 </ul>
             </nav>
             <div class="header__actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
                 <div class="lang-switcher" id="lang-switcher"></div>
                 <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
                     class="btn btn--gold header__cta" data-i18n="header_cta">Book Sessions</a>
@@ -87,38 +93,37 @@
             <p class="section__label" data-i18n="services_label">CORE EXPERTISE</p>
             <h2 class="section__title" data-i18n="services_title">Our Professional Services</h2>
             <div class="services__grid">
-                <div class="service-card">
+                <div class="service-card reveal stagger-1">
                     <div class="service-card__icon"><i class="fas fa-graduation-cap"></i></div>
                     <h3 class="service-card__title" data-i18n="service1_title">Courses</h3>
                     <p class="service-card__text" data-i18n="service1_text">Comprehensive learning programs and
                         certifications to help you grow professionally in today's competitive market.</p>
                     <a href="#" class="service-card__link" data-service="service1"><span data-i18n="learn_more">Learn
-                            More</span> <i class="fas fa-arrow-right"></i></a>
+                            More</span></a>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal stagger-2">
                     <div class="service-card__icon"><i class="fas fa-briefcase"></i></div>
                     <h3 class="service-card__title" data-i18n="service2_title">Coaching</h3>
                     <p class="service-card__text" data-i18n="service2_text">Customized coaching programs designed
                         specifically to transform your business operations and achieve lasting results.</p>
                     <a href="#" class="service-card__link" data-service="service2"><span data-i18n="learn_more">Learn
-                            More</span> <i class="fas fa-arrow-right"></i></a>
+                            More</span></a>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal stagger-3">
                     <div class="service-card__icon"><i class="fas fa-chart-line"></i></div>
                     <h3 class="service-card__title" data-i18n="service3_title">Consulting</h3>
                     <p class="service-card__text" data-i18n="service3_text">Expert consulting services tailored to your
                         industry, structure, and goals for sustainable business outcomes.</p>
                     <a href="#" class="service-card__link" data-service="service3"><span data-i18n="learn_more">Learn
-                            More</span> <i class="fas fa-arrow-right"></i></a>
+                            More</span></a>
                 </div>
-                <div class="service-card">
+                <div class="service-card reveal stagger-4">
                     <div class="service-card__icon"><i class="fas fa-users-cog"></i></div>
                     <h3 class="service-card__title" data-i18n="service4_title">Capacity Building</h3>
                     <p class="service-card__text" data-i18n="service4_text">Empowering organizations and individuals
                         with the skills, tools, and resources needed to achieve sustainable growth.</p>
                     <a href="#" class="service-card__link" data-service="service4"><span data-i18n="learn_more">Learn
-                            More</span> <i class="fas fa-arrow-right"></i></a>
-                    class="fas fa-arrow-right"></i></a>
+                            More</span></a>
                 </div>
             </div>
         </div>
@@ -139,7 +144,7 @@
             </div>
             <div class="courses__grid">
                 <!-- Course 1 -->
-                <div class="course-card" data-course-id="exec-leadership">
+                <div class="course-card reveal stagger-1" data-course-id="exec-leadership">
                     <div class="course-card__image">
                         <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=250&fit=crop"
                             alt="Executive Leadership Excellence">
@@ -156,7 +161,7 @@
                     </div>
                 </div>
                 <!-- Course 2 -->
-                <div class="course-card" data-course-id="business-scaling">
+                <div class="course-card reveal stagger-2" data-course-id="strategic-scaling">
                     <div class="course-card__image">
                         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop"
                             alt="Strategic Business Scaling">
@@ -173,7 +178,7 @@
                     </div>
                 </div>
                 <!-- Course 3 -->
-                <div class="course-card" data-course-id="high-performance">
+                <div class="course-card reveal stagger-3" data-course-id="high-perf-teams">
                     <div class="course-card__image">
                         <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=250&fit=crop"
                             alt="High Performance Teams">
@@ -200,7 +205,7 @@
                 <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=500&h=400&fit=crop"
                     alt="Growth and trust" class="trust__img">
                 <div class="trust__stat">
-                    <span class="trust__stat-number">15+</span>
+                    <span class="trust__stat-number">7+</span>
                     <span class="trust__stat-label" data-i18n="trust_stat_label">Years of Business Excellence</span>
                 </div>
             </div>
@@ -225,54 +230,117 @@
         </div>
     </section>
 
-    <!-- ========== TESTIMONIALS ========== -->
-    <section class="testimonials" id="testimonials">
+    <!-- ========== TESTIMONIALS & GALLERY ========== -->
+    <section class="feedback-section" id="testimonials">
         <div class="container">
-            <p class="section__label" data-i18n="testimonials_label">TRUST WORTHY</p>
-            <h2 class="section__title" data-i18n="testimonials_title">What Our Clients Say</h2>
-            <div class="testimonials__grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-card__header">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face"
-                            alt="Ahmed ALi" class="testimonial-card__avatar">
-                        <div>
-                            <h4 class="testimonial-card__name">Ahmed ALi</h4>
-                            <p class="testimonial-card__role" data-i18n="test1_role">London</p>
+            <div class="feedback-grid">
+                <!-- Testimonials Column -->
+                <div class="testimonials-col reveal">
+                    <p class="section__label" data-i18n="testimonials_label">TRUST WORTHY</p>
+                    <h2 class="section__title section__title--left" data-i18n="testimonials_title">What Our Clients Say
+                    </h2>
+
+                    <div class="swiper testimonial-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-card__header">
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face"
+                                            alt="Ahmed ALi" class="testimonial-card__avatar">
+                                        <div>
+                                            <h4 class="testimonial-card__name">Ahmed ALi</h4>
+                                            <p class="testimonial-card__role" data-i18n="test1_role">London</p>
+                                        </div>
+                                    </div>
+                                    <p class="testimonial-card__text" data-i18n="testimonial1_text">"By the grace of
+                                        Allah, meeting Al
+                                        Ustaad Abu Hamza in Istanbul in 2025 marked a turning point in my life. Before
+                                        his guidance, my
+                                        self-image was limited and unclear. Today, I carry confidence, clarity, and
+                                        inner strength.
+                                        Thank you for this powerful transformation. I highly recommend everyone to join
+                                        Nasiiba
+                                        Coaching."</p>
+                                </div>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-card__header">
+                                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face"
+                                            alt="Abdullahi Abdiqani" class="testimonial-card__avatar">
+                                        <div>
+                                            <h4 class="testimonial-card__name">Abdullahi Abdiqani</h4>
+                                            <p class="testimonial-card__role" data-i18n="test2_role">Muqdisho</p>
+                                        </div>
+                                    </div>
+                                    <p class="testimonial-card__text" data-i18n="testimonial2_text">"Al Ustaad Abu Hamza
+                                        has truly
+                                        transformed my life by the grace of God. Before working with him, I had
+                                        university degrees but
+                                        no real income and a deep sense of frustration. Today, I live with stability,
+                                        happiness, and
+                                        true prosperity. Thank you for helping me rebuild my life with clarity and
+                                        purpose."</p>
+                                </div>
+                            </div>
+                            <!-- Slide 3 -->
+                            <div class="swiper-slide">
+                                <div class="testimonial-card">
+                                    <div class="testimonial-card__header">
+                                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&h=60&fit=crop&crop=face"
+                                            alt="Najax Ibrahim" class="testimonial-card__avatar">
+                                        <div>
+                                            <h4 class="testimonial-card__name">Najax Ibrahim</h4>
+                                            <p class="testimonial-card__role" data-i18n="test3_role">Hargaisa</p>
+                                        </div>
+                                    </div>
+                                    <p class="testimonial-card__text" data-i18n="testimonial3_text">"I am grateful to
+                                        Coach Abu Hamza.
+                                        In less than 24 hours, his guidance elevated my awareness and reshaped my life,
+                                        taking me from
+                                        sadness, confusion, and feeling lost to joy, clarity, inner peace, and renewed
+                                        purpose. This
+                                        experience truly marked a powerful turning point in my personal journey."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Swiper elements -->
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-nav-buttons">
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
                         </div>
                     </div>
-                    <p class="testimonial-card__text" data-i18n="testimonial1_text">"By the grace of Allah, meeting Al
-                        Ustaad Abu Hamza in Istanbul in 2025 marked a turning point in my life. Before his guidance, my
-                        self-image was limited and unclear. Today, I carry confidence, clarity, and inner strength.
-                        Thank you for this powerful transformation. I highly recommend everyone to join Nasiiba
-                        Coaching."</p>
                 </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-card__header">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=face"
-                            alt="Abdullahi Abdiqani" class="testimonial-card__avatar">
-                        <div>
-                            <h4 class="testimonial-card__name">Abdullahi Abdiqani</h4>
-                            <p class="testimonial-card__role" data-i18n="test2_role">Muqdisho</p>
+
+                <!-- Gallery Column -->
+                <div class="gallery-col reveal stagger-2">
+                    <p class="section__label">PROVEN SUCCESS</p>
+                    <h2 class="section__title section__title--left">Our Beautiful Gallery</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item main">
+                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop"
+                                alt="Coaching Session">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=200&h=150&fit=crop"
+                                alt="Team Meeting">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=200&h=150&fit=crop"
+                                alt="Workshop">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=200&h=150&fit=crop"
+                                alt="Success">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=200&h=150&fit=crop"
+                                alt="Community">
                         </div>
                     </div>
-                    <p class="testimonial-card__text" data-i18n="testimonial2_text">"Al Ustaad Abu Hamza has truly
-                        transformed my life by the grace of God. Before working with him, I had university degrees but
-                        no real income and a deep sense of frustration. Today, I live with stability, happiness, and
-                        true prosperity. Thank you for helping me rebuild my life with clarity and purpose."</p>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-card__header">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=60&h=60&fit=crop&crop=face"
-                            alt="Najax Ibrahim" class="testimonial-card__avatar">
-                        <div>
-                            <h4 class="testimonial-card__name">Najax Ibrahim</h4>
-                            <p class="testimonial-card__role" data-i18n="test3_role">Hargaisa</p>
-                        </div>
-                    </div>
-                    <p class="testimonial-card__text" data-i18n="testimonial3_text">"I am grateful to Coach Abu Hamza.
-                        In less than 24 hours, his guidance elevated my awareness and reshaped my life, taking me from
-                        sadness, confusion, and feeling lost to joy, clarity, inner peace, and renewed purpose. This
-                        experience truly marked a powerful turning point in my personal journey."</p>
                 </div>
             </div>
         </div>
@@ -328,10 +396,10 @@
             <div class="footer__contact">
                 <h4 data-i18n="footer_contact_us">CONTACT US</h4>
                 <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Ave, Suite 200</li>
-                    <li><i class="fas fa-envelope"></i> info@nasiibacoaching.com</li>
-                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/15155284209" target="_blank"
-                            rel="noopener noreferrer">+1 (515) 528-4209</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> 1880 Old Hudson Rd, # 214, Saint Paul, MN</li>
+                    <li><i class="fas fa-envelope"></i> info@nasiiba.online</li>
+                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/252634499309" target="_blank"
+                            rel="noopener noreferrer">252 63 449 9309</a></li>
                 </ul>
             </div>
         </div>
@@ -366,7 +434,7 @@
     </div>
 
     <!-- ========== WHATSAPP WIDGET ========== -->
-    <a href="https://wa.me/15155284209" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+    <a href="https://wa.me/252634499309" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
         aria-label="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
@@ -376,6 +444,7 @@
     <script src="supabase-config.js"></script>
     <script src="tracking.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="translations.js"></script>
     <script src="i18n.js"></script>
     <script src="geo-pricing.js"></script>

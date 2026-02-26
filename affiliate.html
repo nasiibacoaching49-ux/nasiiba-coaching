@@ -26,6 +26,7 @@
             </a>
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
                     <li><a href="about.html" class="nav__link" data-i18n="nav_about">About</a></li>
                     <li><a href="index.html#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="index.html#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
@@ -33,6 +34,10 @@
                 </ul>
             </nav>
             <div class="header__actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
                 <div class="lang-switcher" id="lang-switcher"></div>
                 <a href="https://calendar.app.google/BSuVwnM1fbmrHXEcA" target="_blank" rel="noopener noreferrer"
                     class="btn btn--gold header__cta" data-i18n="header_cta">Book Sessions</a>
@@ -48,7 +53,7 @@
     <!-- ========== AFFILIATE HERO ========== -->
     <section class="aff-hero">
         <div class="container aff-hero__inner">
-            <div class="aff-hero__content">
+            <div class="aff-hero__content reveal">
                 <span class="hero__badge" data-i18n="aff_hero_badge">★ PARTNER WITH US</span>
                 <h1 class="hero__title">
                     <span data-i18n="aff_hero_title_1">Earn While You</span><br><strong><span
@@ -72,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="aff-hero__visual">
+            <div class="aff-hero__visual reveal stagger-2">
                 <div class="aff-hero__card">
                     <i class="fas fa-hand-holding-dollar aff-hero__card-icon"></i>
                     <p class="aff-hero__card-text" data-i18n="aff_card_text">Start earning today with just a simple
@@ -88,21 +93,21 @@
             <p class="section__label" data-i18n="aff_steps_label">HOW IT WORKS</p>
             <h2 class="section__title" data-i18n="aff_steps_title">Three Simple Steps to Earn</h2>
             <div class="aff-steps__grid">
-                <div class="aff-step-card">
+                <div class="aff-step-card reveal stagger-1">
                     <div class="aff-step-card__number">01</div>
                     <div class="aff-step-card__icon"><i class="fas fa-user-plus"></i></div>
                     <h3 class="aff-step-card__title" data-i18n="aff_step1_title">Sign Up</h3>
                     <p class="aff-step-card__text" data-i18n="aff_step1_text">Create your free affiliate account and get
                         your unique referral link instantly.</p>
                 </div>
-                <div class="aff-step-card">
+                <div class="aff-step-card reveal stagger-2">
                     <div class="aff-step-card__number">02</div>
                     <div class="aff-step-card__icon"><i class="fas fa-share-nodes"></i></div>
                     <h3 class="aff-step-card__title" data-i18n="aff_step2_title">Share Your Link</h3>
                     <p class="aff-step-card__text" data-i18n="aff_step2_text">Promote Nasiiba Coaching using your unique
                         referral link across your network.</p>
                 </div>
-                <div class="aff-step-card">
+                <div class="aff-step-card reveal stagger-3">
                     <div class="aff-step-card__number">03</div>
                     <div class="aff-step-card__icon"><i class="fas fa-wallet"></i></div>
                     <h3 class="aff-step-card__title" data-i18n="aff_step3_title">Earn Commission</h3>
@@ -150,6 +155,11 @@
                             <span data-i18n="aff_btn_register">Create Affiliate Account</span> <i
                                 class="fas fa-arrow-right"></i>
                         </button>
+                        <p style="margin-top: 15px; text-align: center; font-size: 0.9rem;">
+                            <i class="fab fa-whatsapp" style="color: #25d366;"></i>
+                            Questions? <a href="https://wa.me/252634499309" target="_blank"
+                                rel="noopener noreferrer"><strong>252 63 449 9309</strong></a>
+                        </p>
                         <p id="register-error" class="form-error"></p>
                     </form>
                     <form id="login-form" class="aff-auth__form" style="display:none;">
@@ -395,10 +405,10 @@
             <div class="footer__contact">
                 <h4 data-i18n="footer_contact_us">CONTACT US</h4>
                 <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Business Ave, Suite 200</li>
-                    <li><i class="fas fa-envelope"></i> info@nasiibacoaching.com</li>
-                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/15155284209" target="_blank"
-                            rel="noopener noreferrer">+1 (515) 528-4209</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> 1880 Old Hudson Rd, # 214, Saint Paul, MN</li>
+                    <li><i class="fas fa-envelope"></i> info@nasiiba.online</li>
+                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/252634499309" target="_blank"
+                            rel="noopener noreferrer">252 63 449 9309</a></li>
                 </ul>
             </div>
         </div>
@@ -410,7 +420,7 @@
     </footer>
 
     <!-- ========== WHATSAPP WIDGET ========== -->
-    <a href="https://wa.me/15155284209" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+    <a href="https://wa.me/252634499309" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
         aria-label="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
