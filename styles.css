@@ -1717,6 +1717,7 @@ ul {
     }
 
     .hero__main-image {
+        display: block;
         max-width: 280px;
         /* Smaller for better mobile fit */
         margin: 0 auto;
