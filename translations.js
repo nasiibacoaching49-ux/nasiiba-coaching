@@ -28,7 +28,7 @@ const TRANSLATIONS = {
         // Hero
         hero_badge: "★ EXECUTIVE COACHING & CONSULTING",
         hero_title_1: "Transform Your",
-        hero_title_2: "Skills.",
+        hero_title_2: "Mind.",
         hero_title_3: "Elevate",
         hero_title_4: "Your Business.",
         hero_text: "Empowering top-performing teams and individuals to leverage expert strategies, business coaching and professional consulting services tailored for growth in today's market.",
@@ -211,7 +211,7 @@ const TRANSLATIONS = {
 
         hero_badge: "★ TABABAR HOGAAMIYE & LA-TALIN",
         hero_title_1: "Bedel",
-        hero_title_2: "Xirfadahaaga.",
+        hero_title_2: "Maskaxdaada.",
         hero_title_3: "Kor U Qaad",
         hero_title_4: "Ganacsigaaga.",
         hero_text: "Awoodsiinta kooxaha iyo shakhsiyaadka si ay u isticmaalaan istaraatiijiyadaha khibrada leh, tababarka ganacsiga iyo adeegyada la-talinta xirfadeed ee loo habeeyey kobcinta suuqa maanta.",

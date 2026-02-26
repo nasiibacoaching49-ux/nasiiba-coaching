@@ -108,13 +108,68 @@
             if (profile) {
                 document.getElementById('dash-welcome').textContent = `Welcome, ${profile.full_name}!`;
                 showView('dashboard');
+                fetchStudentCourses(user.id);
             } else {
-                // Not a student?
                 db.auth.signOut();
                 showView('login');
             }
         } else {
-            showView('login');
+            // Check for registration view request
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('view') === 'register' || window.location.hash === '#register') {
+                showView('register');
+            } else {
+                showView('login');
+            }
+        }
+    }
+
+    async function fetchStudentCourses(studentId) {
+        const container = document.getElementById('dashboard-view');
+        // Find or create 'My Courses' container
+        let coursesSection = document.getElementById('my-courses-section');
+        if (!coursesSection) {
+            coursesSection = document.createElement('div');
+            coursesSection.id = 'my-courses-section';
+            coursesSection.style.marginTop = '40px';
+            coursesSection.innerHTML = '<h3 style="margin-bottom: 20px;">My Enrolled Courses</h3><div id="enrolled-courses-grid" class="courses__grid"></div>';
+            container.appendChild(coursesSection);
+        }
+
+        const grid = document.getElementById('enrolled-courses-grid');
+        grid.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Loading your courses...</p>';
+
+        try {
+            const { data: orders, error } = await db.from('orders')
+                .select(`course_id, courses(*)`)
+                .eq('student_id', studentId)
+                .eq('status', 'completed');
+
+            if (error) throw error;
+
+            if (!orders || orders.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-light);">You are not enrolled in any courses yet. <a href="index.html#courses" style="color: var(--gold);">Browse Courses</a></p>';
+                return;
+            }
+
+            grid.innerHTML = orders.map(order => {
+                const course = order.courses;
+                if (!course) return '';
+                return `
+                    <div class="course-card">
+                        <div class="course-card__image">
+                            <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}">
+                        </div>
+                        <div class="course-card__body">
+                            <h3 class="course-card__title">${course.title}</h3>
+                            <a href="course-player.html?courseId=${course.id}" class="btn btn--gold btn--sm btn--full" style="margin-top: 15px;">Continue Learning <i class="fas fa-play"></i></a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch (err) {
+            console.error('Error fetching student courses:', err);
+            grid.innerHTML = '<p style="color: var(--gold);">Error loading courses. Please refresh.</p>';
         }
     }
 

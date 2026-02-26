@@ -76,9 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // SWIPER TESTIMONIALS
     // ===========================
     if (typeof Swiper !== 'undefined') {
-        new Swiper('.testimonial-swiper', {
+        window.testimonialSwiper = new Swiper('.testimonial-swiper', {
             loop: true,
             spaceBetween: 30,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -86,10 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
-            },
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
             },
             breakpoints: {
                 640: {
@@ -104,6 +104,97 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ===========================
+    // DYNAMIC COURSES & REVIEWS
+    // ===========================
+    const db = window.supabaseClient;
+
+    async function initDynamicContent() {
+        if (!db) return;
+        fetchDynamicCourses();
+        fetchDynamicReviews();
+    }
+
+    async function fetchDynamicCourses() {
+        const grid = document.getElementById('courses-grid');
+        if (!grid) return;
+
+        try {
+            const { data: courses, error } = await db.from('courses').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (!courses || courses.length === 0) return;
+
+            grid.innerHTML = courses.map((course, index) => `
+                <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
+                    <div class="course-card__image">
+                        <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}">
+                        <span class="course-card__price-tag">$${Math.round(course.price * 0.4)}</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title">${course.title}</h3>
+                        <p class="course-card__desc">${course.description || ''}</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$${course.price}</span>
+                            <a href="student.html" class="btn btn--navy btn--sm">Enroll</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-observe new elements
+            document.querySelectorAll('.course-card.reveal').forEach(el => observer.observe(el));
+        } catch (err) {
+            console.error('Error loading courses:', err);
+        }
+    }
+
+    async function fetchDynamicReviews() {
+        const swiperWrapper = document.querySelector('.testimonial-swiper .swiper-wrapper');
+        if (!swiperWrapper) return;
+
+        try {
+            const { data: reviews, error } = await db.from('reviews')
+                .select(`*, students(full_name)`)
+                .eq('status', 'approved')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            if (!reviews || reviews.length === 0) return;
+
+            swiperWrapper.innerHTML = reviews.map(review => `
+                <div class="swiper-slide">
+                    <div class="testimonial-card">
+                        <div class="testimonial-card__header">
+                            <div class="testimonial-card__avatar-placeholder" style="width:60px; height:60px; background: var(--bg-alt); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--gold);">
+                                ${review.students ? review.students.full_name.charAt(0) : 'S'}
+                            </div>
+                            <div>
+                                <h4 class="testimonial-card__name">${review.students ? review.students.full_name : 'Student'}</h4>
+                                <p class="testimonial-card__role">Verified Student</p>
+                            </div>
+                        </div>
+                        <div class="review-card__rating" style="margin-bottom: 10px; color: var(--gold);">
+                            ${Array(review.rating).fill('<i class="fas fa-star"></i>').join('')}
+                        </div>
+                        <p class="testimonial-card__text">"${review.comment}"</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Re-init Swiper if it exists
+            if (window.testimonialSwiper) {
+                window.testimonialSwiper.update();
+            }
+        } catch (err) {
+            console.error('Error loading reviews:', err);
+        }
+    }
+
+    // Call init
+    initDynamicContent();
 
     // ===========================
     // SERVICE DETAILS MODAL LOGIC

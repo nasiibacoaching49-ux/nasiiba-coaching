@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Nasiiba Coaching</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --admin-sidebar-width: 260px;
+        }
+
+        body {
+            background-color: var(--bg-alt);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .admin-sidebar {
+            width: var(--admin-sidebar-width);
+            background: var(--navy);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 0;
+            z-index: 100;
+        }
+
+        .admin-sidebar__logo {
+            padding: 0 30px 40px;
+            text-align: center;
+        }
+
+        .admin-sidebar__logo img {
+            max-width: 150px;
+            filter: brightness(2);
+        }
+
+        .admin-nav {
+            flex-grow: 1;
+        }
+
+        .admin-nav__item {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+        }
+
+        .admin-nav__item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-nav__item:hover,
+        .admin-nav__item.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--gold);
+            border-left-color: var(--gold);
+        }
+
+        .admin-sidebar__footer {
+            padding: 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content Styles */
+        .admin-main {
+            margin-left: var(--admin-sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+            width: calc(100% - var(--admin-sidebar-width));
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .admin-header__title h1 {
+            font-size: 1.75rem;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+
+        .admin-header__title p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-card__icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-alt);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--gold);
+        }
+
+        .stat-card__info h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+
+        .stat-card__info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tables & Content Areas */
+        .admin-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .admin-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .admin-card__title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        /* Table Responsive */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 2px solid var(--bg-alt);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--bg-alt);
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge--success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge--warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge--danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Auth Screen (Overlay) */
+        #admin-auth {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+
+    <!-- Auth Overlay -->
+    <div id="admin-auth">
+        <div class="auth-card">
+            <h2 style="margin-bottom: 10px;">Admin Access</h2>
+            <p style="margin-bottom: 30px; color: var(--text-light);">Please sign in to continue</p>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="admin-email" placeholder="admin@nasiiba.online" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="admin-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn--navy btn--full" id="admin-login-btn">Sign In</button>
+            </form>
+            <p id="auth-error" style="color: var(--gold); margin-top: 15px; display: none;"></p>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="admin-sidebar__logo">
+            <img src="https://nasiibacoaching49-ux.github.io/nasiiba-coaching/images/IMG-20250109-WA0014-removebg-preview.png"
+                alt="Nasiiba Logo">
+        </div>
+        <nav class="admin-nav">
+            <a href="#dashboard" class="admin-nav__item active" data-view="dashboard">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="#courses" class="admin-nav__item" data-view="courses">
+                <i class="fas fa-graduation-cap"></i> Manage Courses
+            </a>
+            <a href="#lessons" class="admin-nav__item" data-view="lessons">
+                <i class="fas fa-play-circle"></i> Course Content
+            </a>
+            <a href="#orders" class="admin-nav__item" data-view="orders">
+                <i class="fas fa-shopping-cart"></i> Student Orders
+            </a>
+            <a href="#reviews" class="admin-nav__item" data-view="reviews">
+                <i class="fas fa-star"></i> Reviews & Feedback
+            </a>
+        </nav>
+        <div class="admin-sidebar__footer">
+            <button id="admin-logout" class="admin-nav__item"
+                style="background: none; border: none; width: 100%; cursor: pointer;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="view-content">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>System Overview</h1>
+                    <p>Welcome back, Admin! Here's what's happening today.</p>
+                </div>
+                <div class="admin-header__actions">
+                    <button class="btn btn--gold btn--sm" onclick="location.href='index.html'">View Site <i
+                            class="fas fa-external-link-alt"></i></button>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card__icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-card__info">
+                        <h3 id="stat-students">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__icon"><i class="fas fa-book"></i></div>
+                    <div class="stat-card__info">
+                        <h3 id="stat-courses">0</h3>
+                        <p>Active Courses</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-card__info">
+                        <h3 id="stat-revenue">$0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card__icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-card__info">
+                        <h3 id="stat-reviews">0</h3>
+                        <p>Pending Reviews</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <div class="admin-card__header">
+                    <h2 class="admin-card__title">Recent Orders</h2>
+                </div>
+                <div class="table-responsive">
+                    <table id="recent-orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JS -->
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-light);">
+                                    Loading data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other views will be implemented in the same page or dynamically loaded -->
+        </div>
+
+        <!-- Reviews View -->
+        <div id="view-reviews" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Reviews & Feedback</h1>
+                    <p>Moderate student reviews before they go public.</p>
+                </div>
+            </header>
+            <div id="reviews-container">
+                <!-- Reviews populated by JS -->
+            </div>
+        </div>
+
+        <!-- Courses View -->
+        <div id="view-courses" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Manage Courses</h1>
+                    <p>Add, edit, or remove courses from your catalog.</p>
+                </div>
+                <button class="btn btn--navy" id="btn-add-course"><i class="fas fa-plus"></i> New Course</button>
+            </header>
+
+            <div id="courses-container" class="admin-card">
+                <div class="table-responsive">
+                    <table id="courses-table">
+                        <thead>
+                            <tr>
+                                <th>Thumbnail</th>
+                                <th>Course Title</th>
+                                <th>Price</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons View -->
+        <div id="view-lessons" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Course Content</h1>
+                    <p>Manage lessons, videos, and PDFs for your courses.</p>
+                </div>
+            </header>
+            <div class="admin-card">
+                <div class="form-group">
+                    <label>Select Course</label>
+                    <select id="lesson-course-select" class="form-control"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--gray-200);">
+                        <option value="">-- Choose a course --</option>
+                    </select>
+                </div>
+                <div id="lessons-list-container" style="margin-top: 30px;">
+                    <!-- Lessons will be listed here -->
+                </div>
+                <button class="btn btn--gold btn--sm" id="btn-add-lesson" style="margin-top: 20px; display: none;"><i
+                        class="fas fa-plus"></i> Add Lesson</button>
+            </div>
+        </div>
+
+        <!-- Orders View -->
+        <div id="view-orders" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Student Orders</h1>
+                    <p>Track all course purchases and enrollments.</p>
+                </div>
+            </header>
+            <div class="admin-card">
+                <div class="table-responsive">
+                    <table id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: Course Form -->
+    <div id="modal-course" class="modal-overlay">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal__close" onclick="closeAdminModal('modal-course')"><i class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <h3 class="modal__title" id="course-modal-title">Add New Course</h3>
+            </div>
+            <div class="modal__body">
+                <form id="course-form">
+                    <input type="hidden" id="course-id">
+                    <div class="form-group">
+                        <label>Course Title</label>
+                        <input type="text" id="course-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="course-desc"
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200); height: 100px; font-family: inherit;"></textarea>
+                    </div>
+                    <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Price ($)</label>
+                            <input type="number" id="course-price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Thumbnail URL</label>
+                            <input type="text" id="course-thumb" placeholder="https://...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--navy btn--full" style="margin-top: 10px;">Save Course</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Lesson Form -->
+    <div id="modal-lesson" class="modal-overlay">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal__close" onclick="closeAdminModal('modal-lesson')"><i class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <h3 class="modal__title" id="lesson-modal-title">Add Lesson</h3>
+            </div>
+            <div class="modal__body">
+                <form id="lesson-form">
+                    <input type="hidden" id="lesson-id">
+                    <div class="form-group">
+                        <label>Lesson Title</label>
+                        <input type="text" id="lesson-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Content Type</label>
+                        <select id="lesson-type"
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200);">
+                            <option value="video">YouTube Video (Unlisted)</option>
+                            <option value="pdf">PDF / Document Link</option>
+                            <option value="quiz">Quiz (JSON Format)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Content (URL or JSON)</label>
+                        <textarea id="lesson-content"
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200); height: 100px; font-family: inherit;"
+                            required></textarea>
+                        <small style="color: var(--text-light);">For videos, paste the unlisted YouTube URL.</small>
+                    </div>
+                    <button type="submit" class="btn btn--navy btn--full">Save Lesson</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

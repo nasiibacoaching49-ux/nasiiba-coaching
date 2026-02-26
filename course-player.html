@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Player | Nasiiba Coaching</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: var(--bg-alt);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .player-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 0;
+            flex-grow: 1;
+            height: calc(100vh - 70px);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .player-header {
+            height: 70px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+
+        .player-header__logo img {
+            height: 40px;
+        }
+
+        .player-header__title {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.1rem;
+        }
+
+        /* Video Area */
+        .content-area {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            height: 0;
+            background: #000;
+        }
+
+        .video-wrapper iframe,
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .content-details {
+            padding: 40px;
+            background: var(--white);
+            flex-grow: 1;
+        }
+
+        .content-details h2 {
+            font-size: 1.75rem;
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+
+        /* Sidebar */
+        .player-sidebar {
+            background: var(--white);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-alt);
+        }
+
+        .sidebar-header h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .lesson-list {
+            flex-grow: 1;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .lesson-item:hover {
+            background: var(--bg-alt);
+        }
+
+        .lesson-item.active {
+            background: rgba(212, 160, 23, 0.08);
+            border-left: 4px solid var(--gold);
+        }
+
+        .lesson-item__icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-alt);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            color: var(--gold);
+        }
+
+        .lesson-item.active .lesson-item__icon {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .lesson-item__info h5 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .lesson-item__info span {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Review Section in Player */
+        .review-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .review-form {
+            background: var(--bg-alt);
+            padding: 30px;
+            border-radius: var(--radius-md);
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            color: var(--gray-300);
+            cursor: pointer;
+        }
+
+        .rating-stars i.active {
+            color: var(--gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .player-container {
+                grid-template-columns: 1fr;
+                height: auto;
+                overflow: visible;
+            }
+
+            .player-sidebar {
+                height: 500px;
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="player-header">
+        <a href="student.html" class="btn btn--sm btn--outline"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <div class="player-header__title" id="course-player-title">Loading Course...</div>
+        <div class="player-header__logo">
+            <img src="images/IMG-20250109-WA0014-removebg-preview.png" alt="Nasiiba Logo">
+        </div>
+    </header>
+
+    <div class="player-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <div id="video-placeholder" class="video-wrapper">
+                <!-- Video iframe will be injected here -->
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #fff;">
+                    <i class="fas fa-play-circle fa-4x"></i>
+                </div>
+            </div>
+
+            <div id="pdf-placeholder" class="content-details" style="display: none;">
+                <div id="pdf-container"
+                    style="height: 600px; background: var(--bg-alt); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <a href="#" id="pdf-download-link" class="btn btn--navy" target="_blank">Download PDF <i
+                            class="fas fa-file-pdf"></i></a>
+                </div>
+            </div>
+
+            <div class="content-details">
+                <h2 id="current-lesson-title">Select a lesson to begin</h2>
+                <div id="lesson-description" class="content-text" style="color: var(--text-light); line-height: 1.6;">
+                    Explore the course modules on the sidebar to start your learning journey.
+                </div>
+
+                <!-- Review Form (Hidden until course completion? Or always available after some progress) -->
+                <div class="review-section" id="course-review-section">
+                    <h3 style="margin-bottom: 20px;">Rate this Course</h3>
+                    <form id="review-form" class="review-form">
+                        <div class="rating-stars" id="rating-input">
+                            <i class="fas fa-star" data-value="1"></i>
+                            <i class="fas fa-star" data-value="2"></i>
+                            <i class="fas fa-star" data-value="3"></i>
+                            <i class="fas fa-star" data-value="4"></i>
+                            <i class="fas fa-star" data-value="5"></i>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="review-comment" placeholder="Share your experience with this course..."
+                                style="height: 120px;" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--gold">Submit Review</button>
+                    </form>
+                    <p id="review-status" style="margin-top: 15px; display: none;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="player-sidebar">
+            <div class="sidebar-header">
+                <h4 id="lessons-count">0 LESSONS</h4>
+                <div class="progress-bar"
+                    style="height: 4px; background: var(--gray-200); border-radius: 2px; margin-top: 10px;">
+                    <div id="course-progress"
+                        style="height: 100%; width: 0%; background: var(--gold); border-radius: 2px;"></div>
+                </div>
+            </div>
+            <div class="lesson-list" id="player-lesson-list">
+                <!-- Lessons will be populated here -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="player.js"></script>
+</body>
+
+</html>
