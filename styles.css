@@ -706,7 +706,7 @@ ul {
 .hero__inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: end;
+    align-items: center;
     gap: 40px;
 }
 
@@ -730,6 +730,7 @@ ul {
     line-height: 1.15;
     color: var(--navy);
     margin-bottom: 20px;
+    text-align: left;
 }
 
 .hero__title strong {
@@ -748,6 +749,7 @@ ul {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .hero__image-wrapper {
@@ -755,8 +757,10 @@ ul {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 380px;
+    /* Reduced for laptop */
     margin-left: auto;
-    max-width: 520px;
     padding-top: 20px;
 }
 
@@ -1304,6 +1308,10 @@ ul {
 
 .trust__img {
     width: 100%;
+    max-width: 400px;
+    /* Reduced for laptop */
+    display: block;
+    margin: 0;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
 }
