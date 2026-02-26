@@ -1664,7 +1664,13 @@ ul {
     }
 
     .header__nav .nav__link {
-        color: var(--white);
+        color: #ffffff;
+        /* Always white on dark mobile background */
+        opacity: 0.9;
+    }
+
+    .header__nav .nav__link:hover {
+        color: var(--gold);
         opacity: 1;
     }
 
@@ -1722,11 +1728,14 @@ ul {
         display: flex;
         justify-content: center;
         padding-top: 0;
+        margin: 0 auto;
+        /* Force center mobile hero */
     }
 
     .hero__main-image {
         display: block;
         max-width: 280px;
+        width: 100%;
         /* Smaller for better mobile fit */
         margin: 0 auto;
         border-radius: var(--radius-lg);
@@ -1755,6 +1764,16 @@ ul {
 
     .trust__image-wrapper {
         max-width: 420px;
+        margin: 0 auto;
+        /* Center wrapper on mobile */
+    }
+
+    .trust__img {
+        max-width: 300px;
+        max-height: 320px;
+        /* Shorter limit to fix length issue */
+        object-fit: cover;
+        margin: 0 auto;
     }
 
     .cta-banner__title {

@@ -73,6 +73,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===========================
+    // DYNAMIC HERO TEXT
+    // ===========================
+    const dynamicWord = document.getElementById('dynamic-word');
+    if (dynamicWord) {
+        const words = ['hero_business', 'hero_life'];
+        let currentIndex = 0;
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % words.length;
+            const nextWordKey = words[currentIndex];
+
+            // Fade out
+            dynamicWord.style.opacity = '0';
+            dynamicWord.style.transform = 'translateY(10px)';
+            dynamicWord.style.transition = 'all 0.5s ease';
+
+            setTimeout(() => {
+                // Update text using i18n if available
+                dynamicWord.setAttribute('data-i18n', nextWordKey);
+                if (window.i18n && typeof window.i18n.updatePageContent === 'function') {
+                    window.i18n.updatePageContent();
+                } else {
+                    // Fallback
+                    dynamicWord.textContent = nextWordKey === 'hero_life' ? 'Life.' : 'Business.';
+                }
+
+                // Fade in
+                dynamicWord.style.opacity = '1';
+                dynamicWord.style.transform = 'translateY(0)';
+            }, 500);
+        }, 4000);
+    }
+
+    // ===========================
     // SWIPER TESTIMONIALS
     // ===========================
     if (typeof Swiper !== 'undefined') {
