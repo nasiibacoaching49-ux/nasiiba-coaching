@@ -186,20 +186,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setInterval(() => {
             // Pick a random slot to change
-            const slotIndex = Math.floor(Math.random() * imgElements.length);
+            // Lower probability for the main large image (index 0) to maintain visual balance
+            let slotIndex;
+            const rand = Math.random();
+            if (rand < 0.15) slotIndex = 0; // 15% chance for main image
+            else slotIndex = Math.floor(Math.random() * (imgElements.length - 1)) + 1; // 85% for small ones
+
             const imgEl = imgElements[slotIndex];
 
             if (imgEl) {
+                const parent = imgEl.parentElement;
                 // Smooth fade transition
                 imgEl.style.opacity = '0';
+                if (parent) parent.style.transform = 'scale(0.98)';
 
                 setTimeout(() => {
                     currentIndex = (currentIndex + 1) % images.length;
                     imgEl.src = images[currentIndex];
                     imgEl.style.opacity = '1';
-                }, 600);
+                    if (parent) parent.style.transform = '';
+                }, 800);
             }
-        }, 3000);
+        }, 4000); // Slightly slower for more "premium" feel
     }
     initGalleryRotation();
 
