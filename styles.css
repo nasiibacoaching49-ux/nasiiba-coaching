@@ -1242,37 +1242,6 @@ ul {
     transform: scale(1.05);
 }
 
-.course-card__price-tag {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--gold);
-    color: var(--white);
-    font-weight: 700;
-    font-size: 0.8125rem;
-    padding: 4px 12px;
-    border-radius: var(--radius-sm);
-}
-
-.course-card__body {
-    padding: 20px;
-}
-
-.course-card__title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 8px;
-    line-height: 1.3;
-}
-
-.course-card__desc {
-    font-size: 0.8125rem;
-    color: var(--gray-500);
-    line-height: 1.6;
-    margin-bottom: 16px;
-}
-
 .course-card__footer {
     display: flex;
     justify-content: space-between;
@@ -1400,13 +1369,23 @@ ul {
     margin-top: 40px;
 }
 
+.testimonials-section {
+    padding: 100px 0;
+    background: var(--bg-alt);
+}
+
+.testimonials-inner {
+    text-align: center;
+}
+
 .testimonial-card {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    padding: 28px;
+    padding: 24px;
     text-align: left;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    height: 100%;
 }
 
 .testimonial-card:hover {
@@ -1443,10 +1422,46 @@ ul {
 }
 
 .testimonial-card__text {
-    font-size: 0.8375rem;
-    color: var(--gray-500);
-    line-height: 1.7;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
     font-style: italic;
+}
+
+/* ===========================
+   GALLERY SECTION
+   =========================== */
+.gallery-section {
+    padding: 100px 0;
+    background: var(--white);
+    text-align: center;
+}
+
+.gallery-swiper {
+    margin-top: 40px;
+    padding-bottom: 50px !important;
+}
+
+.gallery-item {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    box-shadow: var(--shadow-md);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+[data-theme="dark"] .gallery-section {
+    background: var(--navy-dark);
 }
 
 /* ===========================
@@ -2100,6 +2115,17 @@ ul {
     text-align: center;
 }
 
+[data-theme="dark"] .form-group input {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+}
+
+[data-theme="dark"] .modal {
+    background: var(--navy-dark);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
 /* ===========================
    ANIMATIONS & DARK MODE EFFECTS
    =========================== */
@@ -2140,30 +2166,157 @@ ul {
 }
 
 /* ===========================
-   PAYMENT MODAL
+   PAYMENT MODAL OPTIMIZATION
    =========================== */
 .modal--payment {
-    max-width: 450px;
+    max-width: 420px;
+    padding: 32px;
 }
 
 .payment-course-info {
     text-align: center;
-    padding: 24px;
+    padding: 20px;
     background: var(--bg-alt);
     border-radius: var(--radius-md);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
 }
 
 .payment-course-info h4 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     color: var(--navy);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    font-weight: 700;
 }
 
 #payment-course-price {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 800;
     color: var(--gold);
+}
+
+.coupon-section {
+    margin-bottom: 20px;
+}
+
+.coupon-section label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.coupon-input-wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+.coupon-input-wrapper input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    background: var(--bg-surface);
+    color: var(--text-main);
+}
+
+.coupon-msg {
+    font-size: 0.75rem;
+    margin-top: 6px;
+    min-height: 18px;
+}
+
+.coupon-msg.success {
+    color: #10b981;
+}
+
+.coupon-msg.error {
+    color: #ef4444;
+}
+
+.payment-methods {
+    margin-bottom: 20px;
+}
+
+.payment-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.payment-icons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.payment-icon {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--bg-surface);
+}
+
+.payment-icon i {
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+    color: var(--navy-light);
+}
+
+.payment-icon span {
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.payment-icon:hover,
+.payment-icon.active {
+    border-color: var(--gold);
+    background: rgba(212, 160, 23, 0.08);
+}
+
+[data-theme="dark"] .payment-icon:hover,
+[data-theme="dark"] .payment-icon.active {
+    background: rgba(212, 160, 23, 0.15);
+}
+
+.payment-footer-note {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+
+/* DARK MODE OVERRIDES */
+[data-theme="dark"] .modal--payment {
+    background: var(--navy-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .payment-course-info {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="dark"] .payment-course-info h4 {
+    color: var(--white);
+}
+
+[data-theme="dark"] .form-group input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+[data-theme="dark"] .form-group label {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .coupon-section {

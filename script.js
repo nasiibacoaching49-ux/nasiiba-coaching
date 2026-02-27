@@ -159,6 +159,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===========================
+    // GALLERY SWIPER (AUTO-ANIMATING)
+    // ===========================
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('.gallery-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+            }
+        });
+    }
+
+    // ===========================
     // DYNAMIC COURSES & REVIEWS
     // ===========================
     const db = window.supabaseClient;

@@ -99,12 +99,6 @@
             const coursePricing = pricing.courses[courseId];
             if (!coursePricing) return;
 
-            // Update price tag (badge on image)
-            const priceTag = card.querySelector('.course-card__price-tag');
-            if (priceTag) {
-                priceTag.textContent = pricing.currency + coursePricing.tagPrice;
-            }
-
             // Update main price
             const priceEl = card.querySelector('.course-card__price');
             if (priceEl) {
