@@ -107,6 +107,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===========================
+    // RAIN ANIMATION (DARK MODE)
+    // ===========================
+    function createRain() {
+        const rainContainer = document.getElementById('rain-container');
+        if (!rainContainer) return;
+
+        const dropCount = 100;
+        for (let i = 0; i < dropCount; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDuration = 0.5 + Math.random() * 1.5 + 's';
+            drop.style.animationDelay = Math.random() * 2 + 's';
+            rainContainer.appendChild(drop);
+        }
+    }
+    createRain();
+
+    // ===========================
     // SWIPER TESTIMONIALS
     // ===========================
     if (typeof Swiper !== 'undefined') {
@@ -309,6 +328,89 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentOpenService && serviceModal.classList.contains('active')) {
                 populateModalList(currentOpenService);
             }
+        });
+    }
+
+    // ===========================
+    // COUPON & PAYMENT ICONS
+    // ===========================
+    const paymentModal = document.getElementById('payment-modal');
+    if (paymentModal) {
+        const paymentClose = document.getElementById('payment-modal-close');
+        const courseTitle = document.getElementById('payment-course-title');
+        const coursePrice = document.getElementById('payment-course-price');
+        const couponInput = document.getElementById('coupon-code');
+        const applyBtn = document.getElementById('apply-coupon');
+        const couponMsg = document.getElementById('coupon-message');
+        const paymentIcons = document.querySelectorAll('.payment-icon');
+
+        let originalPriceValue = 0;
+        const COUPONS = {
+            'NASIIBA20': 0.20,
+            'WELCOME10': 0.10,
+            'SPECIAL': 0.50
+        };
+
+        const openPaymentModal = (title, priceText) => {
+            courseTitle.textContent = title;
+            coursePrice.textContent = priceText;
+            originalPriceValue = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
+
+            // Reset coupon
+            couponInput.value = '';
+            couponMsg.textContent = '';
+            couponMsg.className = 'coupon-msg';
+
+            paymentModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closePaymentModal = () => {
+            paymentModal.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        // Delegate click for enrollment buttons
+        document.body.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-enroll, [data-i18n="enroll"]');
+            if (btn) {
+                e.preventDefault();
+                const card = btn.closest('.course-card');
+                if (card) {
+                    const title = card.querySelector('.course-card__title').textContent;
+                    const price = card.querySelector('.course-card__price').textContent;
+                    openPaymentModal(title, price);
+                }
+            }
+        });
+
+        paymentClose.addEventListener('click', closePaymentModal);
+        paymentModal.addEventListener('click', (e) => {
+            if (e.target === paymentModal) closePaymentModal();
+        });
+
+        // Coupon Logic
+        applyBtn.addEventListener('click', () => {
+            const code = couponInput.value.trim().toUpperCase();
+            if (COUPONS[code]) {
+                const discount = originalPriceValue * COUPONS[code];
+                const newPrice = originalPriceValue - discount;
+                coursePrice.textContent = '$' + newPrice.toFixed(2);
+                couponMsg.textContent = `Success! ${code} applied (${COUPONS[code] * 100}% off)`;
+                couponMsg.className = 'coupon-msg success';
+            } else {
+                couponMsg.textContent = 'Invalid coupon code.';
+                couponMsg.className = 'coupon-msg error';
+                coursePrice.textContent = '$' + originalPriceValue.toFixed(2);
+            }
+        });
+
+        // Payment Method Selection
+        paymentIcons.forEach(icon => {
+            icon.addEventListener('click', () => {
+                paymentIcons.forEach(i => i.classList.remove('active'));
+                icon.classList.add('active');
+            });
         });
     }
 });

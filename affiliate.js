@@ -198,6 +198,7 @@
         const email = document.getElementById('reg-email').value.trim().toLowerCase();
         const password = document.getElementById('reg-password').value;
         const paypal = document.getElementById('reg-paypal').value.trim();
+        const whatsapp = document.getElementById('reg-whatsapp').value.trim();
 
         if (db) {
             const { data, error } = await db.auth.signUp({
@@ -222,6 +223,7 @@
                 name: name,
                 email: email,
                 paypal_email: paypal,
+                whatsapp: whatsapp,
                 ref_code: generateRefCode(name),
                 clicks: 0,
                 created_at: new Date().toISOString()
@@ -250,6 +252,7 @@
                 email: email,
                 passwordHash: hashPassword(password),
                 paypal_email: paypal,
+                whatsapp: whatsapp,
                 ref_code: generateRefCode(name),
                 clicks: 0,
                 created_at: new Date().toISOString()

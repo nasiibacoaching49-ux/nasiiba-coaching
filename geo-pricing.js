@@ -12,14 +12,17 @@
     const PRICING = {
         // Somalia & neighboring Horn of Africa countries — local pricing in USD
         somalia: {
-            countries: ['SO', 'DJ', 'ER', 'ET'],
+            countries: ['SO'],
             currency: '$',
             currencyCode: 'USD',
             label: '🇸🇴 Somalia Price',
             courses: {
                 'exec-leadership': { price: 29, originalPrice: 49, tagPrice: 15 },
                 'business-scaling': { price: 25, originalPrice: 45, tagPrice: 12 },
-                'high-performance': { price: 19, originalPrice: 35, tagPrice: 9 }
+                'high-performance': { price: 19, originalPrice: 35, tagPrice: 9 },
+                'mastering-sales': { price: 29, originalPrice: 49, tagPrice: 15 },
+                'digital-marketing': { price: 25, originalPrice: 45, tagPrice: 12 },
+                'financial-freedom': { price: 19, originalPrice: 35, tagPrice: 9 }
             }
         },
         // International — standard pricing
@@ -31,7 +34,10 @@
             courses: {
                 'exec-leadership': { price: 169, originalPrice: 249, tagPrice: 69 },
                 'business-scaling': { price: 159, originalPrice: 229, tagPrice: 59 },
-                'high-performance': { price: 129, originalPrice: 199, tagPrice: 29 }
+                'high-performance': { price: 129, originalPrice: 199, tagPrice: 29 },
+                'mastering-sales': { price: 169, originalPrice: 249, tagPrice: 69 },
+                'digital-marketing': { price: 159, originalPrice: 229, tagPrice: 59 },
+                'financial-freedom': { price: 129, originalPrice: 199, tagPrice: 29 }
             }
         }
     };

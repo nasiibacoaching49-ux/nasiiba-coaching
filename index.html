@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <div class="rain-container" id="rain-container"></div>
 
     <!-- ========== HEADER ========== -->
     <header class="header" id="header">
@@ -31,6 +32,7 @@
                     <li><a href="about.html" class="nav__link" data-i18n="nav_about">About</a></li>
                     <li><a href="#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
+                    <li><a href="affiliate.html" class="nav__link">Affiliate</a></li>
                     <li><a href="student.html" class="nav__link" data-i18n="nav_student">Login</a></li>
                 </ul>
             </nav>
@@ -159,7 +161,7 @@
                             through modern coaching and management.</p>
                         <div class="course-card__footer">
                             <span class="course-card__price">$169.00</span>
-                            <a href="#" class="btn btn--navy btn--sm" data-i18n="enroll">Enroll</a>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
                         </div>
                     </div>
                 </div>
@@ -176,12 +178,12 @@
                             operations, effective growth systems and frameworks.</p>
                         <div class="course-card__footer">
                             <span class="course-card__price">$159.00</span>
-                            <a href="#" class="btn btn--navy btn--sm" data-i18n="enroll">Enroll</a>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
                         </div>
                     </div>
                 </div>
                 <!-- Course 3 -->
-                <div class="course-card reveal stagger-3" data-course-id="high-perf-teams">
+                <div class="course-card reveal stagger-3" data-course-id="high-performance">
                     <div class="course-card__image">
                         <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=250&fit=crop"
                             alt="High Performance Teams">
@@ -193,7 +195,58 @@
                             high-performance teams to increase efficiency and output.</p>
                         <div class="course-card__footer">
                             <span class="course-card__price">$129.00</span>
-                            <a href="#" class="btn btn--navy btn--sm" data-i18n="enroll">Enroll</a>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 4 -->
+                <div class="course-card reveal stagger-1" data-course-id="mastering-sales">
+                    <div class="course-card__image">
+                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=250&fit=crop"
+                            alt="Mastering Sales Psychology">
+                        <span class="course-card__price-tag">$29</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title" data-i18n="course4_title">Mastering Sales Psychology</h3>
+                        <p class="course-card__desc" data-i18n="course4_desc">Unlock the secrets of human behavior to
+                            close more deals and build lasting relationships.</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$169.00</span>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 5 -->
+                <div class="course-card reveal stagger-2" data-course-id="digital-marketing">
+                    <div class="course-card__image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop"
+                            alt="Digital Marketing Mastery">
+                        <span class="course-card__price-tag">$25</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title" data-i18n="course5_title">Digital Marketing Mastery</h3>
+                        <p class="course-card__desc" data-i18n="course5_desc">Master the latest digital strategies to
+                            grow your brand and reach your target audience.</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$159.00</span>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 6 -->
+                <div class="course-card reveal stagger-3" data-course-id="financial-freedom">
+                    <div class="course-card__image">
+                        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=250&fit=crop"
+                            alt="Financial Freedom Blueprint">
+                        <span class="course-card__price-tag">$19</span>
+                    </div>
+                    <div class="course-card__body">
+                        <h3 class="course-card__title" data-i18n="course6_title">Financial Freedom Blueprint</h3>
+                        <p class="course-card__desc" data-i18n="course6_desc">Take control of your finances and build a
+                            path to long-term wealth and security.</p>
+                        <div class="course-card__footer">
+                            <span class="course-card__price">$129.00</span>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
                         </div>
                     </div>
                 </div>
@@ -381,9 +434,8 @@
                     <li><a href="index.html" data-i18n="nav_home">Home</a></li>
                     <li><a href="#about" data-i18n="nav_about">About</a></li>
                     <li><a href="#services" data-i18n="nav_services">Services</a></li>
-                    <li><a href="#courses" data-i18n="nav_resources">Resources</a></li>
                     <li><a href="affiliate.html" data-i18n="nav_affiliate">Affiliate</a></li>
-                    <li><a href="student.html" data-i18n="nav_student">Student Login</a></li>
+                    <li><a href="student.html" data-i18n="nav_student">Login</a></li>
                     <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
                 </ul>
             </div>
@@ -401,8 +453,8 @@
                 <ul>
                     <li><i class="fas fa-map-marker-alt"></i> 1880 Old Hudson Rd, # 214, Saint Paul, MN</li>
                     <li><i class="fas fa-envelope"></i> info@nasiiba.online</li>
-                    <li><i class="fas fa-phone"></i> <a href="https://wa.me/252634499309" target="_blank"
-                            rel="noopener noreferrer">252 63 449 9309</a></li>
+                    <li><i class="fas fa-phone"></i> <a href="tel:+252634499309" class="footer__phone">252 63 449
+                            9309</a></li>
                 </ul>
             </div>
         </div>
@@ -441,6 +493,45 @@
         aria-label="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+
+    <div class="modal-overlay" id="payment-modal">
+        <div class="modal modal--payment">
+            <button class="modal__close" id="payment-modal-close" aria-label="Close modal"><i
+                    class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <div class="modal__icon"><i class="fas fa-shopping-cart"></i></div>
+                <h3 class="modal__title">Complete Enrollment</h3>
+            </div>
+            <div class="modal__body">
+                <div class="payment-course-info">
+                    <h4 id="payment-course-title">Course Title</h4>
+                    <p id="payment-course-price">$0.00</p>
+                </div>
+
+                <div class="coupon-section">
+                    <label for="coupon-code">Have a Coupon?</label>
+                    <div class="coupon-input-wrapper">
+                        <input type="text" id="coupon-code" placeholder="Enter code">
+                        <button id="apply-coupon" class="btn btn--gold btn--sm">Apply</button>
+                    </div>
+                    <p id="coupon-message" class="coupon-msg"></p>
+                </div>
+
+                <div class="payment-methods">
+                    <p class="payment-label">Select Payment Method</p>
+                    <div class="payment-icons">
+                        <div class="payment-icon" title="Mastercard"><i class="fab fa-cc-mastercard"></i></div>
+                        <div class="payment-icon" title="Waafi"><i class="fas fa-mobile-alt"></i><span>Waafi</span>
+                        </div>
+                        <div class="payment-icon" title="Edahab"><i class="fas fa-wallet"></i><span>Edahab</span></div>
+                    </div>
+                </div>
+
+                <a href="student.html?view=register" class="btn btn--gold btn--full">Proceed to Payment</a>
+                <p class="payment-footer-note">Secure encryption ensures your data is safe.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
