@@ -457,5 +457,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon.classList.add('active');
             });
         });
+
+        // Proceed to Payment
+        const proceedBtn = document.getElementById('proceed-payment');
+        const authPrompt = document.getElementById('auth-prompt');
+
+        const checkAuthState = async () => {
+            if (!db) return false;
+            const { data: { session } } = await db.auth.getSession();
+            return !!session;
+        };
+
+        const updateModalAuth = async () => {
+            const isLoggedIn = await checkAuthState();
+            if (isLoggedIn) {
+                authPrompt.style.display = 'none';
+                proceedBtn.textContent = 'Enroll Now';
+            } else {
+                authPrompt.style.display = 'block';
+                proceedBtn.textContent = 'Register to Enroll';
+            }
+        };
+
+        // Update auth state on open
+        const originalOpenPaymentModal = openPaymentModal;
+        openPaymentModal = async (title, priceText) => {
+            originalOpenPaymentModal(title, priceText);
+            await updateModalAuth();
+        };
+
+        proceedBtn.addEventListener('click', async () => {
+            const isLoggedIn = await checkAuthState();
+            const activeMethod = document.querySelector('.payment-icon.active')?.getAttribute('data-method') || 'evc';
+
+            if (!isLoggedIn) {
+                window.location.href = 'student.html?view=register';
+            } else {
+                // Handle payment processing...
+                alert(`Proceeding with ${activeMethod.toUpperCase()} payment for ${courseTitle.textContent}`);
+                // window.location.href = 'course-player.html';
+            }
+        });
     }
 });
