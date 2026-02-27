@@ -159,27 +159,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===========================
-    // GALLERY SWIPER (AUTO-ANIMATING)
+    // DYNAMIC GALLERY ROTATION
     // ===========================
-    if (typeof Swiper !== 'undefined') {
-        new Swiper('.gallery-swiper', {
-            slidesPerView: 1,
-            spaceBetween: 30,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
+    function initGalleryRotation() {
+        const galleryGrid = document.getElementById('dynamic-gallery');
+        if (!galleryGrid) return;
+
+        const images = [
+            'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=450&fit=crop',
+            'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=450&fit=crop',
+            'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&h=450&fit=crop',
+            'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=450&fit=crop',
+            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=450&fit=crop',
+            'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=450&fit=crop',
+            'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=450&fit=crop'
+        ];
+
+        let currentIndex = 0;
+        const imgElements = [
+            document.getElementById('gallery-img-1'),
+            document.getElementById('gallery-img-2'),
+            document.getElementById('gallery-img-3'),
+            document.getElementById('gallery-img-4'),
+            document.getElementById('gallery-img-5')
+        ];
+
+        setInterval(() => {
+            // Pick a random slot to change
+            const slotIndex = Math.floor(Math.random() * imgElements.length);
+            const imgEl = imgElements[slotIndex];
+
+            if (imgEl) {
+                // Smooth fade transition
+                imgEl.style.opacity = '0';
+
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    imgEl.src = images[currentIndex];
+                    imgEl.style.opacity = '1';
+                }, 600);
             }
-        });
+        }, 3000);
     }
+    initGalleryRotation();
 
     // ===========================
     // DYNAMIC COURSES & REVIEWS
