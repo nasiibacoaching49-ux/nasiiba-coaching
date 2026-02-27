@@ -1253,18 +1253,28 @@ ul {
     transform: scale(1.05);
 }
 
-.course-card__footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--gray-100);
+.course-card__price-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-hover) 100%);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(212, 160, 23, 0.4);
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.course-card__price {
-    font-size: 1.125rem;
-    font-weight: 800;
-    color: var(--navy);
+.course-card__footer {
+    display: flex;
+    justify-content: flex-end;
+    /* Moved enroll button to the right */
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--gray-100);
 }
 
 /* ===========================
@@ -1453,37 +1463,34 @@ ul {
 }
 
 /* ===========================
-   UNIQUE GALLERY SECTION
+   AMAZING UNIQUE GALLERY
    =========================== */
 .gallery-section {
-    padding: 100px 0;
-    background: var(--gray-50);
+    padding: 120px 0;
+    background: var(--white);
     overflow: hidden;
+    position: relative;
 }
 
 [data-theme="dark"] .gallery-section {
-    background: var(--bg-alt);
+    background: var(--navy-dark);
 }
 
-.gallery-inner {
-    text-align: center;
-}
-
-/* Unique Asymmetrical Grid */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 220px);
-    gap: 16px;
-    margin-top: 50px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(2, 240px);
+    gap: 20px;
+    margin-top: 60px;
 }
 
 .gallery-item {
     border-radius: var(--radius-lg);
     overflow: hidden;
     position: relative;
-    box-shadow: var(--shadow-md);
-    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: var(--bg-alt);
 }
 
 .gallery-item img {
@@ -1491,116 +1498,110 @@ ul {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: opacity 0.8s ease-in-out, transform 0.8s ease;
+    transition: all 0.8s ease-in-out;
 }
 
-/* Asymmetrical Spans */
+/* Amazing Asymmetrical layout */
 .gallery-item:nth-child(1) {
-    grid-column: span 3;
+    grid-column: span 5;
     grid-row: span 2;
 }
 
-/* Main Large */
+/* Large left highlight */
 .gallery-item:nth-child(2) {
+    grid-column: span 4;
+    grid-row: span 1;
+}
+
+/* Center top */
+.gallery-item:nth-child(3) {
     grid-column: span 3;
     grid-row: span 1;
 }
 
-/* Top Right */
-.gallery-item:nth-child(3) {
-    grid-column: span 1;
-    grid-row: span 1;
-}
-
-/* Bottom Right Set */
+/* Right top */
 .gallery-item:nth-child(4) {
-    grid-column: span 1;
+    grid-column: span 3;
     grid-row: span 1;
 }
 
+/* Center bottom */
 .gallery-item:nth-child(5) {
-    grid-column: span 1;
+    grid-column: span 4;
     grid-row: span 1;
 }
 
-.gallery-item::after {
+/* Right bottom */
+
+.gallery-item::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(12, 27, 51, 0.4), transparent);
+    background: linear-gradient(to top, rgba(12, 27, 51, 0.6), transparent);
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.gallery-item::after {
+    content: 'View Story';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 700;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.4s ease;
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .gallery-item:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: var(--shadow-lg);
-    z-index: 2;
+    transform: scale(1.03) translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    z-index: 5;
 }
 
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(1deg);
 }
 
 .gallery-item:hover::after {
     opacity: 1;
+    transform: translate(-50%, -50%);
 }
 
-/* Mobile & Laptop Optimizations */
 @media (max-width: 1200px) {
     .gallery-grid {
-        grid-template-rows: repeat(2, 180px);
+        grid-template-rows: repeat(2, 200px);
     }
 }
 
 @media (max-width: 991px) {
-    .testimonials-section {
-        padding: 100px 0 60px;
-    }
-
     .gallery-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
     }
 
+    .gallery-item:nth-child(n) {
+        grid-column: span 1;
+        height: 250px;
+    }
+
     .gallery-item:nth-child(1) {
-        grid-column: span 4;
-        height: 350px;
-    }
-
-    .gallery-item:nth-child(2) {
         grid-column: span 2;
-        height: 200px;
-    }
-
-    .gallery-item:nth-child(3) {
-        grid-column: span 2;
-        height: 200px;
-    }
-
-    .gallery-item:nth-child(4) {
-        grid-column: span 2;
-        height: 200px;
-    }
-
-    .gallery-item:nth-child(5) {
-        grid-column: span 2;
-        height: 200px;
+        height: 400px;
     }
 }
 
 @media (max-width: 640px) {
-    .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
     .gallery-item:nth-child(n) {
         grid-column: span 2;
-        height: 220px;
-    }
-
-    .gallery-item:nth-child(1) {
         height: 280px;
     }
 }

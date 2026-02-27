@@ -189,25 +189,31 @@ document.addEventListener('DOMContentLoaded', () => {
             // Lower probability for the main large image (index 0) to maintain visual balance
             let slotIndex;
             const rand = Math.random();
-            if (rand < 0.15) slotIndex = 0; // 15% chance for main image
-            else slotIndex = Math.floor(Math.random() * (imgElements.length - 1)) + 1; // 85% for small ones
+            if (rand < 0.1) slotIndex = 0; // 10% chance for main image
+            else slotIndex = Math.floor(Math.random() * (imgElements.length - 1)) + 1; // 90% for small ones
 
             const imgEl = imgElements[slotIndex];
 
             if (imgEl) {
                 const parent = imgEl.parentElement;
-                // Smooth fade transition
+                // Smooth sophisticated transition
+                imgEl.style.transition = 'opacity 0.8s ease-in-out, filter 0.8s ease-in-out';
                 imgEl.style.opacity = '0';
-                if (parent) parent.style.transform = 'scale(0.98)';
+                imgEl.style.filter = 'blur(10px)';
+                if (parent) {
+                    parent.style.transition = 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                    parent.style.transform = 'scale(0.95) rotate(-1deg)';
+                }
 
                 setTimeout(() => {
                     currentIndex = (currentIndex + 1) % images.length;
                     imgEl.src = images[currentIndex];
                     imgEl.style.opacity = '1';
+                    imgEl.style.filter = 'blur(0)';
                     if (parent) parent.style.transform = '';
                 }, 800);
             }
-        }, 4000); // Slightly slower for more "premium" feel
+        }, 5000); // Slower, more intentional rotation
     }
     initGalleryRotation();
 
