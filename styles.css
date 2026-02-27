@@ -1270,11 +1270,17 @@ ul {
 
 .course-card__footer {
     display: flex;
-    justify-content: flex-end;
-    /* Moved enroll button to the right */
+    justify-content: space-between;
     align-items: center;
     padding-top: 15px;
     border-top: 1px solid var(--gray-100);
+}
+
+.course-card__price {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: -0.5px;
 }
 
 /* ===========================
