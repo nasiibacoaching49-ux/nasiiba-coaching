@@ -4,10 +4,13 @@
   "description": "Nasiiba Coaching - Executive coaching, consulting, and online courses",
   "scripts": {
     "dev": "npx serve . -p 3000",
-    "start": "npx serve .",
-    "build": "echo 'Static site - no build step needed'"
+    "start": "npx serve ."
   },
-  "keywords": ["coaching", "consulting", "business"],
+  "keywords": [
+    "coaching",
+    "consulting",
+    "business"
+  ],
   "author": "Nasiiba Coaching",
   "license": "MIT"
 }
