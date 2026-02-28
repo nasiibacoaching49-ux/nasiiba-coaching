@@ -159,61 +159,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===========================
-    // DYNAMIC GALLERY ROTATION
+    // DYNAMIC GALLERY ROTATION (Swiper)
     // ===========================
     function initGalleryRotation() {
-        const galleryGrid = document.getElementById('dynamic-gallery');
-        if (!galleryGrid) return;
-
-        const images = [
-            'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=450&fit=crop',
-            'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=450&fit=crop',
-            'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&h=450&fit=crop',
-            'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=450&fit=crop',
-            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=450&fit=crop',
-            'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=450&fit=crop',
-            'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=450&fit=crop'
-        ];
-
-        let currentIndex = 0;
-        const imgElements = [
-            document.getElementById('gallery-img-1'),
-            document.getElementById('gallery-img-2'),
-            document.getElementById('gallery-img-3'),
-            document.getElementById('gallery-img-4'),
-            document.getElementById('gallery-img-5')
-        ];
-
-        setInterval(() => {
-            // Pick a random slot to change
-            // Lower probability for the main large image (index 0) to maintain visual balance
-            let slotIndex;
-            const rand = Math.random();
-            if (rand < 0.1) slotIndex = 0; // 10% chance for main image
-            else slotIndex = Math.floor(Math.random() * (imgElements.length - 1)) + 1; // 90% for small ones
-
-            const imgEl = imgElements[slotIndex];
-
-            if (imgEl) {
-                const parent = imgEl.parentElement;
-                // Smooth sophisticated transition
-                imgEl.style.transition = 'opacity 0.8s ease-in-out, filter 0.8s ease-in-out';
-                imgEl.style.opacity = '0';
-                imgEl.style.filter = 'blur(10px)';
-                if (parent) {
-                    parent.style.transition = 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)';
-                    parent.style.transform = 'scale(0.95) rotate(-1deg)';
-                }
-
-                setTimeout(() => {
-                    currentIndex = (currentIndex + 1) % images.length;
-                    imgEl.src = images[currentIndex];
-                    imgEl.style.opacity = '1';
-                    imgEl.style.filter = 'blur(0)';
-                    if (parent) parent.style.transform = '';
-                }, 800);
+        if (typeof Swiper !== 'undefined') {
+            const gallerySwiperEl = document.querySelector('.gallery-swiper');
+            if (gallerySwiperEl) {
+                window.gallerySwiper = new Swiper('.gallery-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    loop: true,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 30,
+                        }
+                    }
+                });
             }
-        }, 5000); // Slower, more intentional rotation
+        }
     }
     initGalleryRotation();
 

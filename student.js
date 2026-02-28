@@ -34,6 +34,7 @@
         e.preventDefault();
         const name = document.getElementById('reg-name').value;
         const email = document.getElementById('reg-email').value;
+        const whatsapp = document.getElementById('reg-whatsapp').value;
         const password = document.getElementById('reg-password').value;
 
         if (!db) {
@@ -58,7 +59,7 @@
 
             // Create student profile in database
             const { error: profileError } = await db.from('students').insert([
-                { id: data.user.id, full_name: name, email: email }
+                { id: data.user.id, full_name: name, email: email, whatsapp_number: whatsapp }
             ]);
 
             if (profileError) console.error('Error creating profile:', profileError);

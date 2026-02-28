@@ -48,5 +48,6 @@ CREATE TABLE orders (
 --     id UUID PRIMARY KEY REFERENCES auth.users(id),
 --     full_name TEXT,
 --     email TEXT,
+--     whatsapp_number TEXT,
 --     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 -- );
