@@ -3623,3 +3623,21 @@ ul {
     font-size: 0.9rem;
     border-radius: 8px;
 }
+
+/* ===========================
+   ABOUT US PAGE LAYOUT
+   =========================== */
+.custom-about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+    margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+    .custom-about-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
