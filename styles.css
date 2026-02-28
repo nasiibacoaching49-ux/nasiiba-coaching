@@ -3582,14 +3582,20 @@ ul {
 }
 
 /* Gallery Slider */
+.gallery-section {
+    padding-top: 40px;
+    /* Reduced spacing */
+    padding-bottom: 40px;
+}
+
 .gallery-swiper {
-    padding-bottom: 50px;
+    padding-bottom: 30px;
     width: 100%;
 }
 
 .gallery-slide-img {
     width: 100%;
-    height: 450px;
+    height: 320px;
     border-radius: var(--radius-xl);
     overflow: hidden;
     position: relative;
@@ -3627,7 +3633,8 @@ ul {
 /* ===========================
    ABOUT US PAGE LAYOUT
    =========================== */
-.custom-about-grid {
+.custom-about-grid,
+.custom-contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
@@ -3636,7 +3643,9 @@ ul {
 }
 
 @media (max-width: 992px) {
-    .custom-about-grid {
+
+    .custom-about-grid,
+    .custom-contact-grid {
         grid-template-columns: 1fr;
         gap: 30px;
     }
