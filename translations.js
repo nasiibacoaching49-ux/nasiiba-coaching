@@ -33,7 +33,9 @@ const TRANSLATIONS = {
         hero_title_4: "Your ",
         hero_life: "Life.",
         hero_business: "Business.",
-        hero_text: "Empowering top-performing teams and individuals to leverage expert strategies, business coaching and professional consulting services tailored for growth in today's market.",
+        hero_title_main: "Empower Your Mind,",
+        hero_title_highlight: "Elevate Your Life",
+        hero_text: "Nasiiba Coaching is your partner on your journey to clarity, confidence, and purpose. We empower you to unleash your potential and live the life you truly deserve with professional guidance.",
         hero_btn_learn: "Start Learning",
         hero_btn_consult: "Book Sessions",
 
@@ -112,6 +114,37 @@ const TRANSLATIONS = {
         testimonial1_text: '"By the grace of Allah, meeting Al Ustaad Abu Hamza in Istanbul in 2025 marked a turning point in my life. Before his guidance, my self-image was limited and unclear. Today, I carry confidence, clarity, and inner strength. Thank you for this powerful transformation. I highly recommend everyone to join Nasiiba Coaching."',
         testimonial2_text: '"Al Ustaad Abu Hamza has truly transformed my life by the grace of God. Before working with him, I had university degrees but no real income and a deep sense of frustration. Today, I live with stability, happiness, and true prosperity. Thank you for helping me rebuild my life with clarity and purpose."',
         testimonial3_text: '"I am grateful to Coach Abu Hamza. In less than 24 hours, his guidance elevated my awareness and reshaped my life, taking me from sadness, confusion, and feeling lost to joy, clarity, inner peace, and renewed purpose. This experience truly marked a powerful turning point in my personal journey."',
+
+        // Video Showcase
+        videos_label: "MEDIA & INSIGHTS",
+        videos_title: "Video Testimonials & Company Insights",
+        videos_text: "Watch real stories of transformation and discover what makes Nasiiba Coaching a life-changing experience.",
+        video1_title: "Client Transformation Story",
+        video1_desc: "A powerful testimony of personal growth and professional breakthrough.",
+        video2_title: "About Nasiiba Coaching",
+        video2_desc: "Discover our mission, vision, and the movement behind the brand.",
+        video3_title: "Live Coaching Highlights",
+        video3_desc: "Preview the impactful sessions that change lives every day.",
+
+        // Stats
+        stat_stories: "Success Stories",
+        stat_lives: "Transforming Lives Through Quality Education and Mentorship",
+
+        // Gallery
+        gallery_label: "PROVEN SUCCESS",
+        gallery_title: "Our Beautiful Gallery",
+
+        // Contact
+        contact_label: "GET IN TOUCH",
+        contact_title: "Let's Start a Conversation",
+        contact_desc: "Have questions about our programs or ready to begin your transformation? We're here to help.",
+        contact_email_label: "EMAIL US",
+        contact_call_label: "CALL US",
+        contact_whatsapp: "Chat on WhatsApp",
+        contact_form_name: "Full Name",
+        contact_form_email: "Email Address",
+        contact_form_message: "Message",
+        contact_form_send: "Send Message",
 
         // CTA
         cta_title_1: "Ready to Take Your",
@@ -224,7 +257,9 @@ const TRANSLATIONS = {
         hero_title_4: "ee ",
         hero_life: "Nolasha.",
         hero_business: "Ganacsiga.",
-        hero_text: "Waxa aan awood siinaa kooxaha iyo shakhsiyaadka haysta guulaha sare si ay uga faa'iidaystaan xeelado khibrad leh, tababarka ganacsiga iyo adeegyada la-talinta ee loogu talagalay korriinka suuqa maanta.",
+        hero_title_main: "Awood Sii Maskaxdaada,",
+        hero_title_highlight: "Kor U Qaad Nolashaada",
+        hero_text: "Nasiiba Coaching waa lataliye kugu weyn ee safarka xasiloonida, kalsooni iyo hadafka. Waxaan ku awoodsiinaa in aad furto awoodahaaga oo aad ku noolaato nolosha aad u qalanto.",
         hero_btn_learn: "Bilow Barashada",
         hero_btn_consult: "Ballan Ka Samee",
 
@@ -290,6 +325,37 @@ const TRANSLATIONS = {
         testimonial1_text: '"Ku mahadsanid Allaah, la kulanka Al Ustaad Abu Hamza ee Istanbul sanadka 2025 wuxuu ahaa isbadbadal weyn oo nolosheyda ah. Kahor hagistiisa, shakhsiyaddeyda way xaddidnayd. Maanta, waxaan xambaarsanahay kalsooni, caddayn, iyo awood gudeed. Walaal waad ku mahadsantahay isbeddelkan xooggan."',
         testimonial2_text: '"Al Ustaad Abu Hamza wuxuu runtii bedelay nolosheyda mahadda Eebbe. Kahor intaanan la shaqayn, waxaan heystay shahaadooyin jaamacadeed laakiin dakhli dhab ah ma jirin oo niyad jab weyn ayaan ku jiray. Maanta, nabad, farxad, iyo barwaaqo dhab ah ayaan ku noolahay."',
         testimonial3_text: '"Waxaan u mahadcelinayaa Tababare Abu Hamza. In ka yar 24 saacadood, hanuunintiisa waxay kor u qaadday wacyigeyga waxayna dib u habaysay nolosheyda, iyadoo iga kicisay murugo, jahawareer, ilaa farxad, caddayn, iyo hadaf dib loo cusboonaysiiyay."',
+
+        // Video Showcase
+        videos_label: "WARBAAHINTA & FIKRADAHA",
+        videos_title: "Fiidiyooyinka Sheekada Guusha & Shirkadda",
+        videos_text: "Daawo sheekooyin dhab ah oo isbeddel ku saabsan oo ogaaw waxa ka dhigaya Nasiiba Coaching waayo-aragnimo nolosha beddasha.",
+        video1_title: "Sheekada Isbeddelka Macmiilka",
+        video1_desc: "Sheeko awood leh oo ku saabsan korritaanka shakhsiyeed iyo guusha xirfadeed.",
+        video2_title: "Ku Saabsan Nasiiba Coaching",
+        video2_desc: "Ogaaw hadafkeena, aragtideena, iyo dhaqdhaqaaqa ka dambeeya sumadda.",
+        video3_title: "Waxyaabaha Muhiimka Ah ee Tababarka",
+        video3_desc: "Ka fiiri kulammada saamaynta leh ee maalin walba nolosha beddelaya.",
+
+        // Stats
+        stat_stories: "Sheekooyin Guul",
+        stat_lives: "Bedelka Nolosha Iyadoo Loo Marayo Waxbarasho Tayada Sare Leh",
+
+        // Gallery
+        gallery_label: "GUUL LA CADDAYNAYO",
+        gallery_title: "Galleriyadeena Quruxda Badan",
+
+        // Contact
+        contact_label: "NALA SOO XIRIIR",
+        contact_title: "Aan Wadahadal Bilowno",
+        contact_desc: "Ma qabtaa su'aalo ku saabsan barnaamijyadeena ama diyaar ma u tahay inaad bilowdo isbeddelkaaga? Waan halkan ku jiraa si aan ku caawino.",
+        contact_email_label: "NOOGU SOO DIR EMAIL",
+        contact_call_label: "NA SOO WACO",
+        contact_whatsapp: "Naga La Hadal WhatsApp",
+        contact_form_name: "Magaca Oo Dhan",
+        contact_form_email: "Ciwaanka Emailka",
+        contact_form_message: "Fariin",
+        contact_form_send: "Dir Fariinta",
 
         cta_title_1: "Diyaar Ma U Tahay",
         cta_title_2: "Ganacsigaaga Heerka Xiga?",
@@ -396,7 +462,9 @@ const TRANSLATIONS = {
         hero_title_2: "مهاراتك.",
         hero_title_3: "ارتقِ",
         hero_title_4: "بعملك.",
-        hero_text: "تمكين الفرق والأفراد ذوي الأداء العالي للاستفادة من الاستراتيجيات المتخصصة والتدريب على الأعمال وخدمات الاستشارات المهنية المصممة للنمو في سوق اليوم.",
+        hero_title_main: "مكّن عقلك،",
+        hero_title_highlight: "ارتقِ بحياتك",
+        hero_text: "نسيبة للتدريب هي شريكك في رحلتك نحو الوضوح والثقة والهدف. نحن نمكّنك من إطلاق إمكاناتك والعيش الحياة التي تستحقها حقاً بتوجيه مهني.",
         hero_btn_learn: "ابدأ التعلم",
         hero_btn_consult: "احجز استشارة مجانية",
 
@@ -462,6 +530,37 @@ const TRANSLATIONS = {
         testimonial1_text: '"بفضل الله، كان لقائي بالأستاذ أبو حمزة في إسطنبول عام 2025 نقطة تحول في حياتي. قبل توجيهاته، كانت صورتي الذاتية محدودة. اليوم، أمتلك الثقة والوضوح والقوة الداخلية. أوصي بشدة بالانضمام إلى نسيبة للتدريب."',
         testimonial2_text: '"لقد غير الأستاذ أبو حمزة حياتي حقًا بفضل الله. قبل العمل معه، كنت أمتلك شهادات جامعية ولكن بلا دخل حقيقي وبإحباط عميق. اليوم، أعيش في استقرار وسعادة وازدهار حقيقي."',
         testimonial3_text: '"أنا ممتن للمدرب أبو حمزة. في أقل من 24 ساعة، رفع توجيهه وعيي وأعاد تشكيل حياتي، ناقلًا إياي من الحزن والارتباك إلى الفرح والوضوح والسلام الداخلي."',
+
+        // Video Showcase
+        videos_label: "الوسائط والرؤى",
+        videos_title: "شهادات فيديو ورؤى الشركة",
+        videos_text: "شاهد قصصاً حقيقية عن التحول واكتشف ما يجعل نسيبة للتدريب تجربة تغير الحياة.",
+        video1_title: "قصة تحول العميل",
+        video1_desc: "شهادة قوية عن النمو الشخصي والإنجاز المهني.",
+        video2_title: "عن نسيبة للتدريب",
+        video2_desc: "اكتشف مهمتنا ورؤيتنا والحركة وراء العلامة التجارية.",
+        video3_title: "أبرز لحظات التدريب",
+        video3_desc: "استعرض الجلسات المؤثرة التي تغير الحياة كل يوم.",
+
+        // Stats
+        stat_stories: "قصص نجاح",
+        stat_lives: "تحويل الحياة من خلال التعليم والإرشاد عالي الجودة",
+
+        // Gallery
+        gallery_label: "نجاح مثبت",
+        gallery_title: "معرضنا الجميل",
+
+        // Contact
+        contact_label: "تواصل معنا",
+        contact_title: "لنبدأ محادثة",
+        contact_desc: "هل لديك أسئلة حول برامجنا أو مستعد لبدء تحولك؟ نحن هنا للمساعدة.",
+        contact_email_label: "راسلنا",
+        contact_call_label: "اتصل بنا",
+        contact_whatsapp: "تحدث عبر واتساب",
+        contact_form_name: "الاسم الكامل",
+        contact_form_email: "البريد الإلكتروني",
+        contact_form_message: "الرسالة",
+        contact_form_send: "إرسال الرسالة",
 
         cta_title_1: "هل أنت مستعد لنقل",
         cta_title_2: "عملك إلى المستوى التالي؟",
@@ -568,7 +667,9 @@ const TRANSLATIONS = {
         hero_title_2: "Compétences.",
         hero_title_3: "Élevez",
         hero_title_4: "Votre Entreprise.",
-        hero_text: "Accompagner les équipes et les individus performants pour tirer parti de stratégies expertes, du coaching d'affaires et des services de conseil professionnel adaptés à la croissance.",
+        hero_title_main: "Renforcez Votre Esprit,",
+        hero_title_highlight: "Élevez Votre Vie",
+        hero_text: "Nasiiba Coaching est votre partenaire dans votre parcours vers la clarté, la confiance et le sens. Nous vous donnons les moyens de libérer votre potentiel et de vivre la vie que vous méritez vraiment.",
         hero_btn_learn: "Commencer",
         hero_btn_consult: "Consultation Gratuite",
 
@@ -634,6 +735,37 @@ const TRANSLATIONS = {
         testimonial1_text: '"Par la grâce d\'Allah, la rencontre avec Al Ustaad Abu Hamza à Istanbul en 2025 a marqué un tournant dans ma vie. Avant ses conseils, mon image de moi était limitée et floue. Aujourd\'hui, je porte de la confiance, de la clarté et une force intérieure. Je recommande vivement à tous de rejoindre Nasiiba Coaching."',
         testimonial2_text: '"Al Ustaad Abu Hamza a vraiment transformé ma vie par la grâce de Dieu. Avant de travailler avec lui, j\'avais des diplômes universitaires mais pas de revenus et un profond sentiment de frustration. Aujourd\'hui, je vis avec stabilité et véritable prospérité. Merci de m\'avoir aidé à reconstruire ma vie."',
         testimonial3_text: '"Je suis reconnaissante envers le Coach Abu Hamza. En moins de 24 heures, ses conseils ont élevé ma conscience et remodelé ma vie, me faisant passer de la tristesse, de la confusion et du sentiment d\'être perdue à la joie, la clarté, la paix intérieure et un but renouvelé."',
+
+        // Video Showcase
+        videos_label: "MÉDIAS & PERSPECTIVES",
+        videos_title: "Témoignages Vidéo & Aperçus de l'Entreprise",
+        videos_text: "Regardez de vraies histoires de transformation et découvrez ce qui fait de Nasiiba Coaching une expérience qui change la vie.",
+        video1_title: "Histoire de Transformation Client",
+        video1_desc: "Un témoignage puissant de croissance personnelle et de percée professionnelle.",
+        video2_title: "À Propos de Nasiiba Coaching",
+        video2_desc: "Découvrez notre mission, notre vision et le mouvement derrière la marque.",
+        video3_title: "Points Forts du Coaching en Direct",
+        video3_desc: "Aperçu des sessions impactantes qui changent des vies chaque jour.",
+
+        // Stats
+        stat_stories: "Histoires de Réussite",
+        stat_lives: "Transformer des Vies par une Éducation et un Mentorat de Qualité",
+
+        // Gallery
+        gallery_label: "SUCCÈS PROUVÉ",
+        gallery_title: "Notre Belle Galerie",
+
+        // Contact
+        contact_label: "CONTACTEZ-NOUS",
+        contact_title: "Commençons une Conversation",
+        contact_desc: "Des questions sur nos programmes ou prêt à commencer votre transformation? Nous sommes là pour vous aider.",
+        contact_email_label: "ÉCRIVEZ-NOUS",
+        contact_call_label: "APPELEZ-NOUS",
+        contact_whatsapp: "Discuter sur WhatsApp",
+        contact_form_name: "Nom Complet",
+        contact_form_email: "Adresse Email",
+        contact_form_message: "Message",
+        contact_form_send: "Envoyer le Message",
 
         cta_title_1: "Prêt à Amener Votre",
         cta_title_2: "Entreprise au Niveau Supérieur?",
@@ -740,7 +872,9 @@ const TRANSLATIONS = {
         hero_title_2: "Ujuzi Wako.",
         hero_title_3: "Inua",
         hero_title_4: "Biashara Yako.",
-        hero_text: "Kuwezesha timu na watu binafsi kutumia mikakati ya kitaalamu, ukochi wa biashara na huduma za ushauri wa kitaalamu zilizolenga ukuaji katika soko la leo.",
+        hero_title_main: "Imarisha Akili Yako,",
+        hero_title_highlight: "Inua Maisha Yako",
+        hero_text: "Nasiiba Coaching ni mshirika wako katika safari yako ya uwazi, ujasiri na kusudi. Tunakuwezesha kufungua uwezo wako na kuishi maisha unayostahili kweli.",
         hero_btn_learn: "Anza Kujifunza",
         hero_btn_consult: "Weka Miadi",
 
@@ -791,6 +925,37 @@ const TRANSLATIONS = {
         test2_role: "Mogadishu",
         test3_role: "Hargeisa",
         testimonial1_text: '"Kwa neema ya Allah, kukutana na Al Ustaad Abu Hamza mjini Istanbul mwaka 2025 kuliweka mabadiliko makubwa katika maisha yangu. Leo, nina ujasiri na uwazi."',
+
+        // Video Showcase
+        videos_label: "VYOMBO VYA HABARI & MAONI",
+        videos_title: "Ushuhuda wa Video & Maoni ya Kampuni",
+        videos_text: "Tazama hadithi za kweli za mabadiliko na ugundue kinachofanya Nasiiba Coaching kuwa uzoefu unaobadilisha maisha.",
+        video1_title: "Hadithi ya Mabadiliko ya Mteja",
+        video1_desc: "Ushuhuda wenye nguvu wa ukuaji wa kibinafsi na mafanikio ya kitaalamu.",
+        video2_title: "Kuhusu Nasiiba Coaching",
+        video2_desc: "Gundua dhamira yetu, maono yetu na harakati nyuma ya chapa.",
+        video3_title: "Mambo Muhimu ya Ukochi",
+        video3_desc: "Kagua vikao vyenye athari ambavyo hubadilisha maisha kila siku.",
+
+        // Stats
+        stat_stories: "Hadithi za Mafanikio",
+        stat_lives: "Kubadilisha Maisha Kupitia Elimu na Ushauri wa Ubora",
+
+        // Gallery
+        gallery_label: "MAFANIKIO YALIYOTHIBITISHWA",
+        gallery_title: "Matunzio Yetu Mazuri",
+
+        // Contact
+        contact_label: "WASILIANA NASI",
+        contact_title: "Tuanze Mazungumzo",
+        contact_desc: "Una maswali kuhusu programu zetu au uko tayari kuanza mabadiliko yako? Tuko hapa kukusaidia.",
+        contact_email_label: "TUANDIKIE",
+        contact_call_label: "TUPIGIE",
+        contact_whatsapp: "Zungumza kwenye WhatsApp",
+        contact_form_name: "Jina Kamili",
+        contact_form_email: "Anwani ya Barua Pepe",
+        contact_form_message: "Ujumbe",
+        contact_form_send: "Tuma Ujumbe",
 
         cta_title_1: "Je, Uko Tayari Kupeleka",
         cta_title_2: "Biashara Yako Katika Kiwango Kingine?",

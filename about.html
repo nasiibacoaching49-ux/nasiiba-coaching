@@ -27,10 +27,10 @@
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
                     <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
-                    <li><a href="about.html" class="nav__link active nav__link--with-img" data-i18n="nav_about">
+                    <li><a href="about.html" class="nav__link active nav__link--with-img">
                             <img src="https://image2url.com/r2/default/images/1772203041874-61593465-eb88-47a7-96e1-5f91a1596acc.jpeg"
                                 alt="About" class="nav__link-img">
-                            About
+                            <span data-i18n="nav_about">About</span>
                         </a></li>
                     <li><a href="index.html#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="index.html#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
@@ -58,8 +58,10 @@
     <!-- ========== PAGE HEADER ========== -->
     <section class="page-header">
         <div class="container">
+            <p class="section__label" data-i18n="about_label"
+                style="color: var(--gold); margin-bottom: 10px; letter-spacing: 2px; font-weight: 700; font-size: 0.9rem;">
+                OUR STORY</p>
             <h1 data-i18n="about_title">Empowering Minds, Elevating Lives</h1>
-            <p data-i18n="about_label">OUR STORY</p>
         </div>
     </section>
 

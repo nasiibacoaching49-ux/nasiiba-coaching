@@ -29,10 +29,10 @@
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
                     <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
-                    <li><a href="about.html" class="nav__link nav__link--with-img" data-i18n="nav_about">
+                    <li><a href="about.html" class="nav__link nav__link--with-img">
                             <img src="https://image2url.com/r2/default/images/1772203041874-61593465-eb88-47a7-96e1-5f91a1596acc.jpeg"
                                 alt="About" class="nav__link-img">
-                            About
+                            <span data-i18n="nav_about">About</span>
                         </a></li>
                     <li><a href="#services" class="nav__link" data-i18n="nav_services">Services</a></li>
                     <li><a href="#testimonials" class="nav__link" data-i18n="nav_stories">Stories</a></li>
@@ -63,13 +63,15 @@
             <div class="hero__content">
                 <span class="hero__badge" data-i18n="hero_badge">★ EXECUTIVE COACHING & CONSULTING</span>
                 <h1 class="hero__title" style="font-size: 3.5rem; line-height: 1.2;">
-                    Empower Your Mind,<br>
+                    <span data-i18n="hero_title_main">Empower Your Mind,</span><br>
                     <strong>
-                        <span class="animate-branded" style="color: var(--gold);">Elevate Your Life</span>
+                        <span class="animate-branded" style="color: var(--gold);"
+                            data-i18n="hero_title_highlight">Elevate Your Life</span>
                     </strong>
                 </h1>
-                <p class="hero__text" style="font-size: 1.15rem; max-width: 600px; margin-bottom: 30px;">
-                    Nasiiba Training Company is your partner on your journey to clarity, confidence, and purpose. We
+                <p class="hero__text" style="font-size: 1.15rem; max-width: 600px; margin-bottom: 30px;"
+                    data-i18n="hero_text">
+                    Nasiiba Coaching is your partner on your journey to clarity, confidence, and purpose. We
                     empower you to unleash your potential and live the life you truly deserve with professional
                     guidance.
                 </p>
@@ -98,11 +100,12 @@
         <div class="container success-stats__inner">
             <div class="stat-item">
                 <span class="stat-number">65+</span>
-                <span class="stat-label">Success Stories</span>
+                <span class="stat-label" data-i18n="stat_stories">Success Stories</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">1000+</span>
-                <span class="stat-label">Transforming Lives Through Quality Education and Mentorship</span>
+                <span class="stat-label" data-i18n="stat_lives">Transforming Lives Through Quality Education and
+                    Mentorship</span>
             </div>
         </div>
     </section>
@@ -271,19 +274,24 @@
                     alt="Growth and trust" class="trust__img" style="border-radius: 20px;">
             </div>
             <div class="trust__content">
-                <p class="section__label">PROVEN RESULTS</p>
-                <h2 class="section__title section__title--left">Why Leaders Trust Nasiiba</h2>
-                <p class="trust__text">We move beyond theory. We deliver battle-tested
+                <p class="section__label" data-i18n="trust_label">PROVEN RESULTS</p>
+                <h2 class="section__title section__title--left" data-i18n="trust_title">Why Leaders Trust Nasiiba</h2>
+                <p class="trust__text" data-i18n="trust_text">We move beyond theory. We deliver battle-tested
                     strategies that have transformed hundreds of organizations across diverse industries, driving
                     sustainable growth and high-level outcomes.</p>
                 <ul class="trust__list">
-                    <li><i class="fas fa-check-circle"></i><span><strong>Bespoke Strategic Roadmaps:</strong>
-                            <span>Custom-tailored blueprints designed for your unique leadership position and
+                    <li><i class="fas fa-check-circle"></i><span><strong data-i18n="trust_item1_title">Bespoke Strategic
+                                Roadmaps:</strong>
+                            <span data-i18n="trust_item1_text">Custom-tailored blueprints designed for your unique
+                                leadership position and
                                 goals.</span></span></li>
-                    <li><i class="fas fa-check-circle"></i><span><strong>Measurable ROI Focus:</strong> <span>Clear
+                    <li><i class="fas fa-check-circle"></i><span><strong data-i18n="trust_item2_title">Measurable ROI
+                                Focus:</strong> <span data-i18n="trust_item2_text">Clear
                                 performance metrics that demonstrate tangible business returns.</span></span></li>
-                    <li><i class="fas fa-check-circle"></i><span><strong>Elite Professional Network:</strong>
-                            <span>Exclusive access to a curated community of high-performing leaders and
+                    <li><i class="fas fa-check-circle"></i><span><strong data-i18n="trust_item3_title">Elite
+                                Professional Network:</strong>
+                            <span data-i18n="trust_item3_text">Exclusive access to a curated community of
+                                high-performing leaders and
                                 visionaries.</span></span></li>
                 </ul>
             </div>
@@ -331,38 +339,21 @@
                                 Today, I live with stability, happiness, and true prosperity."</p>
                         </div>
                     </div>
-                    <!-- Slide 3 (Video) -->
+                    <!-- Slide 3 -->
                     <div class="swiper-slide">
-                        <div class="testimonial-card testimonial-card--video">
-                            <div class="video-placeholder">
-                                <iframe width="100%" height="215" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                                    title="YouTube video player" frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen style="border-radius: 8px;"></iframe>
-                            </div>
-                            <div class="testimonial-card__header" style="margin-top: 15px;">
+                        <div class="testimonial-card">
+                            <div class="testimonial-card__header">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=face"
+                                    alt="Sahra Muuse" class="testimonial-card__avatar">
                                 <div>
-                                    <h4 class="testimonial-card__name">Global Leader</h4>
-                                    <p class="testimonial-card__role">Video Testimonial</p>
+                                    <h4 class="testimonial-card__name">Sahra Muuse</h4>
+                                    <p class="testimonial-card__role" data-i18n="test3_role">Hargaisa</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Slide 4 (Video) -->
-                    <div class="swiper-slide">
-                        <div class="testimonial-card testimonial-card--video">
-                            <div class="video-placeholder">
-                                <iframe width="100%" height="215" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                                    title="YouTube video player" frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen style="border-radius: 8px;"></iframe>
-                            </div>
-                            <div class="testimonial-card__header" style="margin-top: 15px;">
-                                <div>
-                                    <h4 class="testimonial-card__name">CEO Experience</h4>
-                                    <p class="testimonial-card__role">Video Testimonial</p>
-                                </div>
-                            </div>
+                            <p class="testimonial-card__text" data-i18n="testimonial3_text">"I am grateful to Coach Abu
+                                Hamza. In less than 24 hours, his guidance elevated my awareness and reshaped my life,
+                                taking me from sadness, confusion, and feeling lost to joy, clarity, inner peace, and
+                                renewed purpose."</p>
                         </div>
                     </div>
                 </div>
@@ -375,8 +366,8 @@
     <!-- ========== GALLERY ========== -->
     <section class="gallery-section reveal" id="gallery">
         <div class="container gallery-inner">
-            <p class="section__label">PROVEN SUCCESS</p>
-            <h2 class="section__title">Our Beautiful Gallery</h2>
+            <p class="section__label" data-i18n="gallery_label">PROVEN SUCCESS</p>
+            <h2 class="section__title" data-i18n="gallery_title">Our Beautiful Gallery</h2>
 
             <div class="swiper gallery-swiper">
                 <div class="swiper-wrapper">
@@ -415,16 +406,73 @@
         </div>
     </section>
 
+    <!-- ========== VIDEO SHOWCASE ========== -->
+    <section class="videos-showcase reveal" id="videos">
+        <div class="container">
+            <p class="section__label" data-i18n="videos_label">MEDIA & INSIGHTS</p>
+            <h2 class="section__title" data-i18n="videos_title">Video Testimonials & Company Insights</h2>
+            <p class="videos-showcase__desc" data-i18n="videos_text">Watch real stories of transformation and discover
+                what makes Nasiiba Coaching a life-changing experience.</p>
+            <div class="videos-showcase__grid">
+                <!-- Video 1 -->
+                <div class="video-card reveal stagger-1">
+                    <div class="video-card__wrapper">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Client Success Story"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card__info">
+                        <h4 class="video-card__title" data-i18n="video1_title">Client Transformation Story</h4>
+                        <p class="video-card__desc" data-i18n="video1_desc">A powerful testimony of personal growth and
+                            professional
+                            breakthrough.</p>
+                    </div>
+                </div>
+                <!-- Video 2 -->
+                <div class="video-card reveal stagger-2">
+                    <div class="video-card__wrapper">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Company Overview" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card__info">
+                        <h4 class="video-card__title" data-i18n="video2_title">About Nasiiba Coaching</h4>
+                        <p class="video-card__desc" data-i18n="video2_desc">Discover our mission, vision, and the
+                            movement behind the brand.</p>
+                    </div>
+                </div>
+                <!-- Video 3 -->
+                <div class="video-card reveal stagger-3">
+                    <div class="video-card__wrapper">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Coaching Session Preview"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card__info">
+                        <h4 class="video-card__title" data-i18n="video3_title">Live Coaching Highlights</h4>
+                        <p class="video-card__desc" data-i18n="video3_desc">Preview the impactful sessions that change
+                            lives every day.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ========== CONTACT US ========== -->
     <section class="contact-us-section" id="contact" style="background-color: var(--white); padding: 80px 0;">
         <div class="container contact-us__inner custom-contact-grid">
             <div class="contact-us__info">
-                <p class="section__label" style="color: var(--navy); font-weight: 700; letter-spacing: 2px;">GET IN
+                <p class="section__label" style="color: var(--navy); font-weight: 700; letter-spacing: 2px;"
+                    data-i18n="contact_label">GET IN
                     TOUCH</p>
-                <h2 class="section__title section__title--left" style="margin-bottom: 20px;">Let's Start a Conversation
+                <h2 class="section__title section__title--left" style="margin-bottom: 20px;" data-i18n="contact_title">
+                    Let's Start a Conversation
                 </h2>
                 <p class="contact-us__desc"
-                    style="color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem; line-height: 1.6;">
+                    style="color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem; line-height: 1.6;"
+                    data-i18n="contact_desc">
                     Have questions about our programs or ready to begin your transformation? We're here to help.
                 </p>
 
@@ -436,7 +484,8 @@
                     </div>
                     <div class="contact-card__info">
                         <span class="contact-card__label"
-                            style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">EMAIL
+                            style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;"
+                            data-i18n="contact_email_label">EMAIL
                             US</span>
                         <a href="mailto:info@nasiiba.online" class="contact-card__text"
                             style="color: var(--text-color); font-weight: 600; text-decoration: none;">info@nasiiba.online</a>
@@ -451,7 +500,8 @@
                     </div>
                     <div class="contact-card__info">
                         <span class="contact-card__label"
-                            style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;">CALL
+                            style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;"
+                            data-i18n="contact_call_label">CALL
                             US</span>
                         <a href="tel:+16124508300" class="contact-card__text"
                             style="color: var(--text-color); font-weight: 600; text-decoration: none;">+1 612 450
@@ -462,7 +512,7 @@
                 <a href="https://wa.me/252634499309" class="btn btn--whatsapp btn--full" target="_blank"
                     rel="noopener noreferrer"
                     style="background-color: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;">
-                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                    <i class="fab fa-whatsapp"></i> <span data-i18n="contact_whatsapp">Chat on WhatsApp</span>
                 </a>
             </div>
 
@@ -471,26 +521,30 @@
                 <form class="contact-form">
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label
-                            style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);">Full
+                            style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
+                            data-i18n="contact_form_name">Full
                             Name</label>
                         <input type="text" placeholder="Jane Doe" required
                             style="width: 100%; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-family: inherit; font-size: 1rem; color: #333; outline: none; transition: border-color 0.3s ease;">
                     </div>
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label
-                            style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);">Email
+                            style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
+                            data-i18n="contact_form_email">Email
                             Address</label>
                         <input type="email" placeholder="jane@example.com" required
                             style="width: 100%; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-family: inherit; font-size: 1rem; color: #333; outline: none; transition: border-color 0.3s ease;">
                     </div>
                     <div class="form-group" style="margin-bottom: 25px;">
                         <label
-                            style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);">Message</label>
+                            style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
+                            data-i18n="contact_form_message">Message</label>
                         <textarea rows="4" placeholder="How can we help you?" required
                             style="width: 100%; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-family: inherit; font-size: 1rem; color: #333; outline: none; resize: vertical; transition: border-color 0.3s ease;"></textarea>
                     </div>
                     <button type="submit" class="btn btn--navy btn--full" style="width: 100%;"><i
-                            class="far fa-paper-plane" style="margin-right: 8px;"></i> Send Message</button>
+                            class="far fa-paper-plane" style="margin-right: 8px;"></i> <span
+                            data-i18n="contact_form_send">Send Message</span></button>
                 </form>
             </div>
         </div>
