@@ -626,6 +626,13 @@ ul {
     right: 24px;
 }
 
+[dir="rtl"] .testimonials-inner,
+[dir="rtl"] .gallery-inner,
+[dir="rtl"] .videos-showcase .container {
+    direction: rtl;
+    text-align: right;
+}
+
 [dir="rtl"] .footer__inner {
     direction: rtl;
     text-align: right;

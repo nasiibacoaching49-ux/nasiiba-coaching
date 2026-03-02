@@ -128,47 +128,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===========================
     // SWIPER TESTIMONIALS
     // ===========================
-    if (typeof Swiper !== 'undefined') {
-        window.testimonialSwiper = new Swiper('.testimonial-swiper', {
-            loop: true,
-            spaceBetween: 30,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 1,
-                },
-                768: {
-                    slidesPerView: 1,
-                },
-                1024: {
-                    slidesPerView: 1,
-                },
+    function initTestimonialSwiper(isRTL = false) {
+        if (typeof Swiper !== 'undefined') {
+            const swiperEl = document.querySelector('.testimonial-swiper');
+            if (swiperEl) {
+                if (window.testimonialSwiper && typeof window.testimonialSwiper.destroy === 'function') {
+                    window.testimonialSwiper.destroy(true, true);
+                }
+                window.testimonialSwiper = new Swiper('.testimonial-swiper', {
+                    loop: true,
+                    spaceBetween: 30,
+                    rtl: isRTL,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    }
+                });
             }
-        });
+        }
     }
+
+    // Initial check for RTL
+    const initialRTL = document.documentElement.getAttribute('dir') === 'rtl';
+    initTestimonialSwiper(initialRTL);
 
     // ===========================
     // DYNAMIC GALLERY ROTATION (Swiper)
     // ===========================
-    function initGalleryRotation() {
+    function initGalleryRotation(isRTL = false) {
         if (typeof Swiper !== 'undefined') {
             const gallerySwiperEl = document.querySelector('.gallery-swiper');
             if (gallerySwiperEl) {
+                if (window.gallerySwiper && typeof window.gallerySwiper.destroy === 'function') {
+                    window.gallerySwiper.destroy(true, true);
+                }
                 window.gallerySwiper = new Swiper('.gallery-swiper', {
                     slidesPerView: 1,
                     spaceBetween: 30,
                     loop: true,
+                    rtl: isRTL,
                     autoplay: {
                         delay: 4000,
                         disableOnInteraction: false,
@@ -187,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    initGalleryRotation();
+    initGalleryRotation(initialRTL);
 
     // ===========================
     // DYNAMIC COURSES & REVIEWS
@@ -366,7 +372,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Handle language change while modal is open
-        window.addEventListener('languageChanged', () => {
+        window.addEventListener('languageChanged', (e) => {
+            const lang = e.detail.lang;
+            const isNowRTL = ['ar'].includes(lang);
+
+            // Re-init swipers with correct direction
+            initTestimonialSwiper(isNowRTL);
+            initGalleryRotation(isNowRTL);
+
             if (currentOpenService && serviceModal.classList.contains('active')) {
                 populateModalList(currentOpenService);
             }
