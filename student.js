@@ -142,21 +142,29 @@
     // --- DASHBOARD DATA ---
 
     async function checkUser() {
-        if (!db) return;
+        if (!db) {
+            console.error('Supabase client (db) not found');
+            return;
+        }
+        console.log('Checking auth state...');
         const { data: { user }, error: userError } = await db.auth.getUser();
+        if (userError) console.error('getUser Error:', userError);
 
         if (user) {
+            console.log('User session active:', user.id);
             try {
                 const { data: profile, error: profileError } = await db.from('students').select('*').eq('id', user.id).single();
+                if (profileError) console.error('Profile DB Error:', profileError);
 
                 if (profile) {
+                    console.log('Profile loaded for:', profile.full_name);
                     populateDashboard(profile);
                     showView('dashboard');
                     fetchStudentCourses(user.id);
                     fetchCertificates(user.id);
                 } else {
-                    // Force log out if no matching profile found in 'students' table
-                    console.error('No profile found in students table for user:', user.id);
+                    console.warn('No student profile found for user UID');
+                    alert('Authenticated but profile not found. If you just registered, please try logging in again.');
                     await db.auth.signOut();
                     showView('login');
                 }
