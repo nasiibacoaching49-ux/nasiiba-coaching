@@ -139,21 +139,127 @@
                     </p>
                 </div>
 
-                <!-- Dashboard Placeholder (Hidden by default) -->
+                <!-- Dashboard View (Updated with Sidebar) -->
                 <div id="dashboard-view" style="display: none;">
-                    <div class="dashboard-header">
-                        <h2 id="dash-welcome">Welcome, Student!</h2>
-                        <button id="logout-btn" class="btn btn--sm btn--outline">Logout</button>
-                    </div>
-                    <div class="dashboard-stats">
-                        <div class="stat-card">
-                            <h3 id="dash-courses">0</h3>
-                            <p>Enrolled Courses</p>
+                    <div class="dashboard-container">
+                        <!-- Sidebar -->
+                        <aside class="dashboard-sidebar">
+                            <div class="sidebar-user">
+                                <div class="user-avatar" id="user-avatar-initials">JS</div>
+                                <h3 id="dash-user-name">Student Name</h3>
+                            </div>
+                            <nav class="sidebar-nav">
+                                <button class="nav-item active" data-tab="overview">
+                                    <i class="fas fa-th-large"></i> Dashboard
+                                </button>
+                                <button class="nav-item" data-tab="courses">
+                                    <i class="fas fa-book"></i> My Courses
+                                </button>
+                                <button class="nav-item" data-tab="certificates">
+                                    <i class="fas fa-certificate"></i> Certificates
+                                </button>
+                                <button class="nav-item" data-tab="profile">
+                                    <i class="fas fa-user-circle"></i> My Profile
+                                </button>
+                                <button class="nav-item" data-tab="security">
+                                    <i class="fas fa-shield-alt"></i> Security
+                                </button>
+                                <button id="logout-btn" class="nav-item logout">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </nav>
+                        </aside>
+
+                        <!-- Main Content -->
+                        <div class="dashboard-main">
+                            <!-- Overview Tab -->
+                            <section id="tab-overview" class="dashboard-tab active">
+                                <div class="tab-header">
+                                    <h2 id="dash-welcome">Welcome back, Student!</h2>
+                                    <p>Ready to continue your learning journey?</p>
+                                </div>
+                                <div class="dashboard-stats">
+                                    <div class="stat-card">
+                                        <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                                        <div class="stat-info">
+                                            <h3 id="dash-courses-count">0</h3>
+                                            <p>Enrolled Courses</p>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-icon"><i class="fas fa-award"></i></div>
+                                        <div class="stat-info">
+                                            <h3 id="dash-certs-count">0</h3>
+                                            <p>Certificates Earned</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="recent-activity">
+                                    <h3 class="section-title">Recent Activity</h3>
+                                    <div id="activity-feed" class="activity-feed">
+                                        <p class="empty-msg">No recent activity found.</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Courses Tab -->
+                            <section id="tab-courses" class="dashboard-tab">
+                                <h3 class="section-title">My Enrolled Courses</h3>
+                                <div id="enrolled-courses-grid" class="courses__grid">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </section>
+
+                            <!-- Certificates Tab -->
+                            <section id="tab-certificates" class="dashboard-tab">
+                                <h3 class="section-title">My Certificates</h3>
+                                <div id="certificates-grid" class="certificates-grid">
+                                    <p class="empty-msg">You haven't earned any certificates yet. Complete a course to
+                                        receive one!</p>
+                                </div>
+                            </section>
+
+                            <!-- Profile Tab -->
+                            <section id="tab-profile" class="dashboard-tab">
+                                <h3 class="section-title">Profile Settings</h3>
+                                <form id="profile-form" class="dashboard-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="profile-name">Full Name</label>
+                                            <input type="text" id="profile-name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="profile-whatsapp">WhatsApp Number</label>
+                                            <input type="tel" id="profile-whatsapp" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-email">Email Address (Read-only)</label>
+                                        <input type="email" id="profile-email" readonly
+                                            style="background: var(--bg-alt);">
+                                    </div>
+                                    <button type="submit" class="btn btn--gold">Update Profile</button>
+                                </form>
+                            </section>
+
+                            <!-- Security Tab -->
+                            <section id="tab-security" class="dashboard-tab">
+                                <h3 class="section-title">Security Settings</h3>
+                                <form id="password-form" class="dashboard-form">
+                                    <div class="form-group">
+                                        <label for="new-password">New Password</label>
+                                        <input type="password" id="new-password" required minlength="8"
+                                            placeholder="At least 8 characters">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password">Confirm New Password</label>
+                                        <input type="password" id="confirm-password" required minlength="8"
+                                            placeholder="Repeat new password">
+                                    </div>
+                                    <button type="submit" class="btn btn--navy">Change Password</button>
+                                </form>
+                            </section>
                         </div>
-                    </div>
-                    <div class="dashboard-content">
-                        <p>Your learning dashboard will appear here soon.</p>
-                        <a href="index.html#courses" class="btn btn--gold">Browse Courses</a>
                     </div>
                 </div>
 
