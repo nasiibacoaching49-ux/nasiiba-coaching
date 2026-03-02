@@ -488,8 +488,8 @@
                             style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;"
                             data-i18n="contact_email_label">EMAIL
                             US</span>
-                        <a href="mailto:info@nasiiba.online" class="contact-card__text"
-                            style="color: var(--text-color); font-weight: 600; text-decoration: none;">info@nasiiba.online</a>
+                        <a href="mailto:Nasiibacoach@gmail.com" class="contact-card__text"
+                            style="color: var(--text-color); font-weight: 600; text-decoration: none;">Nasiibacoach@gmail.com</a>
                     </div>
                 </div>
 
@@ -520,13 +520,13 @@
 
             <div class="contact-us__form-wrapper"
                 style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);">
-                <form class="contact-form">
+                <form class="contact-form" action="https://formspree.io/f/Nasiibacoach@gmail.com" method="POST">
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label
                             style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
                             data-i18n="contact_form_name">Full
                             Name</label>
-                        <input type="text" placeholder="Jane Doe" required
+                        <input type="text" name="name" placeholder="Jane Doe" required
                             style="width: 100%; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-family: inherit; font-size: 1rem; color: #333; outline: none; transition: border-color 0.3s ease;">
                     </div>
                     <div class="form-group" style="margin-bottom: 20px;">
@@ -534,14 +534,14 @@
                             style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
                             data-i18n="contact_form_email">Email
                             Address</label>
-                        <input type="email" placeholder="jane@example.com" required
+                        <input type="email" name="email" placeholder="jane@example.com" required
                             style="width: 100%; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-family: inherit; font-size: 1rem; color: #333; outline: none; transition: border-color 0.3s ease;">
                     </div>
                     <div class="form-group" style="margin-bottom: 25px;">
                         <label
                             style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
                             data-i18n="contact_form_message">Message</label>
-                        <textarea rows="4" placeholder="How can we help you?" required
+                        <textarea name="message" rows="4" placeholder="How can we help you?" required
                             style="width: 100%; padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-family: inherit; font-size: 1rem; color: #333; outline: none; resize: vertical; transition: border-color 0.3s ease;"></textarea>
                     </div>
                     <button type="submit" class="btn btn--navy btn--full" style="width: 100%;"><i
