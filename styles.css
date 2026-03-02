@@ -51,11 +51,12 @@
     --white: #0c1b33;
     --navy: #f8fafc;
     --navy-dark: #050a14;
-    /* Stay dark in dark mode */
     --gold: #4dabf7;
-    /* Branded blue instead of yellow in dark mode */
+    /* Branded light blue in dark mode */
     --gold-hover: #3b82f6;
     --gold-light: #60a5fa;
+    --text-on-dark: #ffffff;
+    /* Added stable white variable */
     --border-color: rgba(255, 255, 255, 0.15);
     --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
 
@@ -1831,25 +1832,61 @@ ul {
 [data-theme="dark"] .footer__links h4,
 [data-theme="dark"] .footer__contact h4,
 [data-theme="dark"] .trust__content .section__title,
-[data-theme="dark"] .trust__list li strong {
-    color: #ffffff;
-}
-
-[data-theme="dark"] .video-card__title {
+[data-theme="dark"] .trust__content h2,
+[data-theme="dark"] .trust__list li strong,
+[data-theme="dark"] .trust__item h4,
+[data-theme="dark"] .section__title,
+[data-theme="dark"] .testimonial-card__name,
+[data-theme="dark"] .video-card__title,
+[data-theme="dark"] .service-card__title,
+[data-theme="dark"] .contact-card__text {
     color: #4dabf7 !important;
 }
 
-[data-theme="dark"] .video-card__desc {
-    color: rgba(255, 255, 255, 0.8) !important;
+[data-theme="dark"] .footer__social a,
+[data-theme="dark"] .footer__social a i {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
-[data-theme="dark"] .testimonial-card__name {
+[data-theme="dark"] .footer__social a:hover {
+    background: #ffffff !important;
+    color: #050a14 !important;
+}
+
+[data-theme="dark"] .trust__text,
+[data-theme="dark"] .trust__list li,
+[data-theme="dark"] .trust__item p,
+[data-theme="dark"] .trust__content .section__label,
+[data-theme="dark"] .section__label,
+[data-theme="dark"] .testimonial-card__text,
+[data-theme="dark"] .testimonial-card__role,
+[data-theme="dark"] .video-card__desc,
+[data-theme="dark"] .videos-showcase__desc,
+[data-theme="dark"] .contact-us__desc {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .service-card,
+[data-theme="dark"] .video-card,
+[data-theme="dark"] .contact-card,
+[data-theme="dark"] .contact-us__form-wrapper {
+    background: #0c1b33 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .section__title,
+[data-theme="dark"] .testimonial-card__name,
+[data-theme="dark"] .video-card__title,
+[data-theme="dark"] .service-card__title,
+[data-theme="dark"] .contact-card__text {
     color: #4dabf7 !important;
 }
 
 [data-theme="dark"] .trust__text,
 [data-theme="dark"] .trust__list li {
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.82) !important;
 }
 
 /* ===========================

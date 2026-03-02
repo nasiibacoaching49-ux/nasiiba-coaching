@@ -244,9 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 .eq('status', 'approved')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.warn('[Reviews] Supabase error, keeping static testimonials:', error.message);
+                return;
+            }
 
-            if (!reviews || reviews.length === 0) return;
+            // Only replace static content if we actually have dynamic reviews
+            if (!reviews || reviews.length === 0) {
+                console.log('[Reviews] No dynamic reviews found, keeping static testimonials.');
+                return;
+            }
 
             swiperWrapper.innerHTML = reviews.map(review => `
                 <div class="swiper-slide">

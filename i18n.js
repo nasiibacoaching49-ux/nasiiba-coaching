@@ -32,6 +32,8 @@
             const key = el.getAttribute('data-i18n');
             if (t[key]) {
                 el.textContent = t[key];
+            } else {
+                console.warn(`[i18n] Missing translation key: "${key}" for language: "${lang}"`);
             }
         });
 
