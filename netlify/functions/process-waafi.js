@@ -37,7 +37,8 @@ exports.handler = async (event) => {
                 apiKey: API_KEY,
                 paymentMethod: "MWALLET_ACCOUNT",
                 payerInfo: {
-                    accountNo: phone.startsWith('252') ? phone : `252${phone.replace(/^0+/, '')}`
+                    // Only use 9 digits Somali format
+                    accountNo: phone.length >= 9 ? phone.slice(-9) : phone
                 },
                 transactionInfo: {
                     amount: amount.toString(),
@@ -47,6 +48,8 @@ exports.handler = async (event) => {
             }
         };
 
+        console.log('Requesting Waafi:', JSON.stringify(waafiBody, null, 2));
+
         const response = await fetch('https://api.waafi.com/asm', {
             method: 'POST',
             body: JSON.stringify(waafiBody),
@@ -54,6 +57,7 @@ exports.handler = async (event) => {
         });
 
         const data = await response.json();
+        console.log('Waafi Response:', JSON.stringify(data, null, 2));
 
         // Return the response to frontend
         return {
@@ -62,10 +66,13 @@ exports.handler = async (event) => {
         };
 
     } catch (error) {
-        console.error('Waafi Error:', error);
+        console.error('Waafi Netlify Function Error:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: error.message })
+            body: JSON.stringify({
+                error: error.message,
+                hint: "Ensure environment variables WAAFI_MERCHANT_UID, WAAFI_API_USER_ID, and WAAFI_API_KEY are set in Netlify."
+            })
         };
     }
 };
