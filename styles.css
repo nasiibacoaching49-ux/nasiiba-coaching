@@ -1890,6 +1890,50 @@ ul {
 }
 
 /* ===========================
+   DARK MODE: HEADER
+   =========================== */
+[data-theme="dark"] .header {
+    background: var(--bg-color) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .nav__link {
+    color: #ffffff !important;
+    opacity: 0.85;
+}
+
+[data-theme="dark"] .nav__link:hover,
+[data-theme="dark"] .nav__link.active {
+    color: #4dabf7 !important;
+    opacity: 1;
+}
+
+[data-theme="dark"] .logo-text {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .hamburger span {
+    background: #ffffff !important;
+}
+
+[data-theme="dark"] .header__cta {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .lang-switcher__btn {
+    color: #ffffff !important;
+}
+
+/* ===========================
+   FORCE TESTIMONIALS VISIBLE
+   =========================== */
+.testimonials-section,
+.videos-showcase {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 1024px) {
