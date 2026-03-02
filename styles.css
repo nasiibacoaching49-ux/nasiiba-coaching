@@ -631,6 +631,12 @@ ul {
 [dir="rtl"] .videos-showcase .container {
     direction: rtl;
     text-align: right;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+[dir="rtl"] .swiper-slide {
+    text-align: right;
 }
 
 [dir="rtl"] .footer__inner {

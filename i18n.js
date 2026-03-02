@@ -150,6 +150,9 @@
     window.I18n = {
         setLang: applyTranslations,
         getLang: getPreferredLang,
+        updatePageContent: function () {
+            applyTranslations(getPreferredLang());
+        },
         t: function (key) {
             const lang = getPreferredLang();
             const t = window.TRANSLATIONS[lang];

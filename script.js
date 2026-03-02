@@ -90,10 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
             dynamicWord.style.transition = 'all 0.5s ease';
 
             setTimeout(() => {
-                // Update text using i18n if available
+                // Update text using I18n if available
                 dynamicWord.setAttribute('data-i18n', nextWordKey);
-                if (window.i18n && typeof window.i18n.updatePageContent === 'function') {
-                    window.i18n.updatePageContent();
+                if (window.I18n && typeof window.I18n.updatePageContent === 'function') {
+                    window.I18n.updatePageContent();
                 } else {
                     // Fallback
                     dynamicWord.textContent = nextWordKey === 'hero_life' ? 'Life.' : 'Business.';
@@ -194,6 +194,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     initGalleryRotation(initialRTL);
+
+    // ===========================
+    // GLOBAL LANGUAGE LISTENER
+    // ===========================
+    window.addEventListener('languageChanged', (e) => {
+        const lang = e.detail.lang;
+        const isNowRTL = ['ar'].includes(lang);
+
+        // 1. Re-init swipers with correct direction
+        initTestimonialSwiper(isNowRTL);
+        initGalleryRotation(isNowRTL);
+
+        // 2. Update service modal if open
+        if (typeof window.checkAndPopulateServiceModal === 'function') {
+            window.checkAndPopulateServiceModal();
+        }
+    });
 
     // ===========================
     // DYNAMIC COURSES & REVIEWS
@@ -372,18 +389,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Handle language change while modal is open
-        window.addEventListener('languageChanged', (e) => {
-            const lang = e.detail.lang;
-            const isNowRTL = ['ar'].includes(lang);
-
-            // Re-init swipers with correct direction
-            initTestimonialSwiper(isNowRTL);
-            initGalleryRotation(isNowRTL);
-
+        window.checkAndPopulateServiceModal = () => {
             if (currentOpenService && serviceModal.classList.contains('active')) {
                 populateModalList(currentOpenService);
             }
-        });
+        };
     }
 
     // ===========================
