@@ -120,12 +120,18 @@
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
 
         try {
+            console.log('Attempting login for:', email);
             const { data, error } = await db.auth.signInWithPassword({ email, password });
-            if (error) throw error;
 
+            if (error) {
+                console.error('Supabase Login Error:', error);
+                throw error;
+            }
+
+            console.log('Login successful, data:', data);
             await checkUser();
         } catch (err) {
-            console.error('Login error:', err);
+            console.error('Login Caught Error:', err);
             alert('Login failed: ' + (err.message.includes('Invalid login credentials') ? 'Invalid email or password.' : err.message));
         } finally {
             submitBtn.disabled = false;
