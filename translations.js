@@ -161,7 +161,8 @@ const TRANSLATIONS = {
 
         // About Page
         about_label: "OUR STORY",
-        about_title: "Empowering Minds, Elevating Lives",
+        about_title: "Empowering Minds",
+        about_title_full: "Empowering Minds, Elevating Lives",
         about_company_name: "Nasiiba Coaching LLC",
         about_text1: "A value-driven leader in professional coaching, dedicated to empowering individuals to craft a new reality built on inner peace, mental clarity, and a radical mindset transformation.",
         about_text2: "We believe that true success is the perfect harmony between professional ambition and inner well-being. Our mission is to guide you through a journey of self-discovery, bridging the gap between who you are today and the ultimate potential you are destined to reach.",
@@ -269,6 +270,25 @@ const TRANSLATIONS = {
         aff_faq4_a: "No! There is no cap on how much you can earn. The more clients you refer, the more you earn. Top affiliates earn over $5,000/month.",
         aff_cta_title_1: "Ready to Start",
         aff_cta_title_2: "Earning Commissions?",
+
+        // Tiers
+        aff_tier_starter: "Starter",
+        aff_tier_pro: "Pro",
+        aff_tier_elite: "Elite",
+        aff_tier_feature_referrals: "referrals",
+        aff_tier_feature_payouts_monthly: "Monthly payouts",
+        aff_tier_feature_payouts_biweekly: "Bi-weekly payouts",
+        aff_tier_feature_payouts_weekly: "Weekly payouts",
+        aff_tier_feature_dashboard_basic: "Basic dashboard",
+        aff_tier_feature_support_email: "Email support",
+        aff_tier_feature_analytics_advanced: "Advanced analytics",
+        aff_tier_feature_support_priority: "Priority support",
+        aff_tier_feature_promo: "Custom promo materials",
+        aff_tier_feature_manager: "Dedicated manager",
+        aff_tier_feature_bonuses: "Exclusive bonuses",
+        aff_tier_feature_landing: "Co-branded landing pages",
+
+        modal_whatsapp: "Chat on WhatsApp",
 
         // Errors
         err_email_exists: "An account with this email already exists. Please login instead.",
@@ -417,7 +437,8 @@ const TRANSLATIONS = {
 
         // About Page
         about_label: "SHEEKADEENA",
-        about_title: "Awoodsiinta Maskaxda, Horumarinta Nolosha",
+        about_title: "Awoodsiinta Maskaxda",
+        about_title_full: "Awoodsiinta Maskaxda, Horumarinta Nolosha",
         about_company_name: "Nasiiba Coaching LLC",
         about_text1: "Hogaamiye qiimo ku dhisan tababarka xirfadeed, u heellan inuu awood siiyo shakhsiyaadka si ay u abuuraan xaqiiqo cusub oo ku dhisan nabadgelyo gudaha ah, caddeyn maskaxeed, iyo isbeddel maskaxeed oo asaas ah.",
         about_text2: "Waxaan aaminsannahay in guusha dhabta ah ay tahay wada noolaanshaha kaamilka ah ee u dhexeeya hamiga xirfadeed iyo fayo-qabka gudaha. Hadafkeenu waa inaan kugu hageyo safarka is-helidda, anagoo buuxinayna farqiga u dhexeeya qofka aad maanta tahay iyo awooda buuxda ee lagugu tala galay inaad gaarto.",
@@ -524,6 +545,25 @@ const TRANSLATIONS = {
         aff_faq4_a: "Maya! Ma jiro xaddi aad ka sameysan karto. Inta badan ee aad soo gudbiso, ayaa badan ee aad heli doonto.",
         aff_cta_title_1: "Diyaar Ma U Tahay",
         aff_cta_title_2: "Komishan Ka Hel?",
+
+        // Tiers
+        aff_tier_starter: "Bilow",
+        aff_tier_pro: "Xirfadle",
+        aff_tier_elite: "Elite",
+        aff_tier_feature_referrals: "gudbinta",
+        aff_tier_feature_payouts_monthly: "Lacag bixinta bishii",
+        aff_tier_feature_payouts_biweekly: "Lacag bixinta labadii asbuucba",
+        aff_tier_feature_payouts_weekly: "Lacag bixinta asbuuciiba",
+        aff_tier_feature_dashboard_basic: "Dashboard-ka aasaasiga ah",
+        aff_tier_feature_support_email: "Taageerada emailka",
+        aff_tier_feature_analytics_advanced: "Falanqaynta sare",
+        aff_tier_feature_support_priority: "Taageerada mudnaanta leh",
+        aff_tier_feature_promo: "Qalabka xayeysiinta",
+        aff_tier_feature_manager: "Maamule gaar ah",
+        aff_tier_feature_bonuses: "Gunnooyin gaar ah",
+        aff_tier_feature_landing: "Bogagga degitaanka",
+
+        modal_whatsapp: "WhatsApp kula hadal",
 
         err_email_exists: "Akoon email-kan leh ayaa hore u jira. Fadlan soo gal.",
         err_no_account: "Akoon email-kan leh lama helin. Fadlan is diiwaan geli.",
@@ -669,7 +709,8 @@ const TRANSLATIONS = {
 
         // About Page
         about_label: "قصتنا",
-        about_title: "تمكين العقول، والارتقاء بالحياة",
+        about_title: "تمكين العقول",
+        about_title_full: "تمكين العقول، والارتقاء بالحياة",
         about_company_name: "نسيبة كوتشينغ ذ.م.م",
         about_text1: "رائدة في التوجيه المهني، مدفوعة بالقيم ومكرسة لتمكين الأفراد لخلق واقع جديد يُبنى على السلام الداخلي، الوضوح العقلي والتحول الجذري في طريقة التفكير.",
         about_text2: "نحن نؤمن بأن النجاح الحقيقي هو التناغم المثالي بين الطموح المهني، والراحة الداخلية. تتمثل مهمتنا في إرشادك خلال رحلة اكتشاف ذاتك لردم الفجوة بين ما أنت عليه وبين ما تستحقه.",
@@ -776,6 +817,25 @@ const TRANSLATIONS = {
         aff_faq4_a: "لا! لا يوجد حد. كلما أحلت أكثر، كسبت أكثر.",
         aff_cta_title_1: "هل أنت مستعد للبدء",
         aff_cta_title_2: "في كسب العمولات؟",
+
+        // Tiers
+        aff_tier_starter: "مبتديء",
+        aff_tier_pro: "محترف",
+        aff_tier_elite: "متميز",
+        aff_tier_feature_referrals: "إحالات",
+        aff_tier_feature_payouts_monthly: "دفعات شهرية",
+        aff_tier_feature_payouts_biweekly: "دفعات كل أسبوعين",
+        aff_tier_feature_payouts_weekly: "دفعات أسبوعية",
+        aff_tier_feature_dashboard_basic: "لوحة تحكم أساسية",
+        aff_tier_feature_support_email: "دعم عبر البريد",
+        aff_tier_feature_analytics_advanced: "تحليلات متقدمة",
+        aff_tier_feature_support_priority: "دعم ذو أولوية",
+        aff_tier_feature_promo: "مواد ترويجية مخصصة",
+        aff_tier_feature_manager: "مدير حساب مخصص",
+        aff_tier_feature_bonuses: "مكافآت حصرية",
+        aff_tier_feature_landing: "صفحات هبوط مشتركة",
+
+        modal_whatsapp: "دردشة عبر واتساب",
 
         err_email_exists: "يوجد حساب بهذا البريد بالفعل. يرجى تسجيل الدخول.",
         err_no_account: "لم يتم العثور على حساب بهذا البريد. يرجى التسجيل أولاً.",

@@ -3962,3 +3962,37 @@ ul {
         margin-bottom: 30px;
     }
 }
+
+/* ===========================
+   UTILITIES & MOBILE FIXES
+   =========================== */
+.hide-mobile {
+    display: inline;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+
+    /* Modal Optimization */
+    .modal {
+        width: 95% !important;
+        max-height: 90vh !important;
+        padding: 25px 15px !important;
+        overflow-y: auto !important;
+    }
+
+    .modal-ctas {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .modal__list {
+        margin-bottom: 20px !important;
+    }
+
+    .modal__title {
+        font-size: 1.5rem !important;
+    }
+}

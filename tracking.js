@@ -51,7 +51,7 @@
     // 3. Setup Listeners for key buttons
     function setupInteractionListeners() {
         // Consultation Buttons
-        document.querySelectorAll('a[href*="calendar.app.google"]').forEach(btn => {
+        document.querySelectorAll('a[href*="calendly.com"], a[href*="calendar.app.google"]').forEach(btn => {
             btn.addEventListener('click', () => {
                 logInteraction('click_consultation', btn.id || 'consultation_btn', {
                     section: btn.closest('section')?.id || 'header'
