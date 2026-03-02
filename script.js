@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'SPECIAL': 0.50
         };
 
-        const openPaymentModal = (title, priceText) => {
+        let openPaymentModal = (title, priceText) => {
             courseTitle.textContent = title;
             coursePrice.textContent = priceText;
             originalPriceValue = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
@@ -515,8 +515,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         proceedBtn.addEventListener('click', async () => {
+            console.log('Proceed button clicked');
             const isLoggedIn = await checkAuthState();
+            console.log('Auth state:', isLoggedIn);
             const activeMethod = document.querySelector('.payment-icon.active')?.getAttribute('data-method') || 'evc';
+            console.log('Active method:', activeMethod);
 
             if (!isLoggedIn) {
                 window.location.href = 'student.html?view=register';
