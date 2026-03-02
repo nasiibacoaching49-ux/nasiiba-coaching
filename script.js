@@ -197,7 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initDynamicContent() {
         if (!db) return;
         fetchDynamicCourses();
-        fetchDynamicReviews();
+        // NOTE: fetchDynamicReviews disabled — it replaces static HTML
+        // (which has data-i18n attributes for all 5 languages) with
+        // dynamic DB content that cannot be translated. Static testimonials
+        // are the correct approach for a multi-language site.
+        // fetchDynamicReviews();
     }
 
     async function fetchDynamicCourses() {

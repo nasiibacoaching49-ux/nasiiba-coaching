@@ -1926,7 +1926,9 @@ ul {
    FORCE TESTIMONIALS VISIBLE
    =========================== */
 .testimonials-section,
-.videos-showcase {
+.videos-showcase,
+.gallery-section,
+.success-stats {
     opacity: 1 !important;
     transform: none !important;
 }
