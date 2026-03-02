@@ -1248,4 +1248,4 @@ const TRANSLATIONS = {
 };
 
 // Make available globally
-window.TRANSLATIONS = TRANSLATIONS;
+module.exports = TRANSLATIONS;
