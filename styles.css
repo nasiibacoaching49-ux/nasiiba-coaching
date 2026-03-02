@@ -3970,29 +3970,37 @@ ul {
     display: inline;
 }
 
+/* Modal Base Improvements */
+.modal {
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+}
+
 @media (max-width: 768px) {
     .hide-mobile {
         display: none !important;
     }
 
-    /* Modal Optimization */
+    /* Modal Mobile Optimization */
     .modal {
         width: 95% !important;
-        max-height: 90vh !important;
-        padding: 25px 15px !important;
-        overflow-y: auto !important;
+        padding: 20px 15px !important;
     }
 
     .modal-ctas {
         flex-direction: column !important;
-        gap: 12px !important;
+        gap: 10px !important;
     }
 
     .modal__list {
-        margin-bottom: 20px !important;
+        margin-bottom: 15px !important;
     }
 
     .modal__title {
-        font-size: 1.5rem !important;
+        font-size: 1.4rem !important;
+    }
+
+    .modal__text {
+        font-size: 0.95rem !important;
     }
 }
