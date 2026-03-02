@@ -64,7 +64,7 @@
 
             if (profileError) console.error('Error creating profile:', profileError);
 
-            alert('Registration successful! Please check your email for verification.');
+            alert('Registration successful! You can now sign in.');
             showView('login');
         } catch (err) {
             alert('Registration failed: ' + err.message);

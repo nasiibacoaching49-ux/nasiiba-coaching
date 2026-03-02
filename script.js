@@ -546,13 +546,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             })
                         });
 
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            throw new Error(`Server Error (${response.status}): ${errorText || 'Check Netlify Functions logs'}`);
+                        }
+
                         const result = await response.json();
                         if (result.errorCode === '0') {
-                            alert('Payment request sent to your phone! Please enter your PIN on your mobile device to complete.');
-                            // Optionally redirect to a thank you page or poll for status
+                            alert('Success! Payment request sent to your phone. Please enter your PIN on your mobile device to complete the enrollment.');
                             window.location.href = 'student.html?tab=courses';
                         } else {
-                            throw new Error(result.error || result.description || 'Payment processing failed.');
+                            // Specific Waafi error handling
+                            const errorMsg = result.description || result.error || 'Payment declined or account issue.';
+                            throw new Error(`Waafi Error: ${errorMsg}`);
                         }
 
                     } else if (activeMethod === 'stripe') {
