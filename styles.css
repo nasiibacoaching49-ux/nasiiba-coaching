@@ -4004,3 +4004,63 @@ ul {
         font-size: 0.95rem !important;
     }
 }
+
+/* Payment Modal Phone Input */
+.phone-input-section {
+    margin: 20px 0;
+    animation: fadeIn 0.3s ease;
+}
+
+.phone-input-section label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.phone-input-wrapper:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.phone-prefix {
+    padding: 12px 15px;
+    background: #e2e8f0;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.phone-input-wrapper input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 15px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--navy);
+    outline: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

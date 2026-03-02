@@ -78,7 +78,7 @@
         }
 
         // Restrict to specific admin email
-        const ADMIN_EMAIL = 'Nasiibacoach@gmail.com';
+        const ADMIN_EMAIL = 'info@nasiibacoaching.com';
 
         if (user.email === ADMIN_EMAIL) {
             authOverlay.style.display = 'none';

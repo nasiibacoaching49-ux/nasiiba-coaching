@@ -488,8 +488,8 @@
                             style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px;"
                             data-i18n="contact_email_label">EMAIL
                             US</span>
-                        <a href="mailto:Nasiibacoach@gmail.com" class="contact-card__text"
-                            style="color: var(--text-color); font-weight: 600; text-decoration: none;">Nasiibacoach@gmail.com</a>
+                        <a href="mailto:info@nasiibacoaching.com" class="contact-card__text"
+                            style="color: var(--text-color); font-weight: 600; text-decoration: none;">info@nasiibacoaching.com</a>
                     </div>
                 </div>
 
@@ -520,7 +520,7 @@
 
             <div class="contact-us__form-wrapper"
                 style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);">
-                <form class="contact-form" action="https://formspree.io/f/Nasiibacoach@gmail.com" method="POST">
+                <form class="contact-form" action="https://formspree.io/f/info@nasiibacoaching.com" method="POST">
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label
                             style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--navy);"
@@ -690,9 +690,18 @@
                         <div class="payment-icon" title="eDahab" data-method="edahab">
                             <i class="fas fa-wallet"></i><span>Edahab</span>
                         </div>
-                        <div class="payment-icon" title="Mastercard" data-method="mastercard">
-                            <i class="fab fa-cc-mastercard"></i><span>Card</span>
+                        <div class="payment-icon" title="Mastercard" data-method="stripe">
+                            <i class="fab fa-cc-stripe"></i><span>Stripe</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Phone input for EVC/eDahab -->
+                <div id="phone-input-section" class="phone-input-section">
+                    <label for="payer-phone">Enter Mobile Number (e.g. 634499309)</label>
+                    <div class="phone-input-wrapper">
+                        <span class="phone-prefix">+252</span>
+                        <input type="tel" id="payer-phone" placeholder="Contact number" maxlength="9">
                     </div>
                 </div>
 

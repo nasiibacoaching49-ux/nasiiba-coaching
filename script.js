@@ -471,10 +471,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Payment Method Selection
+        const phoneInputSection = document.getElementById('phone-input-section');
         paymentIcons.forEach(icon => {
             icon.addEventListener('click', () => {
                 paymentIcons.forEach(i => i.classList.remove('active'));
                 icon.classList.add('active');
+
+                const method = icon.getAttribute('data-method');
+                if (method === 'evc' || method === 'edahab') {
+                    phoneInputSection.style.display = 'block';
+                } else {
+                    phoneInputSection.style.display = 'none';
+                }
             });
         });
 
@@ -513,9 +521,69 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isLoggedIn) {
                 window.location.href = 'student.html?view=register';
             } else {
-                // Handle payment processing...
-                alert(`Proceeding with ${activeMethod.toUpperCase()} payment for ${courseTitle.textContent}`);
-                // window.location.href = 'course-player.html';
+                const amount = parseFloat(coursePrice.textContent.replace(/[^0-9.]/g, '')) || 0;
+                const courseTitleVal = courseTitle.textContent;
+
+                proceedBtn.disabled = true;
+                proceedBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+                try {
+                    if (activeMethod === 'evc' || activeMethod === 'edahab') {
+                        const phone = document.getElementById('payer-phone').value.trim();
+                        if (!phone || phone.length < 9) {
+                            alert('Please enter a valid Somali phone number (9 digits).');
+                            proceedBtn.disabled = false;
+                            proceedBtn.innerHTML = 'Proceed to Payment';
+                            return;
+                        }
+
+                        const response = await fetch('/.netlify/functions/process-waafi', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                amount: amount,
+                                phone: phone,
+                                courseTitle: courseTitleVal
+                            })
+                        });
+
+                        const result = await response.json();
+                        if (result.errorCode === '0') {
+                            alert('Payment request sent to your phone! Please enter your PIN on your mobile device to complete.');
+                            // Optionally redirect to a thank you page or poll for status
+                            window.location.href = 'student.html?tab=courses';
+                        } else {
+                            throw new Error(result.error || result.description || 'Payment processing failed.');
+                        }
+
+                    } else if (activeMethod === 'stripe') {
+                        const response = await fetch('/.netlify/functions/create-stripe-session', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                amount: amount,
+                                courseTitle: courseTitleVal,
+                                successUrl: window.location.origin + '/student.html?tab=courses&session_id={CHECKOUT_SESSION_ID}',
+                                cancelUrl: window.location.href
+                            })
+                        });
+
+                        const session = await response.json();
+                        if (session.url) {
+                            window.location.href = session.url;
+                        } else {
+                            throw new Error('Could not create Stripe session.');
+                        }
+                    } else {
+                        alert(`Method ${activeMethod} is not fully implemented yet.`);
+                        proceedBtn.disabled = false;
+                        proceedBtn.innerHTML = 'Proceed to Payment';
+                    }
+
+                } catch (err) {
+                    console.error('Payment Error:', err);
+                    alert('Error: ' + err.message);
+                    proceedBtn.disabled = false;
+                    proceedBtn.innerHTML = 'Proceed to Payment';
+                }
             }
         });
     }

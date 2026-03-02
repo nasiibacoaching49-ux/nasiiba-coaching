@@ -12,5 +12,9 @@
     "business"
   ],
   "author": "Nasiiba Coaching",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^14.12.0",
+    "node-fetch": "^2.7.0"
+  }
 }
