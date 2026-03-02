@@ -217,22 +217,22 @@
                 const course = order.courses;
                 if (!course) return '';
                 return `
-                    <div class="course-card">
+                    <div class="dashboard-course-card">
                         <div class="course-card__image">
                             <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}">
                         </div>
                         <div class="course-card__body">
-                            <h3 class="course-card__title" style="font-size: 1rem;">${course.title}</h3>
+                            <h3 class="course-card__title" style="font-size: 1rem; color: #fff;">${course.title}</h3>
                             <div class="course-progress" style="margin-top: 10px;">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; color: rgba(255,255,255,0.6);">
                                     <span>Course Progress</span>
                                     <span>0%</span>
                                 </div>
-                                <div style="height: 6px; background: #eee; border-radius: 3px; overflow: hidden;">
+                                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                     <div style="width: 0%; height: 100%; background: var(--gold);"></div>
                                 </div>
                             </div>
-                            <a href="course-player.html?courseId=${course.id}" class="btn btn--gold btn--sm btn--full" style="margin-top: 15px;">Continue <i class="fas fa-play" style="font-size: 0.7rem;"></i></a>
+                            <a href="course-player.html?courseId=${course.id}" class="btn btn--gold btn--sm btn--full" style="margin-top: 15px; color: #0c1b33;">Continue <i class="fas fa-play" style="font-size: 0.7rem;"></i></a>
                         </div>
                     </div>
                 `;

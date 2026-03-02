@@ -242,6 +242,7 @@ body {
     color: var(--white);
     background: linear-gradient(to right, #fff, var(--gold));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: var(--font-display);
     margin-bottom: 10px;
@@ -430,8 +431,6 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-}
 }
 
 @keyframes float {
