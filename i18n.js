@@ -107,13 +107,12 @@
         // Toggle dropdown
         document.addEventListener('click', (e) => {
             const toggle = e.target.closest('#lang-toggle, .lang-switcher__btn');
-            const dropdown = document.getElementById('lang-dropdown');
 
             if (toggle) {
                 e.stopPropagation();
-                // Find the dropdown relative to the clicked toggle or its container
-                const dropdown = toggle.closest('.lang-switcher').querySelector('.lang-switcher__dropdown');
-                dropdown.classList.toggle('open');
+                // Find the dropdown relative to the clicked toggle
+                const dd = toggle.closest('.lang-switcher').querySelector('.lang-switcher__dropdown');
+                if (dd) dd.classList.toggle('open');
                 return;
             }
 
@@ -125,12 +124,16 @@
                 if (window.GeoPricing) {
                     window.GeoPricing.refresh();
                 }
-                dropdown.classList.remove('open');
+                // Close the dropdown this option belongs to
+                const dd = option.closest('.lang-switcher__dropdown');
+                if (dd) dd.classList.remove('open');
                 return;
             }
 
-            // Close on outside click
-            if (dropdown) dropdown.classList.remove('open');
+            // Close all dropdowns on outside click
+            document.querySelectorAll('.lang-switcher__dropdown.open').forEach(dd => {
+                dd.classList.remove('open');
+            });
         });
     }
 
