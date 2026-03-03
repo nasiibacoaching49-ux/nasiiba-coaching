@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.innerHTML = courses.map((course, index) => `
                 <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
                     <div class="course-card__image">
-                        <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}">
+                        <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}" onerror="this.src='https://via.placeholder.com/400x250'">
                         <span class="course-card__price-tag">$${Math.round(course.price * 0.4)}</span>
                     </div>
                     <div class="course-card__body">
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="course-card__desc">${course.description || ''}</p>
                         <div class="course-card__footer">
                             <span class="course-card__price">$${course.price}</span>
-                            <a href="student.html" class="btn btn--navy btn--sm">Enroll</a>
+                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
                         </div>
                     </div>
                 </div>
