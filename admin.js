@@ -170,6 +170,7 @@
 
     // Helper: Upload Image to Supabase
     async function uploadThumbnail(file) {
+        console.log('[Storage] Starting thumbnail upload:', file.name);
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
         const filePath = `course-thumbs/${fileName}`;
@@ -178,12 +179,16 @@
             .from('thumbnails')
             .upload(filePath, file);
 
-        if (error) throw error;
+        if (error) {
+            console.error('[Storage] Upload error:', error);
+            throw error;
+        }
 
         const { data: { publicUrl } } = db.storage
             .from('thumbnails')
             .getPublicUrl(filePath);
 
+        console.log('[Storage] Upload successful. Public URL:', publicUrl);
         return publicUrl;
     }
 
