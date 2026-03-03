@@ -233,14 +233,18 @@
 
             // 3. Handle Lessons
             const lessonRows = modalLessonsList.querySelectorAll('.lesson-row');
-            const lessonsData = Array.from(lessonRows).map((row, index) => ({
-                id: row.querySelector('.lesson-id').value || undefined,
-                course_id: courseId,
-                title: row.querySelector('.lesson-title').value,
-                type: row.querySelector('.lesson-type').value,
-                content: row.querySelector('.lesson-content').value,
-                order_index: index
-            }));
+            const lessonsData = Array.from(lessonRows).map((row, index) => {
+                const lessonId = row.querySelector('.lesson-id').value;
+                const lesson = {
+                    course_id: courseId,
+                    title: row.querySelector('.lesson-title').value,
+                    type: row.querySelector('.lesson-type').value,
+                    content: row.querySelector('.lesson-content').value,
+                    order_index: index
+                };
+                if (lessonId) lesson.id = lessonId;
+                return lesson;
+            });
 
             // Delete removed lessons (those NOT in current modal list but previously in DB)
             if (id) {
