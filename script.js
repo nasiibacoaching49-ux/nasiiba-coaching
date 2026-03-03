@@ -36,11 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: stop observing once visible
-                // observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
+
+    window.observer = observer;
 
     // Observe elements with .reveal class
     document.querySelectorAll('.reveal').forEach(el => {
@@ -268,7 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Re-observe new elements for reveal animations
             if (window.observer) {
-                document.querySelectorAll('.course-card.reveal').forEach(el => window.observer.observe(el));
+                grid.querySelectorAll('.reveal').forEach(el => {
+                    window.observer.observe(el);
+                });
             }
         } catch (err) {
             console.error('[Courses] Error loading dynamic courses:', err);
@@ -454,10 +456,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = e.target.closest('.btn-enroll, [data-i18n="enroll"]');
             if (btn) {
                 e.preventDefault();
+                // Find nearest course card parent
                 const card = btn.closest('.course-card');
                 if (card) {
-                    const title = card.querySelector('.course-card__title').textContent;
-                    const price = card.querySelector('.course-card__price').textContent;
+                    const titleEl = card.querySelector('.course-card__title');
+                    const priceEl = card.querySelector('.course-card__price') || card.querySelector('.course-card__price-tag');
+
+                    const title = titleEl ? titleEl.textContent : 'Course';
+                    const price = priceEl ? priceEl.textContent : '$0';
+
                     openPaymentModal(title, price);
                 }
             }
