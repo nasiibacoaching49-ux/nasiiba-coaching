@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// Using native fetch available in Node.js 18+ on Vercel
 
 /**
  * Vercel Serverless Function: Process Waafi (EVC Plus / eDahab) Payment
@@ -57,6 +57,9 @@ module.exports = async (req, res) => {
             method: 'POST',
             body: JSON.stringify(waafiBody),
             headers: { 'Content-Type': 'application/json' }
+        }).catch(err => {
+            console.error('[Waafi Fetch Error]:', err);
+            throw new Error(`Connection to Waafi API failed: ${err.message}`);
         });
 
         if (!response.ok) {
@@ -71,10 +74,11 @@ module.exports = async (req, res) => {
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error('Waafi API Error:', error);
+        console.error('Final Waafi Error:', error);
         return res.status(500).json({
             error: error.message,
-            hint: "Ensure environment variables WAAFI_MERCHANT_UID, WAAFI_API_USER_ID, and WAAFI_API_KEY are set in Vercel."
+            details: error.stack,
+            hint: "If this is a connection error, verify the API endpoint and that your Vercel region can reach waafi.com."
         });
     }
 };
