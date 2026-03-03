@@ -229,13 +229,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchDynamicCourses() {
         const grid = document.getElementById('courses-grid');
-        if (!grid) return;
+        if (!grid) {
+            console.warn('[Courses] Grid element #courses-grid not found on this page.');
+            return;
+        }
 
         try {
+            console.log('[Courses] Fetching dynamic courses from Supabase...');
             const { data: courses, error } = await db.from('courses').select('*').order('created_at', { ascending: false });
+
             if (error) throw error;
 
-            if (!courses || courses.length === 0) return;
+            console.log(`[Courses] Successfully fetched ${courses ? courses.length : 0} courses.`);
+
+            if (!courses || courses.length === 0) {
+                console.info('[Courses] No courses found in database. Keeping static HTML or empty grid.');
+                return;
+            }
 
             grid.innerHTML = courses.map((course, index) => `
                 <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
@@ -254,10 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `).join('');
 
-            // Re-observe new elements
-            document.querySelectorAll('.course-card.reveal').forEach(el => observer.observe(el));
+            // Re-observe new elements for reveal animations
+            if (window.observer) {
+                document.querySelectorAll('.course-card.reveal').forEach(el => window.observer.observe(el));
+            }
         } catch (err) {
-            console.error('Error loading courses:', err);
+            console.error('[Courses] Error loading dynamic courses:', err);
         }
     }
 
