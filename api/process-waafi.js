@@ -68,17 +68,28 @@ module.exports = async (req, res) => {
         }
 
         const data = await response.json();
-        console.log('Waafi Response:', JSON.stringify(data, null, 2));
+        console.log('Waafi Response Full:', JSON.stringify(data, null, 2));
 
-        // Return the response to frontend
-        return res.status(200).json(data);
+        // Normalize for frontend (script.js expects errorCode and description)
+        // In Waafi ASM, responseCode '2001' is Success.
+        const normalizedResponse = {
+            ...data,
+            errorCode: data.responseCode === '2001' ? '0' : (data.errorCode || data.responseCode),
+            description: data.responseMsg || data.description || (data.params ? data.params.description : null)
+        };
+
+        console.log('Returning Normalized:', JSON.stringify(normalizedResponse, null, 2));
+
+        // Return the normalized response to frontend
+        return res.status(200).json(normalizedResponse);
 
     } catch (error) {
         console.error('Final Waafi Error:', error);
         return res.status(500).json({
             error: error.message,
-            details: error.stack,
-            hint: "If this is a connection error, verify the API endpoint and that your Vercel region can reach waafi.com."
+            errorCode: '500',
+            description: error.message,
+            details: error.stack
         });
     }
 };
