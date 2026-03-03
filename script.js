@@ -540,8 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             return;
                         }
 
-                        const response = await fetch('/.netlify/functions/process-waafi', {
+                        const response = await fetch('/api/process-waafi', {
                             method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 amount: amount,
                                 phone: phone,
@@ -551,7 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         if (!response.ok) {
                             const errorText = await response.text();
-                            throw new Error(`Server Error (${response.status}): ${errorText || 'Check Netlify Functions logs'}`);
+                            throw new Error(`Server Error (${response.status}): ${errorText || 'Check Vercel Logs'}`);
                         }
 
                         const result = await response.json();
@@ -565,8 +566,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
 
                     } else if (activeMethod === 'stripe') {
-                        const response = await fetch('/.netlify/functions/create-stripe-session', {
+                        const response = await fetch('/api/create-stripe-session', {
                             method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 amount: amount,
                                 courseTitle: courseTitleVal,

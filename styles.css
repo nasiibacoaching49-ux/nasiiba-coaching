@@ -13,6 +13,7 @@
     --bg-color: #ffffff;
     --bg-alt: #f8f9fa;
     --text-color: #33363f;
+    --text-main: #33363f;
     --text-light: #6b6f7a;
     --border-color: rgba(0, 0, 0, 0.05);
 
@@ -46,6 +47,7 @@
     --bg-color: #081222;
     --bg-alt: #0c1b33;
     --text-color: #f3f4f6;
+    --text-main: #f3f4f6;
     --text-muted: #94a3b8;
     --text-light: #cbd5e1;
     --white: #0c1b33;
@@ -2842,7 +2844,7 @@ ul {
 }
 
 [data-theme="dark"] .modal--payment {
-    background: rgba(12, 27, 51, 0.9);
+    background: var(--navy-dark);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -3038,17 +3040,14 @@ ul {
 }
 
 /* DARK MODE OVERRIDES */
-[data-theme="dark"] .modal--payment {
-    background: var(--navy-dark);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* Konsolidated above */
 
 [data-theme="dark"] .payment-course-info {
     background: rgba(255, 255, 255, 0.03);
 }
 
 [data-theme="dark"] .payment-course-info h4 {
-    color: var(--white);
+    color: var(--text-color);
 }
 
 [data-theme="dark"] .form-group input {
@@ -4364,8 +4363,8 @@ ul {
 .phone-input-wrapper {
     display: flex;
     align-items: center;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--gray-50);
+    border: 1.5px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -4378,7 +4377,7 @@ ul {
 
 .phone-prefix {
     padding: 12px 15px;
-    background: #e2e8f0;
+    background: var(--gray-200);
     color: var(--navy);
     font-weight: 700;
     font-size: 0.9rem;
