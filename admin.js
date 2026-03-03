@@ -146,7 +146,7 @@
                     <input type="text" class="lesson-content" value="${lessonData.content || ''}" placeholder="YouTube URL" required>
                 </div>
             </div>
-            <button type="button" class="btn-remove-lesson" onclick="this.parentElement.remove()" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1rem;">
+            <button type="button" class="btn-remove-lesson" onclick="deleteLesson('${lessonData.id || ''}', '${rowId}')" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1rem;">
                 <i class="fas fa-times-circle"></i>
             </button>
         `;
@@ -310,10 +310,15 @@
         }
     };
 
-    window.deleteLesson = async (id) => {
-        if (confirm('Delete this lesson?')) {
-            const { error } = await db.from('lessons').delete().eq('id', id);
-            if (!error) fetchLessons(currentCourseId);
+    window.deleteLesson = async (id, rowId) => {
+        if (id) {
+            if (confirm('Delete this lesson permanently?')) {
+                const { error } = await db.from('lessons').delete().eq('id', id);
+                if (error) alert('Error deleting lesson: ' + error.message);
+                else if (document.getElementById(rowId)) document.getElementById(rowId).remove();
+            }
+        } else {
+            if (document.getElementById(rowId)) document.getElementById(rowId).remove();
         }
     };
 
@@ -508,7 +513,5 @@
             if (!error) fetchCourses();
         }
     };
-    window.editLesson = editLesson;
-    window.deleteLesson = deleteLesson;
 
 })();
