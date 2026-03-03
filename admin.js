@@ -221,6 +221,13 @@
             const thumbFile = thumbFileInput.files[0];
             if (thumbFile) {
                 finalThumbUrl = await uploadThumbnail(thumbFile);
+                if (finalThumbUrl) {
+                    alert(`Upload Successful!\nImage URL: ${finalThumbUrl}\n\nPlease check if this opens in a new tab.`);
+                }
+            }
+
+            if (!finalThumbUrl || finalThumbUrl === 'undefined' || finalThumbUrl === 'null') {
+                console.warn('[Storage] Warning: No valid thumbnail URL generated.');
             }
 
             // 2. Save Course
