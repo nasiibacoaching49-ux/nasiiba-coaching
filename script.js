@@ -236,6 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('[Courses] Fetching dynamic courses from Supabase...');
+            const db = window.supabaseClient;
+            if (!db) throw new Error('Supabase client not available');
             const { data: courses, error } = await db.from('courses').select('*').order('created_at', { ascending: false });
 
             if (error) throw error;
@@ -503,9 +505,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const authPrompt = document.getElementById('auth-prompt');
 
         const checkAuthState = async () => {
-            if (!db) return false;
-            const { data: { session } } = await db.auth.getSession();
-            return !!session;
+            try {
+                const db = window.supabaseClient;
+                if (!db) return false;
+                const { data: { session }, error } = await db.auth.getSession();
+                if (error) throw error;
+                return !!session;
+            } catch (err) {
+                console.error('[Auth] Error getting session:', err);
+                return false;
+            }
         };
 
         const updateModalAuth = async () => {

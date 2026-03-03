@@ -162,6 +162,14 @@
                     showView('dashboard');
                     fetchStudentCourses(user.id);
                     fetchCertificates(user.id);
+
+                    // Handle dynamic tab selection from URL
+                    const params = new URLSearchParams(window.location.search);
+                    const targetTab = params.get('tab');
+                    if (targetTab) {
+                        const tabBtn = document.querySelector(`.nav-item[data-tab="${targetTab}"]`);
+                        if (tabBtn) tabBtn.click();
+                    }
                 } else {
                     console.warn('No student profile found for user UID');
                     alert('Authenticated but profile not found. If you just registered, please try logging in again.');
