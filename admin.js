@@ -77,10 +77,11 @@
             return;
         }
 
-        // Restrict to specific admin email
-        const ADMIN_EMAIL = 'info@nasiibacoaching.com';
+        // Restrict to specific admin email (case-insensitive)
+        const ADMIN_EMAIL = 'info@nasiibacoaching.com'.toLowerCase().trim();
+        const userEmail = (user.email || '').toLowerCase().trim();
 
-        if (user.email === ADMIN_EMAIL) {
+        if (userEmail === ADMIN_EMAIL) {
             authOverlay.style.display = 'none';
             // Trigger initial load
             const hash = window.location.hash.replace('#', '') || 'dashboard';

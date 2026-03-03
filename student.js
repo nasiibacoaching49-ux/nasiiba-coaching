@@ -187,10 +187,18 @@
         document.getElementById('dash-user-name').textContent = profile.full_name;
         document.getElementById('user-avatar-initials').textContent = profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
 
-        // Show admin link if email matches
-        const ADMIN_EMAIL = 'info@nasiibacoaching.com';
+        // Populate profile form
+        if (document.getElementById('profile-name')) document.getElementById('profile-name').value = profile.full_name;
+        if (document.getElementById('profile-whatsapp')) document.getElementById('profile-whatsapp').value = profile.whatsapp_number || '';
+        if (document.getElementById('profile-email')) document.getElementById('profile-email').value = profile.email;
+
+        // Show admin link if email matches (robust check)
+        const ADMIN_EMAIL = 'info@nasiibacoaching.com'.toLowerCase().trim();
+        const userEmail = (profile.email || '').toLowerCase().trim();
         const adminLink = document.getElementById('admin-link');
-        if (profile.email === ADMIN_EMAIL && adminLink) {
+
+        if (userEmail === ADMIN_EMAIL && adminLink) {
+            console.log('[Admin] Admin user detected, showing panel link.');
             adminLink.style.display = 'flex';
         }
     }
