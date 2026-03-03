@@ -187,10 +187,12 @@
         document.getElementById('dash-user-name').textContent = profile.full_name;
         document.getElementById('user-avatar-initials').textContent = profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
 
-        // Populate profile form
-        document.getElementById('profile-name').value = profile.full_name;
-        document.getElementById('profile-whatsapp').value = profile.whatsapp_number || '';
-        document.getElementById('profile-email').value = profile.email;
+        // Show admin link if email matches
+        const ADMIN_EMAIL = 'info@nasiibacoaching.com';
+        const adminLink = document.getElementById('admin-link');
+        if (profile.email === ADMIN_EMAIL && adminLink) {
+            adminLink.style.display = 'flex';
+        }
     }
 
     async function fetchStudentCourses(studentId) {
