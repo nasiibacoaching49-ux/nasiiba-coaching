@@ -102,45 +102,171 @@
 
     // Modals
     const modalCourse = document.getElementById('modal-course');
-    const modalLesson = document.getElementById('modal-lesson');
     const courseForm = document.getElementById('course-form');
-    const lessonForm = document.getElementById('lesson-form');
+    const modalLessonsList = document.getElementById('modal-lessons-list');
+    const btnModalAddLesson = document.getElementById('btn-modal-add-lesson');
+    const thumbFileInput = document.getElementById('course-thumb-file');
+    const thumbPreview = document.getElementById('thumb-preview');
+    const thumbUrlHidden = document.getElementById('course-thumb-url');
 
     window.closeAdminModal = (modalId) => {
         document.getElementById(modalId).classList.remove('active');
     };
+
+    // Helper: Add Lesson Row to Modal
+    function addLessonRow(lessonData = {}) {
+        const rowId = `lesson-row-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        const div = document.createElement('div');
+        div.className = 'lesson-row';
+        div.id = rowId;
+        div.style.background = 'var(--bg-alt)';
+        div.style.padding = '15px';
+        div.style.borderRadius = '8px';
+        div.style.marginBottom = '10px';
+        div.style.position = 'relative';
+        div.style.border = '1px solid var(--gray-200)';
+
+        div.innerHTML = `
+            <input type="hidden" class="lesson-id" value="${lessonData.id || ''}">
+            <div class="form-group" style="margin-bottom: 10px;">
+                <label style="font-size: 0.75rem;">Lesson Title</label>
+                <input type="text" class="lesson-title" value="${lessonData.title || ''}" placeholder="e.g. Introduction to Leadership" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                    <label style="font-size: 0.75rem;">Type</label>
+                    <select class="lesson-type" style="padding: 10px; width: 100%; border-radius: 6px; border: 1px solid var(--gray-200);">
+                        <option value="video" ${lessonData.type === 'video' ? 'selected' : ''}>Video</option>
+                        <option value="pdf" ${lessonData.type === 'pdf' ? 'selected' : ''}>PDF</option>
+                        <option value="quiz" ${lessonData.type === 'quiz' ? 'selected' : ''}>Quiz</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="font-size: 0.75rem;">Content (URL/YouTube)</label>
+                    <input type="text" class="lesson-content" value="${lessonData.content || ''}" placeholder="YouTube URL" required>
+                </div>
+            </div>
+            <button type="button" class="btn-remove-lesson" onclick="this.parentElement.remove()" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1rem;">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        `;
+        modalLessonsList.appendChild(div);
+    }
+
+    btnModalAddLesson.addEventListener('click', () => addLessonRow());
+
+    // Thumbnail Preview handler
+    thumbFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                thumbPreview.src = e.target.result;
+                thumbPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Helper: Upload Image to Supabase
+    async function uploadThumbnail(file) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+        const filePath = `course-thumbs/${fileName}`;
+
+        const { data, error } = await db.storage
+            .from('thumbnails')
+            .upload(filePath, file);
+
+        if (error) throw error;
+
+        const { data: { publicUrl } } = db.storage
+            .from('thumbnails')
+            .getPublicUrl(filePath);
+
+        return publicUrl;
+    }
 
     // Course Management
     document.getElementById('btn-add-course').addEventListener('click', () => {
         document.getElementById('course-modal-title').textContent = 'Add New Course';
         courseForm.reset();
         document.getElementById('course-id').value = '';
+        modalLessonsList.innerHTML = '';
+        thumbPreview.style.display = 'none';
+        thumbUrlHidden.value = '';
+        addLessonRow(); // Add first lesson row by default
         modalCourse.classList.add('active');
     });
 
     courseForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const submitBtn = document.getElementById('course-save-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
         const id = document.getElementById('course-id').value;
         const title = document.getElementById('course-title').value;
         const description = document.getElementById('course-desc').value;
         const price = document.getElementById('course-price').value;
-        const thumbnail_url = document.getElementById('course-thumb').value;
-
-        const courseData = { title, description, price, thumbnail_url };
 
         try {
-            let error;
-            if (id) {
-                ({ error } = await db.from('courses').update(courseData).eq('id', id));
-            } else {
-                ({ error } = await db.from('courses').insert([courseData]));
+            // 1. Handle Thumbnail Upload
+            let finalThumbUrl = thumbUrlHidden.value;
+            const thumbFile = thumbFileInput.files[0];
+            if (thumbFile) {
+                finalThumbUrl = await uploadThumbnail(thumbFile);
             }
 
-            if (error) throw error;
+            // 2. Save Course
+            const courseData = { title, description, price, thumbnail_url: finalThumbUrl };
+            let courseId = id;
+
+            if (id) {
+                const { error } = await db.from('courses').update(courseData).eq('id', id);
+                if (error) throw error;
+            } else {
+                const { data, error } = await db.from('courses').insert([courseData]).select();
+                if (error) throw error;
+                courseId = data[0].id;
+            }
+
+            // 3. Handle Lessons
+            const lessonRows = modalLessonsList.querySelectorAll('.lesson-row');
+            const lessonsData = Array.from(lessonRows).map((row, index) => ({
+                id: row.querySelector('.lesson-id').value || undefined,
+                course_id: courseId,
+                title: row.querySelector('.lesson-title').value,
+                type: row.querySelector('.lesson-type').value,
+                content: row.querySelector('.lesson-content').value,
+                order_index: index
+            }));
+
+            // Delete removed lessons (those NOT in current modal list but previously in DB)
+            if (id) {
+                const existingLessonIds = lessonsData.filter(l => l.id).map(l => l.id);
+                if (existingLessonIds.length > 0) {
+                    await db.from('lessons').delete().eq('course_id', id).not('id', 'in', `(${existingLessonIds.join(',')})`);
+                } else {
+                    await db.from('lessons').delete().eq('course_id', id);
+                }
+            }
+
+            // Upsert remaining lessons
+            if (lessonsData.length > 0) {
+                const { error: lessonError } = await db.from('lessons').upsert(lessonsData);
+                if (lessonError) throw lessonError;
+            }
+
             modalCourse.classList.remove('active');
             fetchCourses();
+            alert('Course and lessons saved successfully!');
         } catch (err) {
-            alert('Error saving course: ' + err.message);
+            console.error('Error saving:', err);
+            alert('Error saving course/lessons: ' + err.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Save Course & Lessons';
         }
     });
 
@@ -153,118 +279,34 @@
             document.getElementById('course-title').value = course.title;
             document.getElementById('course-desc').value = course.description;
             document.getElementById('course-price').value = course.price;
-            document.getElementById('course-thumb').value = course.thumbnail_url;
+
+            thumbUrlHidden.value = course.thumbnail_url || '';
+            if (course.thumbnail_url) {
+                thumbPreview.src = course.thumbnail_url;
+                thumbPreview.style.display = 'block';
+            } else {
+                thumbPreview.style.display = 'none';
+            }
+
+            // Fetch and populate lessons
+            modalLessonsList.innerHTML = '';
+            const { data: lessons, error: lessonError } = await db.from('lessons')
+                .select('*')
+                .eq('course_id', id)
+                .order('order_index', { ascending: true });
+
+            if (lessonError) throw lessonError;
+
+            if (lessons && lessons.length > 0) {
+                lessons.forEach(l => addLessonRow(l));
+            } else {
+                addLessonRow();
+            }
 
             document.getElementById('course-modal-title').textContent = 'Edit Course';
             modalCourse.classList.add('active');
         } catch (err) {
             alert('Error loading course details: ' + err.message);
-        }
-    };
-
-    // Lesson Management
-    let currentCourseId = null;
-    const lessonCourseSelect = document.getElementById('lesson-course-select');
-    const btnAddLesson = document.getElementById('btn-add-lesson');
-
-    lessonCourseSelect.addEventListener('change', (e) => {
-        currentCourseId = e.target.value;
-        if (currentCourseId) {
-            btnAddLesson.style.display = 'inline-block';
-            fetchLessons(currentCourseId);
-        } else {
-            btnAddLesson.style.display = 'none';
-            document.getElementById('lessons-list-container').innerHTML = '';
-        }
-    });
-
-    btnAddLesson.addEventListener('click', () => {
-        document.getElementById('lesson-modal-title').textContent = 'Add Lesson';
-        lessonForm.reset();
-        document.getElementById('lesson-id').value = '';
-        modalLesson.classList.add('active');
-    });
-
-    lessonForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const id = document.getElementById('lesson-id').value;
-        const title = document.getElementById('lesson-title').value;
-        const type = document.getElementById('lesson-type').value;
-        const content = document.getElementById('lesson-content').value;
-
-        const lessonData = { course_id: currentCourseId, title, type, content };
-
-        try {
-            let error;
-            if (id) {
-                ({ error } = await db.from('lessons').update(lessonData).eq('id', id));
-            } else {
-                ({ error } = await db.from('lessons').insert([lessonData]));
-            }
-
-            if (error) throw error;
-            modalLesson.classList.remove('active');
-            fetchLessons(currentCourseId);
-        } catch (err) {
-            alert('Error saving lesson: ' + err.message);
-        }
-    });
-
-    async function fetchLessons(courseId) {
-        const container = document.getElementById('lessons-list-container');
-        try {
-            const { data: lessons, error } = await db.from('lessons').select('*').eq('course_id', courseId).order('order_index', { ascending: true });
-            if (error) throw error;
-
-            if (lessons.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-light);">No lessons yet. Add your first lesson above.</p>';
-                return;
-            }
-
-            container.innerHTML = `
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Type</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${lessons.map(lesson => `
-                                <tr>
-                                    <td>${lesson.title}</td>
-                                    <td><span class="badge ${lesson.type === 'video' ? 'badge--success' : 'badge--warning'}">${lesson.type}</span></td>
-                                    <td>
-                                        <button class="btn btn--sm btn--outline" onclick="editLesson('${lesson.id}')"><i class="fas fa-edit"></i></button>
-                                        <button class="btn btn--sm btn--danger" onclick="deleteLesson('${lesson.id}')"><i class="fas fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        } catch (err) {
-            console.error('Error fetching lessons:', err);
-        }
-    }
-
-    window.editLesson = async (id) => {
-        try {
-            const { data: lesson, error } = await db.from('lessons').select('*').eq('id', id).single();
-            if (error) throw error;
-
-            document.getElementById('lesson-id').value = lesson.id;
-            document.getElementById('lesson-title').value = lesson.title;
-            document.getElementById('lesson-type').value = lesson.type;
-            document.getElementById('lesson-content').value = lesson.content;
-
-            document.getElementById('lesson-modal-title').textContent = 'Edit Lesson';
-            modalLesson.classList.add('active');
-        } catch (err) {
-            alert('Error loading lesson: ' + err.message);
         }
     };
 

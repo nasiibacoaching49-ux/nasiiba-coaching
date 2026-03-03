@@ -321,9 +321,6 @@
             <a href="#courses" class="admin-nav__item" data-view="courses">
                 <i class="fas fa-graduation-cap"></i> Manage Courses
             </a>
-            <a href="#lessons" class="admin-nav__item" data-view="lessons">
-                <i class="fas fa-play-circle"></i> Course Content
-            </a>
             <a href="#orders" class="admin-nav__item" data-view="orders">
                 <i class="fas fa-shopping-cart"></i> Student Orders
             </a>
@@ -458,29 +455,6 @@
             </div>
         </div>
 
-        <!-- Lessons View -->
-        <div id="view-lessons" class="view-content" style="display: none;">
-            <header class="admin-header">
-                <div class="admin-header__title">
-                    <h1>Course Content</h1>
-                    <p>Manage lessons, videos, and PDFs for your courses.</p>
-                </div>
-            </header>
-            <div class="admin-card">
-                <div class="form-group">
-                    <label>Select Course</label>
-                    <select id="lesson-course-select" class="form-control"
-                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--gray-200);">
-                        <option value="">-- Choose a course --</option>
-                    </select>
-                </div>
-                <div id="lessons-list-container" style="margin-top: 30px;">
-                    <!-- Lessons will be listed here -->
-                </div>
-                <button class="btn btn--gold btn--sm" id="btn-add-lesson" style="margin-top: 20px; display: none;"><i
-                        class="fas fa-plus"></i> Add Lesson</button>
-            </div>
-        </div>
 
         <!-- Orders View -->
         <div id="view-orders" class="view-content" style="display: none;">
@@ -536,51 +510,41 @@
                             <input type="number" id="course-price" step="0.01" required>
                         </div>
                         <div class="form-group">
-                            <label>Thumbnail URL</label>
-                            <input type="text" id="course-thumb" placeholder="https://...">
+                            <label>Thumbnail Image</label>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <input type="file" id="course-thumb-file" accept="image/*" style="padding: 5px;">
+                                <img id="thumb-preview" src=""
+                                    style="width: 50px; height: 35px; object-fit: cover; border-radius: 4px; display: none; border: 1px solid var(--gray-200);">
+                                <input type="hidden" id="course-thumb-url">
+                            </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn--navy btn--full" style="margin-top: 10px;">Save Course</button>
+
+                    <!-- Lessons Section -->
+                    <div class="modal-divider"
+                        style="margin: 25px 0 15px; height: 1px; background: var(--gray-200); position: relative;">
+                        <span
+                            style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); background: #fff; padding-right: 15px; font-weight: 700; font-size: 0.85rem; color: var(--navy); text-transform: uppercase; letter-spacing: 1px;">Course
+                            Lessons</span>
+                    </div>
+
+                    <div id="modal-lessons-list"
+                        style="max-height: 250px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
+                        <!-- Dynamic lesson rows -->
+                    </div>
+
+                    <button type="button" id="btn-modal-add-lesson" class="btn btn--outline btn--sm btn--full"
+                        style="margin-bottom: 20px;">
+                        <i class="fas fa-plus"></i> Add Another Lesson
+                    </button>
+
+                    <button type="submit" class="btn btn--navy btn--full" id="course-save-btn">Save Course &
+                        Lessons</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Lesson Form -->
-    <div id="modal-lesson" class="modal-overlay">
-        <div class="modal" style="max-width: 500px;">
-            <button class="modal__close" onclick="closeAdminModal('modal-lesson')"><i class="fas fa-times"></i></button>
-            <div class="modal__header">
-                <h3 class="modal__title" id="lesson-modal-title">Add Lesson</h3>
-            </div>
-            <div class="modal__body">
-                <form id="lesson-form">
-                    <input type="hidden" id="lesson-id">
-                    <div class="form-group">
-                        <label>Lesson Title</label>
-                        <input type="text" id="lesson-title" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Content Type</label>
-                        <select id="lesson-type"
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200);">
-                            <option value="video">YouTube Video (Unlisted)</option>
-                            <option value="pdf">PDF / Document Link</option>
-                            <option value="quiz">Quiz (JSON Format)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Content (URL or JSON)</label>
-                        <textarea id="lesson-content"
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200); height: 100px; font-family: inherit;"
-                            required></textarea>
-                        <small style="color: var(--text-light);">For videos, paste the unlisted YouTube URL.</small>
-                    </div>
-                    <button type="submit" class="btn btn--navy btn--full">Save Lesson</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
