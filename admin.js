@@ -388,10 +388,6 @@
             const { data: courses, error } = await db.from('courses').select('*').order('created_at', { ascending: false });
             if (error) throw error;
 
-            // Populate course select for lessons view while we're at it
-            lessonCourseSelect.innerHTML = '<option value="">-- Choose a course --</option>' +
-                courses.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
-
             if (courses.length === 0) {
                 coursesTable.innerHTML = '<tr><td colspan="5" style="text-align: center;">No courses found.</td></tr>';
                 return;
