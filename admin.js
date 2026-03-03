@@ -399,7 +399,7 @@
 
             coursesTable.innerHTML = courses.map(course => `
                 <tr>
-                    <td><img src="${course.thumbnail_url || 'https://via.placeholder.com/60x40'}" style="width: 60px; border-radius: 4px;"></td>
+                    <td><img src="${course.thumbnail_url || 'https://via.placeholder.com/60x40'}" style="width: 60px; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/60x40'"></td>
                     <td><strong>${course.title}</strong></td>
                     <td>$${course.price}</td>
                     <td>${new Date(course.created_at).toLocaleDateString()}</td>
