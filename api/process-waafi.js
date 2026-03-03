@@ -44,6 +44,7 @@ module.exports = async (req, res) => {
                     accountNo: formattedPhone
                 },
                 transactionInfo: {
+                    referenceId: requestId,
                     amount: formattedAmount,
                     currency: "USD",
                     description: `Enrollment: ${courseTitle.substring(0, 30)}` // Limit length
