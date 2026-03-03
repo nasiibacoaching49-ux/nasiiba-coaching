@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
 
         console.log(`[Waafi Request] ID: ${requestId}, Phone: ${formattedPhone}, Amount: ${formattedAmount}`);
 
-        const response = await fetch('https://api.waafi.com/asm', {
+        const response = await fetch('https://api.waafipay.com/asm', {
             method: 'POST',
             body: JSON.stringify(waafiBody),
             headers: { 'Content-Type': 'application/json' }
