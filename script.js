@@ -452,6 +452,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const applyBtn = document.getElementById('apply-coupon');
         const couponMsg = document.getElementById('coupon-message');
         const paymentIcons = document.querySelectorAll('.payment-icon');
+        const pricingGrid = document.querySelector('.pricing-grid');
+        const blogGrid = document.getElementById('blog-list-container');
 
         let originalPriceValue = 0;
         const COUPONS = {
@@ -872,5 +874,87 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    window.showBlogPostModal = async (id) => {
+        try {
+            const { data: post, error } = await db.from('blogs').select('*').eq('id', id).single();
+            if (error) throw error;
+
+            let modal = document.getElementById('blog-post-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'blog-post-modal';
+                modal.className = 'modal-overlay';
+                modal.innerHTML = `
+                    <div class="modal" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+                        <button class="modal__close"><i class="fas fa-times"></i></button>
+                        <div class="modal__body" style="padding: 50px;">
+                            <span id="modal-blog-category" class="section__label" style="display: block; margin-bottom: 20px;"></span>
+                            <h2 id="modal-blog-title" class="section__title" style="text-align: left; margin-bottom: 30px; font-size: 2.5rem;"></h2>
+                            <div id="modal-blog-meta" style="margin-bottom: 40px; color: var(--text-light); border-bottom: 1px solid var(--border-color); padding-bottom: 20px;"></div>
+                            <img id="modal-blog-image" src="" style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-lg); margin-bottom: 40px; display: none;">
+                            <div id="modal-blog-content" class="blog-post-body" style="line-height: 1.8; font-size: 1.1rem; color: var(--text-color);"></div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                modal.querySelector('.modal__close').addEventListener('click', () => modal.classList.remove('active'));
+                modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+            }
+
+            document.getElementById('modal-blog-title').textContent = post.title;
+            document.getElementById('modal-blog-category').textContent = post.category || 'General';
+            document.getElementById('modal-blog-meta').innerHTML = `By <strong>${post.author_name || 'Abdullahi Yusuf'}</strong> • Published on ${new Date(post.created_at).toLocaleDateString()}`;
+
+            const modalImg = document.getElementById('modal-blog-image');
+            if (post.thumbnail_url) {
+                modalImg.src = post.thumbnail_url;
+                modalImg.style.display = 'block';
+            } else {
+                modalImg.style.display = 'none';
+            }
+
+            document.getElementById('modal-blog-content').innerHTML = post.content.replace(/\n/g, '<br>');
+            modal.classList.add('active');
+
+            db.from('blogs').update({ views_count: (post.views_count || 0) + 1 }).eq('id', id).then();
+        } catch (err) {
+            console.error('Error showing post:', err);
+            alert('Could not load the full article.');
+        }
+    };
+
+    async function fetchBlogs() {
+        if (!blogGrid) return;
+        try {
+            const { data: blogs, error } = await db.from('blogs').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            if (!blogs || blogs.length === 0) {
+                blogGrid.innerHTML = '<div style="text-align: center; padding: 60px; width: 100%;"><p style="color: var(--text-light);">No articles found yet. Check back soon!</p></div>';
+                return;
+            }
+            blogGrid.innerHTML = blogs.map(post => `
+                <article class="blog-post-card reveal">
+                    <div class="blog-post-card__image">
+                        <img src="${post.thumbnail_url || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&fit=crop'}" 
+                             alt="${post.title}" onerror="this.src='https://via.placeholder.com/400x250'">
+                    </div>
+                    <div class="blog-post-card__content">
+                        <span class="blog-post-card__meta">${post.category || 'General'} • ${new Date(post.created_at).toLocaleDateString()}</span>
+                        <h2 class="blog-post-card__title" style="margin-bottom: 15px;">${post.title}</h2>
+                        <p class="blog-post-card__excerpt" style="margin-bottom: 25px;">${post.excerpt || (post.content.substring(0, 150) + '...')}</p>
+                        <button class="btn btn--navy btn--sm" onclick="showBlogPostModal('${post.id}')">Read Article</button>
+                    </div>
+                </article>
+            `).join('');
+            if (window.observer) {
+                blogGrid.querySelectorAll('.reveal').forEach(el => window.observer.observe(el));
+            }
+        } catch (err) {
+            console.error('Error fetching blogs:', err);
+            blogGrid.innerHTML = '<p style="text-align: center; color: var(--gold); padding: 40px;">Error loading blogs.</p>';
+        }
+    }
+
+    if (blogGrid) fetchBlogs();
     initCourseDetails();
 });

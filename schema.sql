@@ -57,4 +57,29 @@ CREATE TABLE orders (
 --     email TEXT,
 --     whatsapp_number TEXT,
 --     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
--- );
+-- 6. Blogs Table
+CREATE TABLE blogs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    excerpt TEXT,
+    thumbnail_url TEXT,
+    category TEXT DEFAULT 'General',
+    author_name TEXT DEFAULT 'Abdullahi Yusuf',
+    views_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS
+ALTER TABLE blogs ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access
+CREATE POLICY "Allow public read access" ON blogs FOR SELECT USING (true);
+
+-- Allow authenticated admin to manage blogs
+-- Note: Replace 'info@nasiibacoaching.com' with the actual admin email if different
+CREATE POLICY "Allow admin manage blogs" ON blogs 
+    FOR ALL 
+    USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
+

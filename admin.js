@@ -34,6 +34,7 @@
         if (viewName === 'orders') fetchOrders();
         if (viewName === 'reviews') fetchReviews();
         if (viewName === 'affiliates') fetchAffiliates();
+        if (viewName === 'blogs') fetchBlogs();
     }
 
     navItems.forEach(item => {
@@ -110,6 +111,13 @@
     const thumbPreview = document.getElementById('thumb-preview');
     const thumbUrlHidden = document.getElementById('course-thumb-url');
 
+    // Blogs UI Elements
+    const modalBlog = document.getElementById('modal-blog');
+    const blogForm = document.getElementById('blog-form');
+    const blogThumbFileInput = document.getElementById('blog-thumb-file');
+    const blogThumbPreview = document.getElementById('blog-thumb-preview');
+    const blogThumbUrlHidden = document.getElementById('blog-thumb-url');
+
     window.closeAdminModal = (modalId) => {
         document.getElementById(modalId).classList.remove('active');
     };
@@ -169,6 +177,18 @@
         }
     });
 
+    blogThumbFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                blogThumbPreview.src = e.target.result;
+                blogThumbPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
     // Helper: Upload Image to Supabase
     async function uploadThumbnail(file) {
         console.log('[Storage] Starting thumbnail upload:', file.name);
@@ -190,6 +210,28 @@
             .getPublicUrl(filePath);
 
         console.log('[Storage] Upload successful. Public URL:', publicUrl);
+        return publicUrl;
+    }
+
+    async function uploadBlogThumbnail(file) {
+        console.log('[Storage] Starting blog thumbnail upload:', file.name);
+        const fileExt = file.name.split('.').pop();
+        const fileName = `blog-${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+        const filePath = `blog-thumbs/${fileName}`;
+
+        const { data, error } = await db.storage
+            .from('thumbnails')
+            .upload(filePath, file);
+
+        if (error) {
+            console.error('[Storage] Blog thumbnail upload error:', error);
+            throw error;
+        }
+
+        const { data: { publicUrl } } = db.storage
+            .from('thumbnails')
+            .getPublicUrl(filePath);
+
         return publicUrl;
     }
 
@@ -305,6 +347,102 @@
             submitBtn.innerHTML = 'Save Course & Lessons';
         }
     });
+
+    // Blogs Management
+    document.getElementById('btn-add-blog').addEventListener('click', () => {
+        document.getElementById('blog-modal-title').textContent = 'New Blog Article';
+        blogForm.reset();
+        document.getElementById('blog-id').value = '';
+        blogThumbPreview.style.display = 'none';
+        blogThumbUrlHidden.value = '';
+        modalBlog.classList.add('active');
+    });
+
+    blogForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('blog-save-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+
+        const id = document.getElementById('blog-id').value;
+        const title = document.getElementById('blog-title').value;
+        const excerpt = document.getElementById('blog-excerpt').value;
+        const content = document.getElementById('blog-content').value;
+        const category = document.getElementById('blog-category').value;
+        const author_name = document.getElementById('blog-author').value;
+
+        try {
+            // Handle Thumbnail
+            let finalThumbUrl = blogThumbUrlHidden.value;
+            const thumbFile = blogThumbFileInput.files[0];
+            if (thumbFile) {
+                finalThumbUrl = await uploadBlogThumbnail(thumbFile);
+            }
+
+            const blogData = {
+                title,
+                excerpt,
+                content,
+                category,
+                author_name,
+                thumbnail_url: finalThumbUrl,
+                updated_at: new Date().toISOString()
+            };
+
+            if (id) {
+                const { error } = await db.from('blogs').update(blogData).eq('id', id);
+                if (error) throw error;
+            } else {
+                const { error } = await db.from('blogs').insert([blogData]);
+                if (error) throw error;
+            }
+
+            modalBlog.classList.remove('active');
+            fetchBlogs();
+            alert('Article saved successfully!');
+        } catch (err) {
+            console.error('Error saving blog:', err);
+            alert('Error saving blog: ' + err.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Publish Article';
+        }
+    });
+
+    window.editBlog = async (id) => {
+        try {
+            const { data: blog, error } = await db.from('blogs').select('*').eq('id', id).single();
+            if (error) throw error;
+
+            document.getElementById('blog-id').value = blog.id;
+            document.getElementById('blog-title').value = blog.title;
+            document.getElementById('blog-excerpt').value = blog.excerpt || '';
+            document.getElementById('blog-content').value = blog.content;
+            document.getElementById('blog-category').value = blog.category;
+            document.getElementById('blog-author').value = blog.author_name;
+
+            blogThumbUrlHidden.value = blog.thumbnail_url || '';
+            if (blog.thumbnail_url) {
+                blogThumbPreview.src = blog.thumbnail_url;
+                blogThumbPreview.style.display = 'block';
+            } else {
+                blogThumbPreview.style.display = 'none';
+            }
+
+            document.getElementById('blog-modal-title').textContent = 'Edit Blog Article';
+            modalBlog.classList.add('active');
+        } catch (err) {
+            alert('Error loading blog details: ' + err.message);
+        }
+    };
+
+    window.deleteBlog = async (id) => {
+        if (confirm('Are you sure you want to delete this article?')) {
+            const { error } = await db.from('blogs').delete().eq('id', id);
+            if (!error) fetchBlogs();
+            else alert('Error: ' + error.message);
+        }
+    };
 
     window.editCourse = async (id) => {
         try {
@@ -581,5 +719,35 @@
             if (!error) fetchCourses();
         }
     };
+
+    async function fetchBlogs() {
+        const tableBody = document.querySelector('#blogs-table tbody');
+        if (!tableBody) return;
+
+        try {
+            const { data: blogs, error } = await db.from('blogs').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (blogs.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No articles found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = blogs.map(blog => `
+                <tr>
+                    <td><img src="${blog.thumbnail_url || 'https://via.placeholder.com/100x60'}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/100x60'"></td>
+                    <td><strong>${blog.title}</strong></td>
+                    <td><span class="badge badge--warning">${blog.category}</span></td>
+                    <td>${new Date(blog.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn--sm btn--outline" onclick="editBlog('${blog.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn--sm btn--danger" onclick="deleteBlog('${blog.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Error fetching blogs:', err);
+        }
+    }
 
 })();
