@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
                     <div class="course-card__image">
                         ${course.is_distinguished ? '<div class="course-card__badge-distinguished">Distinguished</div>' : ''}
-                        <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}" onerror="this.src='https://via.placeholder.com/400x250'">
+                        <img src="${course.thumbnail_url || 'images/course-placeholder.jpg'}" alt="${course.title}" onerror="this.src='images/course-placeholder.jpg'">
                         <div class="course-card__overlay-premium">
                             <h4 class="course-card__hover-title">${course.title}</h4>
                             <p class="course-card__hover-desc">${course.description || ''}</p>
@@ -679,8 +679,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const db = window.supabaseClient;
+            if (!db) throw new Error('Supabase client not available');
+
             const { data: course, error } = await db.from('courses').select('*').eq('id', courseId).single();
-            if (error) throw error;
+
+            if (error || !course) {
+                console.error('[Course Details] Course not found:', error);
+                document.getElementById('course-details-container').innerHTML = `
+                    <div class="container" style="padding: 100px 20px; text-align: center;">
+                        <h2>Course Not Found</h2>
+                        <p>The course you are looking for does not exist or has been removed.</p>
+                        <a href="index.html#courses" class="btn btn--gold">Back to Courses</a>
+                    </div>`;
+                return;
+            }
 
             if (course) {
                 // Update Page Title
@@ -724,8 +736,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (thumbEl) {
                     let thumbUrl = course.thumbnail_url || 'images/course-placeholder.jpg';
-                    // If it's just a filename or relative path, ensure it works
-                    if (thumbUrl && !thumbUrl.startsWith('http') && !thumbUrl.startsWith('images/') && !thumbUrl.startsWith('/')) {
+                    // Only add images/ prefix if it's a simple filename (no dots other than extension, no slashes)
+                    if (thumbUrl && !thumbUrl.startsWith('http') && !thumbUrl.includes('/') && thumbUrl.includes('.')) {
                         thumbUrl = 'images/' + thumbUrl;
                     }
                     thumbEl.src = thumbUrl;
