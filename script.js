@@ -474,7 +474,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn) {
                 e.preventDefault();
 
-                // 1. Check if inside a course card (Homepage)
+                // 1. Prefer explicit data attributes (Reliable)
+                const dataTitle = btn.getAttribute('data-course-title');
+                const dataPrice = btn.getAttribute('data-course-price');
+                if (dataTitle && dataPrice) {
+                    window.openPaymentModal(dataTitle, dataPrice);
+                    return;
+                }
+
+                // 2. Check if inside a course card (Fallback)
                 const card = btn.closest('.course-card');
                 if (card) {
                     const titleEl = card.querySelector('.course-card__title');
@@ -485,21 +493,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // 2. Check if inside an enrollment card (Course Detail Page)
+                // 3. Check if inside an enrollment card (Course Detail Page Fallback)
                 const enrollCard = btn.closest('.enrollment-card');
                 if (enrollCard) {
                     const titleEl = document.getElementById('course-title-display');
                     const priceEl = document.getElementById('course-price-display');
-                    const title = titleEl ? titleEl.textContent : 'Course';
+                    const title = titleEl ? (titleEl.textContent.trim() !== 'Course Details' ? titleEl.textContent : 'Course') : 'Course';
                     const price = priceEl ? priceEl.textContent : '$0';
                     window.openPaymentModal(title, price);
                     return;
                 }
 
-                // 3. Fallback for any other .btn-enroll (e.g. from attributes)
-                const title = btn.getAttribute('data-course-title') || 'Course';
-                const price = btn.getAttribute('data-course-price') || '$0';
-                window.openPaymentModal(title, price);
+                // 4. Final Fallback
+                window.openPaymentModal('Course', '$0');
             }
         });
 
@@ -708,8 +714,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (priceEl) priceEl.textContent = `$${course.price}`;
                 if (oldPriceEl) oldPriceEl.textContent = `$${Math.round(course.price * 1.5)}`;
 
+                // Update Enrollment Button Data Attributes
+                const enrollBtn = document.querySelector('.btn-enroll');
+                if (enrollBtn) {
+                    enrollBtn.setAttribute('data-course-id', course.id);
+                    enrollBtn.setAttribute('data-course-title', course.title);
+                    enrollBtn.setAttribute('data-course-price', course.price);
+                }
+
                 if (thumbEl) {
-                    thumbEl.src = course.thumbnail_url || 'https://via.placeholder.com/400x250';
+                    let thumbUrl = course.thumbnail_url || 'images/course-placeholder.jpg';
+                    // If it's just a filename or relative path, ensure it works
+                    if (thumbUrl && !thumbUrl.startsWith('http') && !thumbUrl.startsWith('images/') && !thumbUrl.startsWith('/')) {
+                        thumbUrl = 'images/' + thumbUrl;
+                    }
+                    thumbEl.src = thumbUrl;
                     thumbEl.alt = course.title;
                 }
 
