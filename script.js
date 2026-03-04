@@ -253,39 +253,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            grid.innerHTML = courses.map((course, index) => `
-                <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
-                    <div class="course-card__image">
-                        ${course.is_distinguished ? '<div class="course-card__badge-distinguished">Distinguished</div>' : ''}
-                        <img src="${course.thumbnail_url || 'images/course-placeholder.jpg'}" alt="${course.title}" onerror="this.src='images/course-placeholder.jpg'">
-                        <div class="course-card__overlay-premium">
-                            <h4 class="course-card__hover-title">${course.title}</h4>
-                            <p class="course-card__hover-desc">${course.description || ''}</p>
-                            <div class="course-card__hover-actions">
-                                <a href="course.html?id=${course.id}" class="btn btn--outline btn--sm">Details</a>
-                                <button class="btn btn--gold btn--sm btn-enroll" data-course-id="${course.id}" data-course-title="${course.title}" data-course-price="${course.price}">Get Course</button>
+            grid.innerHTML = courses.map(c => `
+                    <article class="course-card reveal" style="cursor: pointer;" onclick="window.location.href='course.html?id=${c.id}'">
+                        <div class="course-card__image">
+                            <img src="${c.thumbnail_url || 'images/course-placeholder.jpg'}" alt="${c.title}">
+                            <div class="course-card__overlay">
+                                <div class="course-card__hover-content">
+                                    <h4 class="course-card__hover-title" style="color: white; margin-bottom: 10px;">${c.title}</h4>
+                                    <p class="course-card__hover-desc" style="color: rgba(255,255,255,0.9); font-size: 0.85rem; line-height: 1.4;">
+                                        ${c.description ? c.description.substring(0, 120) + '...' : 'Dive into professional coaching with Abdullahi Yusuf.'}
+                                    </p>
+                                    <div style="margin-top: 20px;">
+                                        <span class="btn btn--outline" style="border-color: white; color: white;">Learn More</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="course-card__stats-bar">
-                        <div class="stat-item"><i class="far fa-eye"></i> <span>${course.views_count || 0}</span></div>
-                        <div class="stat-item"><i class="far fa-comment"></i> <span>${course.comments_count || 0}</span></div>
-                    </div>
-                    <div class="course-card__body">
-                        <p class="course-card__category">Paid courses</p>
-                        <h3 class="course-card__title">${course.title}</h3>
-                        <div class="course-card__footer-premium">
-                            <div class="course-card__price-section">
-                                <span class="course-card__old-price">$${Math.round(course.price * 1.5)}</span>
-                                <span class="course-card__price">$${course.price}</span>
-                            </div>
-                            <div class="course-card__stars">
-                                4.9 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <div class="course-card__stats-bar">
+                            <div class="stat-item"><i class="far fa-user"></i> <span>${c.views_count || 0} Learners</span></div>
+                            <div class="stat-item"><i class="far fa-star"></i> <span>5.0</span></div>
+                        </div>
+                        <div class="course-card__body">
+                            <span class="course-card__category">NASIIBA COACHING</span>
+                            <h3 class="course-card__title">
+                                <a href="course.html?id=${c.id}">${c.title}</a>
+                            </h3>
+                            <div class="course-card__footer-premium">
+                                <div class="course-card__price-section">
+                                    <span class="course-card__price">$${c.price}</span>
+                                </div>
+                                <div class="course-card__stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            `).join('');
+                    </article>
+                `).join('');
 
             // Re-observe new elements for reveal animations
             if (window.observer) {
@@ -799,34 +806,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (!relatedError && relatedCourses && relatedCourses.length > 0) {
                         relatedGridEl.innerHTML = relatedCourses.map(c => `
-                            <article class="course-card reveal">
-                                <div class="course-card__img-container">
+                            <article class="course-card reveal" style="cursor: pointer;" onclick="window.location.href='course.html?id=${c.id}'">
+                                <div class="course-card__image">
                                     <img src="${c.thumbnail_url || 'images/course-placeholder.jpg'}" alt="${c.title}" class="course-card__img">
                                     <div class="course-card__overlay">
                                         <div class="course-card__hover-content">
-                                            <h4 class="course-card__hover-title">${c.title}</h4>
-                                            <p class="course-card__hover-desc">${c.description ? c.description.substring(0, 100) + '...' : ''}</p>
-                                            <div class="course-card__hover-actions">
-                                                <button class="btn btn--primary btn-enroll" 
-                                                        data-course-id="${c.id}" 
-                                                        data-course-title="${c.title}" 
-                                                        data-course-price="${c.price}">
-                                                    Enroll Now
-                                                </button>
-                                                <a href="course.html?id=${c.id}" class="btn btn--outline">View Details</a>
+                                            <h4 class="course-card__hover-title" style="color: white; margin-bottom: 10px;">${c.title}</h4>
+                                            <p class="course-card__hover-desc" style="color: rgba(255,255,255,0.9); font-size: 0.85rem; line-height: 1.4;">
+                                                ${c.description ? c.description.substring(0, 120) + '...' : 'View course details and enrollment options.'}
+                                            </p>
+                                            <div style="margin-top: 15px;">
+                                                <span class="btn btn--outline" style="border-color: white; color: white;">Learn More</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="course-card__content">
-                                    <div class="course-card__meta">
-                                        <span class="course-card__tag">Premium</span>
-                                        <span class="course-card__price">$${c.price}</span>
+                                <div class="course-card__body" style="padding: 20px 15px;">
+                                    <div class="course-card__meta" style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                        <span class="course-card__tag" style="font-size: 0.75rem; color: var(--gold); font-weight: 700;">Premium</span>
+                                        <span class="course-card__price" style="font-weight: 800; color: var(--navy);">$${c.price}</span>
                                     </div>
-                                    <h3 class="course-card__title">
+                                    <h3 class="course-card__title" style="font-size: 1.1rem; margin-bottom:10px;">
                                         <a href="course.html?id=${c.id}">${c.title}</a>
                                     </h3>
-                                    <div class="course-card__stats">
+                                    <div class="course-card__stats" style="display: flex; gap: 15px; font-size: 0.8rem; color: var(--text-light);">
                                         <span><i class="far fa-user"></i> ${c.views_count || 0}</span>
                                         <span><i class="far fa-star"></i> 5.0</span>
                                     </div>
@@ -839,21 +842,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             relatedGridEl.querySelectorAll('.reveal').forEach(el => window.observer.observe(el));
                         }
 
-                        // Re-initialize enrollment buttons for newly added cards
-                        // This ensures the data attributes are correctly set for the payment modal
-                        document.querySelectorAll('#related-courses-grid .btn-enroll').forEach(btn => {
-                            const card = btn.closest('.course-card');
-                            if (card) {
-                                const cId = btn.getAttribute('data-course-id');
-                                // Find course data from our current fetch
-                                const cData = relatedCourses.find(c => c.id == cId);
-                                if (cData) {
-                                    btn.setAttribute('data-course-id', cData.id);
-                                    btn.setAttribute('data-course-title', cData.title);
-                                    btn.setAttribute('data-course-price', cData.price);
-                                }
-                            }
-                        });
+                        // Enrollment buttons removed from cards, so we don't need to re-initialize here
+                        // unless we add them back. Currently adhering to user request for hover desc.
 
                     } else {
                         const section = document.getElementById('related-courses-section');
