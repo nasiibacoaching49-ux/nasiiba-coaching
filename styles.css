@@ -2,20 +2,22 @@
    CSS Custom Properties
    =========================== */
 :root {
-    /* Colors */
-    --navy: #0c1b33;
-    --navy-dark: #081222;
-    --navy-light: #162a4d;
-    --gold: #d4af37;
-    --gold-hover: #b5942d;
-    --gold-light: #f4d03f;
+    /* Colors - Nasiiba Branding */
+    --navy: #0a1931;
+    /* Deep Navy */
+    --navy-dark: #061121;
+    --navy-light: #152b4d;
+    --gold: #c5a059;
+    /* Muted Premium Gold */
+    --gold-hover: #a6854a;
+    --gold-light: #e0c38c;
     --white: #ffffff;
     --bg-color: #ffffff;
-    --bg-alt: #f8f9fa;
-    --text-color: #33363f;
-    --text-main: #33363f;
-    --text-light: #6b6f7a;
-    --border-color: rgba(0, 0, 0, 0.05);
+    --bg-alt: #f4f7f9;
+    --text-color: #2c3e50;
+    --text-main: #2c3e50;
+    --text-light: #7f8c8d;
+    --border-color: rgba(10, 25, 49, 0.1);
 
     --font-primary: 'Inter', sans-serif;
     --font-display: 'Playfair Display', serif;
@@ -1679,8 +1681,7 @@ ul {
     display: flex;
     justify-content: space-between;
     padding: 10px 15px;
-    background: #008080;
-    /* Teal stats bar color from image */
+    background: var(--navy);
     color: white;
     font-size: 0.8rem;
     font-weight: 600;

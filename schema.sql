@@ -7,6 +7,13 @@ CREATE TABLE courses (
     description TEXT,
     price DECIMAL(10, 2) DEFAULT 0.00,
     thumbnail_url TEXT,
+    duration TEXT DEFAULT '10 hours',
+    lectures_count INTEGER DEFAULT 5,
+    video_minutes INTEGER DEFAULT 60,
+    views_count INTEGER DEFAULT 0,
+    comments_count INTEGER DEFAULT 0,
+    is_distinguished BOOLEAN DEFAULT false,
+    teacher_name TEXT DEFAULT 'Abdullahi Yusuf',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

@@ -548,39 +548,74 @@
                             <input type="number" id="course-price" step="0.01" required>
                         </div>
                         <div class="form-group">
-                            <label>Thumbnail Image</label>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="file" id="course-thumb-file" accept="image/*" style="padding: 5px;">
-                                <img id="thumb-preview" src=""
-                                    style="width: 50px; height: 35px; object-fit: cover; border-radius: 4px; display: none; border: 1px solid var(--gray-200);">
-                                <input type="hidden" id="course-thumb-url">
-                            </div>
+                            <label>Teacher Name</label>
+                            <input type="text" id="course-teacher" value="Abdullahi Yusuf">
                         </div>
                     </div>
-
-                    <!-- Lessons Section -->
-                    <div class="modal-divider"
-                        style="margin: 25px 0 15px; height: 1px; background: var(--gray-200); position: relative;">
-                        <span
-                            style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); background: #fff; padding-right: 15px; font-weight: 700; font-size: 0.85rem; color: var(--navy); text-transform: uppercase; letter-spacing: 1px;">Course
-                            Lessons</span>
+                    <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="course-duration" placeholder="10 hours">
+                        </div>
+                        <div class="form-group">
+                            <label>Lectures</label>
+                            <input type="number" id="course-lectures" value="5">
+                        </div>
                     </div>
-
-                    <div id="modal-lessons-list"
-                        style="max-height: 250px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
-                        <!-- Dynamic lesson rows -->
+                    <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Video Mins</label>
+                            <input type="number" id="course-minutes" value="60">
+                        </div>
+                        <div class="form-group">
+                            <label>Views</label>
+                            <input type="number" id="course-views" value="0">
+                        </div>
                     </div>
-
-                    <button type="button" id="btn-modal-add-lesson" class="btn btn--outline btn--sm btn--full"
-                        style="margin-bottom: 20px;">
-                        <i class="fas fa-plus"></i> Add Another Lesson
-                    </button>
-
-                    <button type="submit" class="btn btn--navy btn--full" id="course-save-btn">Save Course &
-                        Lessons</button>
-                </form>
+                    <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Comments</label>
+                            <input type="number" id="course-comments" value="0">
+                        </div>
+                        <div class="form-group"
+                            style="display: flex; align-items: center; gap: 10px; padding-top: 25px;">
+                            <input type="checkbox" id="course-distinguished" style="width: auto;">
+                            <label style="margin-bottom: 0;">Distinguished?</label>
+                        </div>
+                    </div>
+                    <label>Thumbnail Image</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="file" id="course-thumb-file" accept="image/*" style="padding: 5px;">
+                        <img id="thumb-preview" src=""
+                            style="width: 50px; height: 35px; object-fit: cover; border-radius: 4px; display: none; border: 1px solid var(--gray-200);">
+                        <input type="hidden" id="course-thumb-url">
+                    </div>
             </div>
         </div>
+
+        <!-- Lessons Section -->
+        <div class="modal-divider"
+            style="margin: 25px 0 15px; height: 1px; background: var(--gray-200); position: relative;">
+            <span
+                style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); background: #fff; padding-right: 15px; font-weight: 700; font-size: 0.85rem; color: var(--navy); text-transform: uppercase; letter-spacing: 1px;">Course
+                Lessons</span>
+        </div>
+
+        <div id="modal-lessons-list"
+            style="max-height: 250px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
+            <!-- Dynamic lesson rows -->
+        </div>
+
+        <button type="button" id="btn-modal-add-lesson" class="btn btn--outline btn--sm btn--full"
+            style="margin-bottom: 20px;">
+            <i class="fas fa-plus"></i> Add Another Lesson
+        </button>
+
+        <button type="submit" class="btn btn--navy btn--full" id="course-save-btn">Save Course &
+            Lessons</button>
+        </form>
+    </div>
+    </div>
     </div>
 
 

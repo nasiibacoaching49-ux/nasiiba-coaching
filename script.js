@@ -252,15 +252,15 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.innerHTML = courses.map((course, index) => `
                 <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
                     <div class="course-card__image">
-                        ${index === 0 ? '<div class="course-card__badge-distinguished">Distinguished</div>' : ''}
+                        ${course.is_distinguished ? '<div class="course-card__badge-distinguished">Distinguished</div>' : ''}
                         <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}" onerror="this.src='https://via.placeholder.com/400x250'">
                         <div class="course-card__overlay-premium">
                             <a href="course.html?id=${course.id}" class="btn btn--gold btn--about-course">About the course</a>
                         </div>
                     </div>
                     <div class="course-card__stats-bar">
-                        <div class="stat-item"><i class="far fa-eye"></i> <span>${Math.floor(Math.random() * 500) + 50}</span></div>
-                        <div class="stat-item"><i class="far fa-comment"></i> <span>${Math.floor(Math.random() * 50) + 5}</span></div>
+                        <div class="stat-item"><i class="far fa-eye"></i> <span>${course.views_count || 0}</span></div>
+                        <div class="stat-item"><i class="far fa-comment"></i> <span>${course.comments_count || 0}</span></div>
                     </div>
                     <div class="course-card__body">
                         <p class="course-card__category">Paid courses</p>
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="course-card__price">$${course.price}</span>
                             </div>
                             <div class="course-card__stars">
-                                0.0 <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                4.9 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
                     </div>
@@ -668,6 +668,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const oldPriceEl = document.getElementById('course-old-price-display');
                 const thumbEl = document.getElementById('course-thumbnail-display');
 
+                // New Dynamic Fields
+                const teacherEl = document.querySelector('.stat-box span:last-child'); // Quick find for teacher
+                const durationEl = document.querySelector('.detail-item span'); // Duration
+                const lecturesEl = document.querySelectorAll('.detail-item span')[1];
+                const videoEl = document.querySelectorAll('.detail-item span')[2];
+
                 if (titleEl) titleEl.textContent = course.title;
                 if (descEl) descEl.textContent = course.description || '';
                 if (fullDescEl) fullDescEl.textContent = course.description || 'No detailed description available.';
@@ -677,6 +683,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     thumbEl.src = course.thumbnail_url || 'https://via.placeholder.com/400x250';
                     thumbEl.alt = course.title;
                 }
+
+                if (teacherEl) teacherEl.textContent = course.teacher_name || 'Abdullahi Yusuf';
+                if (durationEl) durationEl.textContent = course.duration || '10 hours';
+                if (lecturesEl) lecturesEl.textContent = course.lectures_count || '5';
+                if (videoEl) videoEl.textContent = `${course.video_minutes || 60} minutes`;
 
                 const detailEnrollBtn = document.querySelector('.course-sidebar .btn-enroll');
                 if (detailEnrollBtn) {

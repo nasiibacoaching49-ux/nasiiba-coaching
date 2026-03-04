@@ -215,6 +215,13 @@
         const title = document.getElementById('course-title').value;
         const description = document.getElementById('course-desc').value;
         const price = document.getElementById('course-price').value;
+        const teacher_name = document.getElementById('course-teacher').value;
+        const duration = document.getElementById('course-duration').value;
+        const lectures_count = document.getElementById('course-lectures').value;
+        const video_minutes = document.getElementById('course-minutes').value;
+        const views_count = document.getElementById('course-views').value;
+        const comments_count = document.getElementById('course-comments').value;
+        const is_distinguished = document.getElementById('course-distinguished').checked;
 
         try {
             // 1. Handle Thumbnail Upload
@@ -232,7 +239,19 @@
             }
 
             // 2. Save Course
-            const courseData = { title, description, price, thumbnail_url: finalThumbUrl };
+            const courseData = {
+                title,
+                description,
+                price,
+                thumbnail_url: finalThumbUrl,
+                teacher_name,
+                duration,
+                lectures_count: parseInt(lectures_count),
+                video_minutes: parseInt(video_minutes),
+                views_count: parseInt(views_count),
+                comments_count: parseInt(comments_count),
+                is_distinguished
+            };
             let courseId = id;
 
             if (id) {
@@ -296,6 +315,13 @@
             document.getElementById('course-title').value = course.title;
             document.getElementById('course-desc').value = course.description;
             document.getElementById('course-price').value = course.price;
+            document.getElementById('course-teacher').value = course.teacher_name || 'Abdullahi Yusuf';
+            document.getElementById('course-duration').value = course.duration || '';
+            document.getElementById('course-lectures').value = course.lectures_count || 0;
+            document.getElementById('course-minutes').value = course.video_minutes || 0;
+            document.getElementById('course-views').value = course.views_count || 0;
+            document.getElementById('course-comments').value = course.comments_count || 0;
+            document.getElementById('course-distinguished').checked = course.is_distinguished || false;
 
             thumbUrlHidden.value = course.thumbnail_url || '';
             if (course.thumbnail_url) {
