@@ -235,6 +235,48 @@
             display: block;
         }
 
+        /* Dark Mode Support for Course Details Page */
+        [data-theme="dark"] .enrollment-card,
+        [data-theme="dark"] .course-tabs {
+            background: var(--navy-light);
+            border: 1px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .detail-item {
+            border-bottom-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .detail-item label {
+            color: var(--text-light);
+        }
+
+        [data-theme="dark"] .detail-item span,
+        [data-theme="dark"] .course-details-list h4,
+        [data-theme="dark"] .tab-link {
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .tab-content {
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .tab-link.active {
+            color: var(--gold);
+        }
+
+        [data-theme="dark"] .tab-link.active::after {
+            background: var(--gold);
+        }
+
+        [data-theme="dark"] .course-banner {
+            background: var(--navy-dark);
+        }
+
+        [data-theme="dark"] .header__logo-img,
+        [data-theme="dark"] .footer__logo-img {
+            filter: brightness(0) invert(1);
+        }
+
         @media (max-width: 991px) {
             .course-page-grid {
                 grid-template-columns: 1fr;
@@ -289,10 +331,8 @@
                                     class="far fa-star"></i><i class="far fa-star"></i><i
                                     class="far fa-star"></i></span>
                         </div>
-                        <h1 class="course-banner__title" id="course-title-display">Secrets of the Law of Attraction</h1>
-                        <p class="course-banner__desc" id="course-desc-display">Discover the secret to achieving your
-                            goals by controlling the precise frequencies of each goal, whether it's money, love,
-                            opportunity, or status. Learn the exercises.</p>
+                        <h1 class="course-banner__title" id="course-title-display">Course Details</h1>
+                        <p class="course-banner__desc" id="course-desc-display">Loading course information...</p>
 
                         <div class="course-banner__stats">
                             <div class="stat-box">
@@ -330,8 +370,8 @@
                         <img src="" id="course-thumbnail-display" alt="Course Thumbnail" class="enrollment-card__img">
                         <div class="enrollment-card__pricing">
                             <div class="price-box">
-                                <span class="new-price" id="course-price-display">$399</span>
-                                <span class="old-price" id="course-old-price-display">$450</span>
+                                <span class="new-price" id="course-price-display">--</span>
+                                <span class="old-price" id="course-old-price-display">--</span>
                             </div>
                             <button class="btn-get-course btn-enroll">GET THE COURSE</button>
                         </div>
@@ -343,15 +383,15 @@
                             <h4>Course details</h4>
                             <div class="detail-item">
                                 <label><i class="far fa-clock"></i> Duration</label>
-                                <span>hour</span>
+                                <span id="course-duration-display">hour</span>
                             </div>
                             <div class="detail-item">
                                 <label><i class="far fa-file-alt"></i> Lectures</label>
-                                <span>5</span>
+                                <span id="course-lectures-display">5</span>
                             </div>
                             <div class="detail-item">
                                 <label><i class="far fa-play-circle"></i> video.</label>
-                                <span>15 minutes</span>
+                                <span id="course-video-display">15 minutes</span>
                             </div>
                         </div>
                     </div>
@@ -362,8 +402,8 @@
                     <div class="course-tabs">
                         <div class="tabs-nav">
                             <div class="tab-link" data-tab="reviews">Reviews</div>
-                            <div class="tab-link" data-tab="curricula">Curricula</div>
-                            <div class="tab-link active" data-tab="description">A Description</div>
+                            <div class="tab-link" data-tab="curriculum">Curriculum</div>
+                            <div class="tab-link active" data-tab="description">Description</div>
                         </div>
 
                         <div class="tab-content active" id="tab-description">
@@ -371,8 +411,10 @@
                                 <!-- Populated by JS -->
                             </div>
                         </div>
-                        <div class="tab-content" id="tab-curricula">
-                            <p>Course curriculum will be available soon.</p>
+                        <div class="tab-content" id="tab-curriculum">
+                            <div id="course-curriculum-list">
+                                <p>Course curriculum will be available soon.</p>
+                            </div>
                         </div>
                         <div class="tab-content" id="tab-reviews">
                             <p>No reviews yet. Be the first to review this course!</p>

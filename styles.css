@@ -1673,6 +1673,40 @@ ul {
     visibility: visible;
 }
 
+.course-card__hover-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--navy);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.course-card__hover-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    overflow: hidden;
+}
+
+.course-card__hover-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.course-card__hover-actions .btn {
+    flex: 1;
+    max-width: 120px;
+    white-space: nowrap;
+}
+
 .course-card:hover .course-card__image img {
     transform: scale(1.1);
 }

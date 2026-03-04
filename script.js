@@ -255,7 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${course.is_distinguished ? '<div class="course-card__badge-distinguished">Distinguished</div>' : ''}
                         <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}" onerror="this.src='https://via.placeholder.com/400x250'">
                         <div class="course-card__overlay-premium">
-                            <a href="course.html?id=${course.id}" class="btn btn--gold btn--about-course">About the course</a>
+                            <h4 class="course-card__hover-title">${course.title}</h4>
+                            <p class="course-card__hover-desc">${course.description || ''}</p>
+                            <div class="course-card__hover-actions">
+                                <a href="course.html?id=${course.id}" class="btn btn--outline btn--sm">Details</a>
+                                <button class="btn btn--gold btn--sm btn-enroll" data-course-id="${course.id}" data-course-title="${course.title}" data-course-price="${course.price}">Get Course</button>
+                            </div>
                         </div>
                     </div>
                     <div class="course-card__stats-bar">
@@ -468,17 +473,33 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = e.target.closest('.btn-enroll, [data-i18n="enroll"]');
             if (btn) {
                 e.preventDefault();
-                // Find nearest course card parent
+
+                // 1. Check if inside a course card (Homepage)
                 const card = btn.closest('.course-card');
                 if (card) {
                     const titleEl = card.querySelector('.course-card__title');
                     const priceEl = card.querySelector('.course-card__price') || card.querySelector('.course-card__price-tag');
-
                     const title = titleEl ? titleEl.textContent : 'Course';
                     const price = priceEl ? priceEl.textContent : '$0';
-
-                    openPaymentModal(title, price);
+                    window.openPaymentModal(title, price);
+                    return;
                 }
+
+                // 2. Check if inside an enrollment card (Course Detail Page)
+                const enrollCard = btn.closest('.enrollment-card');
+                if (enrollCard) {
+                    const titleEl = document.getElementById('course-title-display');
+                    const priceEl = document.getElementById('course-price-display');
+                    const title = titleEl ? titleEl.textContent : 'Course';
+                    const price = priceEl ? priceEl.textContent : '$0';
+                    window.openPaymentModal(title, price);
+                    return;
+                }
+
+                // 3. Fallback for any other .btn-enroll (e.g. from attributes)
+                const title = btn.getAttribute('data-course-title') || 'Course';
+                const price = btn.getAttribute('data-course-price') || '$0';
+                window.openPaymentModal(title, price);
             }
         });
 
@@ -652,15 +673,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const db = window.supabaseClient;
-            if (!getCourseData) {
-                // Define a quick helper if needed
-            }
-
             const { data: course, error } = await db.from('courses').select('*').eq('id', courseId).single();
             if (error) throw error;
 
             if (course) {
+                // Update Page Title
                 document.title = `${course.title} - Nasiiba Coaching`;
+
+                // Select Elements
                 const titleEl = document.getElementById('course-title-display');
                 const descEl = document.getElementById('course-desc-display');
                 const fullDescEl = document.getElementById('course-full-description');
@@ -668,39 +688,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 const oldPriceEl = document.getElementById('course-old-price-display');
                 const thumbEl = document.getElementById('course-thumbnail-display');
 
-                // New Dynamic Fields
-                const teacherEl = document.querySelector('.stat-box span:last-child'); // Quick find for teacher
-                const durationEl = document.querySelector('.detail-item span'); // Duration
-                const lecturesEl = document.querySelectorAll('.detail-item span')[1];
-                const videoEl = document.querySelectorAll('.detail-item span')[2];
+                // Metadata Elements
+                const teacherStatEl = document.querySelector('.course-banner__stats .stat-box:last-child span');
+                const studentStatEl = document.getElementById('registered-students');
+                const durationEl = document.getElementById('course-duration-display');
+                const lecturesEl = document.getElementById('course-lectures-display');
+                const videoEl = document.getElementById('course-video-display');
 
+                // Populate Basic Info
                 if (titleEl) titleEl.textContent = course.title;
                 if (descEl) descEl.textContent = course.description || '';
-                if (fullDescEl) fullDescEl.textContent = course.description || 'No detailed description available.';
+
+                // Full Description (Use course.full_description if it exists, else use description)
+                if (fullDescEl) {
+                    const fullDesc = course.full_description || course.description || 'No detailed description available.';
+                    fullDescEl.innerHTML = fullDesc.replace(/\n/g, '<br>');
+                }
+
                 if (priceEl) priceEl.textContent = `$${course.price}`;
                 if (oldPriceEl) oldPriceEl.textContent = `$${Math.round(course.price * 1.5)}`;
+
                 if (thumbEl) {
                     thumbEl.src = course.thumbnail_url || 'https://via.placeholder.com/400x250';
                     thumbEl.alt = course.title;
                 }
 
-                if (teacherEl) teacherEl.textContent = course.teacher_name || 'Abdullahi Yusuf';
-                if (durationEl) durationEl.textContent = course.duration || '10 hours';
+                // Populate Metadata Stats
+                if (teacherStatEl) teacherStatEl.textContent = course.teacher_name || 'Abdullahi Yusuf';
+                if (studentStatEl) studentStatEl.textContent = course.views_count || '0';
+                if (durationEl) durationEl.textContent = course.duration || 'Not specified';
                 if (lecturesEl) lecturesEl.textContent = course.lectures_count || '5';
-                if (videoEl) videoEl.textContent = `${course.video_minutes || 60} minutes`;
+                if (videoEl) videoEl.textContent = course.video_minutes ? `${course.video_minutes} minutes` : '60 minutes';
 
-                const detailEnrollBtn = document.querySelector('.course-sidebar .btn-enroll');
-                if (detailEnrollBtn) {
-                    detailEnrollBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (typeof window.openPaymentModal === 'function') {
-                            window.openPaymentModal(course.title, `$${course.price}`);
-                        }
-                    });
+                // Fetch Curriculum (Lessons)
+                const curriculumListEl = document.getElementById('course-curriculum-list');
+                const { data: lessons, error: lessonsError } = await db.from('lessons')
+                    .select('*')
+                    .eq('course_id', courseId)
+                    .order('order_index', { ascending: true });
+
+                if (!lessonsError && lessons && lessons.length > 0) {
+                    curriculumListEl.innerHTML = lessons.map(lesson => `
+                        <div class="lesson-item" style="display: flex; align-items: center; justify-between; padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); gap: 15px;">
+                            <div style="flex-grow: 1; display: flex; align-items: center; gap: 15px;">
+                                <i class="${lesson.type === 'video' ? 'fas fa-play-circle' : 'fas fa-file-pdf'}" style="color: var(--gold); font-size: 1.2rem;"></i>
+                                <span style="font-weight: 600;">${lesson.title}</span>
+                            </div>
+                            <span style="font-size: 0.8rem; color: var(--text-light);">${lesson.type.toUpperCase()}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    curriculumListEl.innerHTML = '<p>No lessons uploaded yet for this course.</p>';
                 }
             }
         } catch (err) {
-            console.error('[Course Details] Error:', err);
+            console.error('[Course Details] Error fetching info:', err);
         }
     };
 
