@@ -252,18 +252,27 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.innerHTML = courses.map((course, index) => `
                 <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
                     <div class="course-card__image">
+                        ${index === 0 ? '<div class="course-card__badge-distinguished">Distinguished</div>' : ''}
                         <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}" onerror="this.src='https://via.placeholder.com/400x250'">
-                        <div class="course-card__overlay">
-                            <p class="course-card__overlay-desc">${course.description || ''}</p>
+                        <div class="course-card__overlay-premium">
+                            <a href="course.html?id=${course.id}" class="btn btn--gold btn--about-course">About the course</a>
                         </div>
-                        <span class="course-card__price-tag">$${Math.round(course.price * 0.4)}</span>
+                    </div>
+                    <div class="course-card__stats-bar">
+                        <div class="stat-item"><i class="far fa-eye"></i> <span>${Math.floor(Math.random() * 500) + 50}</span></div>
+                        <div class="stat-item"><i class="far fa-comment"></i> <span>${Math.floor(Math.random() * 50) + 5}</span></div>
                     </div>
                     <div class="course-card__body">
+                        <p class="course-card__category">Paid courses</p>
                         <h3 class="course-card__title">${course.title}</h3>
-                        <p class="course-card__desc">${course.description || ''}</p>
-                        <div class="course-card__footer">
-                            <span class="course-card__price">$${course.price}</span>
-                            <button class="btn btn--navy btn--sm btn-enroll" data-i18n="enroll">Enroll</button>
+                        <div class="course-card__footer-premium">
+                            <div class="course-card__price-section">
+                                <span class="course-card__old-price">$${Math.round(course.price * 1.5)}</span>
+                                <span class="course-card__price">$${course.price}</span>
+                            </div>
+                            <div class="course-card__stars">
+                                0.0 <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -435,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'SPECIAL': 0.50
         };
 
-        let openPaymentModal = (title, priceText) => {
+        window.openPaymentModal = (title, priceText) => {
             courseTitle.textContent = title;
             coursePrice.textContent = priceText;
             originalPriceValue = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
@@ -539,8 +548,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Update auth state on open
-        const originalOpenPaymentModal = openPaymentModal;
-        openPaymentModal = async (title, priceText) => {
+        const originalOpenPaymentModal = window.openPaymentModal;
+        window.openPaymentModal = async (title, priceText) => {
             originalOpenPaymentModal(title, priceText);
             await updateModalAuth();
         };
@@ -593,6 +602,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         } else {
                             // Specific Waafi error handling
                             const errorMsg = result.description || result.error || 'Payment declined or account issue.';
+                            if (errorMsg.toLowerCase().includes('balance') || errorMsg.toLowerCase().includes('insufficient')) {
+                                throw new Error('haraaga xisaabtada kuguma filna');
+                            }
                             throw new Error(`Waafi Error: ${errorMsg}`);
                         }
 
@@ -629,4 +641,57 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ===========================
+    // COURSE DETAILS PAGE LOGIC
+    // ===========================
+    const initCourseDetails = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+        if (!courseId || !document.getElementById('course-details-container')) return;
+
+        try {
+            const db = window.supabaseClient;
+            if (!getCourseData) {
+                // Define a quick helper if needed
+            }
+
+            const { data: course, error } = await db.from('courses').select('*').eq('id', courseId).single();
+            if (error) throw error;
+
+            if (course) {
+                document.title = `${course.title} - Nasiiba Coaching`;
+                const titleEl = document.getElementById('course-title-display');
+                const descEl = document.getElementById('course-desc-display');
+                const fullDescEl = document.getElementById('course-full-description');
+                const priceEl = document.getElementById('course-price-display');
+                const oldPriceEl = document.getElementById('course-old-price-display');
+                const thumbEl = document.getElementById('course-thumbnail-display');
+
+                if (titleEl) titleEl.textContent = course.title;
+                if (descEl) descEl.textContent = course.description || '';
+                if (fullDescEl) fullDescEl.textContent = course.description || 'No detailed description available.';
+                if (priceEl) priceEl.textContent = `$${course.price}`;
+                if (oldPriceEl) oldPriceEl.textContent = `$${Math.round(course.price * 1.5)}`;
+                if (thumbEl) {
+                    thumbEl.src = course.thumbnail_url || 'https://via.placeholder.com/400x250';
+                    thumbEl.alt = course.title;
+                }
+
+                const detailEnrollBtn = document.querySelector('.course-sidebar .btn-enroll');
+                if (detailEnrollBtn) {
+                    detailEnrollBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (typeof window.openPaymentModal === 'function') {
+                            window.openPaymentModal(course.title, `$${course.price}`);
+                        }
+                    });
+                }
+            }
+        } catch (err) {
+            console.error('[Course Details] Error:', err);
+        }
+    };
+
+    initCourseDetails();
 });

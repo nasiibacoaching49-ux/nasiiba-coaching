@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details - Nasiiba Coaching</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .course-banner {
+            background: #005662;
+            /* Teal background from image */
+            color: white;
+            padding: 60px 0;
+            margin-top: 90px;
+        }
+
+        .course-banner__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .course-banner__content {
+            flex: 1;
+            max-width: 700px;
+        }
+
+        .course-banner__meta-top {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .course-banner__title {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .course-banner__desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .course-banner__stats {
+            display: flex;
+            gap: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-box i {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .stat-box label {
+            display: block;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        .stat-box span {
+            font-weight: 700;
+        }
+
+        .course-page-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 40px;
+            padding: 60px 0;
+        }
+
+        /* Sidebar Styles */
+        .course-sidebar {
+            position: sticky;
+            top: 110px;
+        }
+
+        .enrollment-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .enrollment-card__img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .enrollment-card__pricing {
+            background: #ff6d00;
+            /* Orange from image */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 25px;
+            color: white;
+        }
+
+        .price-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-box .new-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .price-box .old-price {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .btn-get-course {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            font-weight: 800;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-get-course:hover {
+            background: white;
+            color: #ff6d00;
+        }
+
+        .sidebar-links {
+            padding: 15px 25px;
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .course-details-list {
+            padding: 25px;
+        }
+
+        .course-details-list h4 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--navy);
+            text-align: center;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+        }
+
+        .detail-item label {
+            color: var(--text-light);
+        }
+
+        .detail-item span {
+            font-weight: 600;
+        }
+
+        /* Tabs Styles */
+        .course-tabs {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            padding: 40px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .tab-link {
+            padding: 15px 0;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-link.active {
+            color: #007bff;
+        }
+
+        .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background: #007bff;
+        }
+
+        .tab-content {
+            display: none;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 991px) {
+            .course-page-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-banner__inner {
+                flex-direction: column;
+            }
+
+            .course-sidebar {
+                order: -1;
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <img src="images/logo.png" alt="NASIIBA COACHING" class="header__logo-img">
+            </a>
+            <nav class="header__nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">Home</a></li>
+                    <li><a href="index.html#courses" class="nav__link active">Courses</a></li>
+                    <li><a href="about.html" class="nav__link">About</a></li>
+                    <li><a href="blog.html" class="nav__link">Blog</a></li>
+                    <li><a href="affiliate.html" class="nav__link">Affiliate</a></li>
+                    <li><a href="student.html" class="nav__link">Login</a></li>
+                </ul>
+            </nav>
+            <div class="header__actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="course-details-container">
+        <!-- Banner -->
+        <section class="course-banner">
+            <div class="container">
+                <div class="course-banner__inner">
+                    <div class="course-banner__content">
+                        <div class="course-banner__meta-top">
+                            <span>0 reviews <i class="far fa-star"></i><i class="far fa-star"></i><i
+                                    class="far fa-star"></i><i class="far fa-star"></i><i
+                                    class="far fa-star"></i></span>
+                        </div>
+                        <h1 class="course-banner__title" id="course-title-display">Secrets of the Law of Attraction</h1>
+                        <p class="course-banner__desc" id="course-desc-display">Discover the secret to achieving your
+                            goals by controlling the precise frequencies of each goal, whether it's money, love,
+                            opportunity, or status. Learn the exercises.</p>
+
+                        <div class="course-banner__stats">
+                            <div class="stat-box">
+                                <i class="far fa-flag"></i>
+                                <div>
+                                    <label>registered Students</label>
+                                    <span id="registered-students">276</span>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <i class="far fa-bookmark"></i>
+                                <div>
+                                    <label>category</label>
+                                    <span>Paid courses</span>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <i class="far fa-user-circle"></i>
+                                <div>
+                                    <label>teacher</label>
+                                    <span>Saba Alali</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="course-page-grid">
+                <!-- Sidebar -->
+                <aside class="course-sidebar">
+                    <div class="enrollment-card">
+                        <img src="" id="course-thumbnail-display" alt="Course Thumbnail" class="enrollment-card__img">
+                        <div class="enrollment-card__pricing">
+                            <div class="price-box">
+                                <span class="new-price" id="course-price-display">$399</span>
+                                <span class="old-price" id="course-old-price-display">$450</span>
+                            </div>
+                            <button class="btn-get-course btn-enroll">GET THE COURSE</button>
+                        </div>
+                        <div class="sidebar-links">
+                            <span><i class="fas fa-share-alt"></i> sharing</span>
+                            <span><i class="far fa-heart"></i> Add to Wishlist</span>
+                        </div>
+                        <div class="course-details-list">
+                            <h4>Course details</h4>
+                            <div class="detail-item">
+                                <label><i class="far fa-clock"></i> Duration</label>
+                                <span>hour</span>
+                            </div>
+                            <div class="detail-item">
+                                <label><i class="far fa-file-alt"></i> Lectures</label>
+                                <span>5</span>
+                            </div>
+                            <div class="detail-item">
+                                <label><i class="far fa-play-circle"></i> video.</label>
+                                <span>15 minutes</span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="course-main">
+                    <div class="course-tabs">
+                        <div class="tabs-nav">
+                            <div class="tab-link" data-tab="reviews">Reviews</div>
+                            <div class="tab-link" data-tab="curricula">Curricula</div>
+                            <div class="tab-link active" data-tab="description">A Description</div>
+                        </div>
+
+                        <div class="tab-content active" id="tab-description">
+                            <div id="course-full-description">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                        <div class="tab-content" id="tab-curricula">
+                            <p>Course curriculum will be available soon.</p>
+                        </div>
+                        <div class="tab-content" id="tab-reviews">
+                            <p>No reviews yet. Be the first to review this course!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <img src="images/logo.png" alt="NASIIBA COACHING" class="footer__logo-img">
+                <p class="footer__about">Empowering results-driven coaching and consulting for leaders, executives, and
+                    businesses seeking to achieve competitive advantages in their industries.</p>
+            </div>
+            <div class="footer__links">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="student.html">Login</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h4>GET IN TOUCH</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i><span>info@nasiibacoaching.com</span></li>
+                    <li><i class="fas fa-phone"></i><span>+1 612 450 8300</span></li>
+                    <li><i class="fas fa-map-marker-alt"></i><span>Saint Paul MN, USA</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer__bottom">
+            <p>&copy; 2026 NASIIBA COACHING. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Tab system
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                link.classList.add('active');
+                document.getElementById('tab-' + link.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
