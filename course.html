@@ -276,16 +276,53 @@
         [data-theme="dark"] .course-banner__desc,
         [data-theme="dark"] .stat-box span,
         [data-theme="dark"] .stat-box label {
-            color: white;
+            color: #ffffff !important;
         }
 
-        [data-theme="dark"] .detail-item span {
-            color: var(--gold);
+        [data-theme="dark"] .detail-item span,
+        [data-theme="dark"] .enrollment-card__info h3 {
+            color: #ffffff !important;
         }
 
-        [data-theme="dark"] .header__logo-img,
-        [data-theme="dark"] .footer__logo-img {
-            filter: brightness(0) invert(1);
+        [data-theme="dark"] .enrollment-card {
+            background: var(--navy-light);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="dark"] .tab-link:not(.active) {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .course-banner__title {
+                font-size: 2.2rem;
+            }
+
+            .course-banner__inner {
+                padding: 60px 0 40px;
+                text-align: center;
+            }
+
+            .course-banner__stats {
+                justify-content: center;
+            }
+
+            .course-main__inner {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .course-sidebar {
+                order: -1;
+                /* Sidebar with enrollment card comes first on mobile */
+            }
+
+            .enrollment-card {
+                position: static;
+                margin-top: -80px;
+                z-index: 10;
+            }
         }
 
         @media (max-width: 991px) {

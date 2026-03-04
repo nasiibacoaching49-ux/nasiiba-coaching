@@ -695,8 +695,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (course) {
+                // Explicitly update Banner Content
+                const titleDisplay = document.getElementById('course-title-display');
+                const descDisplay = document.getElementById('course-desc-display');
+                if (titleDisplay) titleDisplay.textContent = course.title;
+                if (descDisplay) descDisplay.textContent = course.description;
+
                 // Update Page Title
-                document.title = `${course.title} - Nasiiba Coaching`;
+                document.title = `${course.title} | NASIIBA COACHING`;
 
                 // Select Elements
                 const titleEl = document.getElementById('course-title-display');
@@ -726,13 +732,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (priceEl) priceEl.textContent = `$${course.price}`;
                 if (oldPriceEl) oldPriceEl.textContent = `$${Math.round(course.price * 1.5)}`;
 
-                // Update Enrollment Button Data Attributes
-                const enrollBtn = document.querySelector('.btn-enroll');
-                if (enrollBtn) {
-                    enrollBtn.setAttribute('data-course-id', course.id);
-                    enrollBtn.setAttribute('data-course-title', course.title);
-                    enrollBtn.setAttribute('data-course-price', course.price);
-                }
+                // Update ALL Enrollment Buttons (main and any others that exist)
+                const updateEnrollButtons = (cId, cTitle, cPrice) => {
+                    document.querySelectorAll('.btn-enroll').forEach(btn => {
+                        // Only update if it doesn't already have specific related-course data
+                        if (!btn.hasAttribute('data-course-id') || btn.getAttribute('data-course-id') === cId) {
+                            btn.setAttribute('data-course-id', cId);
+                            btn.setAttribute('data-course-title', cTitle);
+                            btn.setAttribute('data-course-price', cPrice);
+                        }
+                    });
+                };
+                updateEnrollButtons(course.id, course.title, course.price);
 
                 if (thumbEl) {
                     let thumbUrl = course.thumbnail_url || 'images/course-placeholder.jpg';
@@ -823,6 +834,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (window.observer) {
                             relatedGridEl.querySelectorAll('.reveal').forEach(el => window.observer.observe(el));
                         }
+
+                        // Re-initialize enrollment buttons for newly added cards
+                        // This ensures the data attributes are correctly set for the payment modal
+                        document.querySelectorAll('#related-courses-grid .btn-enroll').forEach(btn => {
+                            const card = btn.closest('.course-card');
+                            if (card) {
+                                const cId = btn.getAttribute('data-course-id');
+                                // Find course data from our current fetch
+                                const cData = relatedCourses.find(c => c.id == cId);
+                                if (cData) {
+                                    btn.setAttribute('data-course-id', cData.id);
+                                    btn.setAttribute('data-course-title', cData.title);
+                                    btn.setAttribute('data-course-price', cData.price);
+                                }
+                            }
+                        });
+
                     } else {
                         const section = document.getElementById('related-courses-section');
                         if (section) section.style.display = 'none';
