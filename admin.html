@@ -327,6 +327,9 @@
             <a href="#reviews" class="admin-nav__item" data-view="reviews">
                 <i class="fas fa-star"></i> Reviews & Feedback
             </a>
+            <a href="#affiliates" class="admin-nav__item" data-view="affiliates">
+                <i class="fas fa-user-friends"></i> Affiliates
+            </a>
         </nav>
         <div class="admin-sidebar__footer">
             <button id="admin-logout" class="admin-nav__item"
@@ -456,6 +459,9 @@
         </div>
 
 
+        </div>
+        </div>
+
         <!-- Orders View -->
         <div id="view-orders" class="view-content" style="display: none;">
             <header class="admin-header">
@@ -478,6 +484,38 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Affiliates View -->
+        <div id="view-affiliates" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Affiliate Registrations</h1>
+                    <p>Manage and track all affiliate partners.</p>
+                </div>
+            </header>
+            <div class="admin-card">
+                <div class="table-responsive">
+                    <table id="affiliates-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>WhatsApp</th>
+                                <th>Ref Code</th>
+                                <th>Clicks</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-light);">
+                                    Loading data...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

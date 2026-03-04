@@ -253,6 +253,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="course-card reveal stagger-${(index % 3) + 1}" data-course-id="${course.id}">
                     <div class="course-card__image">
                         <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}" onerror="this.src='https://via.placeholder.com/400x250'">
+                        <div class="course-card__overlay">
+                            <p class="course-card__overlay-desc">${course.description || ''}</p>
+                        </div>
                         <span class="course-card__price-tag">$${Math.round(course.price * 0.4)}</span>
                     </div>
                     <div class="course-card__body">

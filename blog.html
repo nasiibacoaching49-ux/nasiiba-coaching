@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Nasiiba Coaching</title>
+    <meta name="description"
+        content="Insights, strategies, and stories on leadership, scaling, and personal growth from Nasiiba Coaching.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .blog-header {
+            padding: 160px 0 80px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .blog-header h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .blog-content {
+            padding: 80px 0;
+            background: var(--bg-color);
+        }
+
+        .blog-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .blog-post-card {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 40px;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s ease;
+        }
+
+        .blog-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .blog-post-card__image {
+            height: 100%;
+            min-height: 250px;
+        }
+
+        .blog-post-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .blog-post-card__content {
+            padding: 40px 40px 40px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .blog-post-card__meta {
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .blog-post-card__title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            color: var(--navy);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .blog-post-card__excerpt {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+        }
+
+        @media (max-width: 850px) {
+            .blog-post-card {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-post-card__content {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="header">
+        <div class="container header__inner">
+            <a href="index.html" class="header__logo">
+                <img src="images/logo.png" alt="NASIIBA COACHING" class="header__logo-img">
+            </a>
+            <nav class="header__nav" id="nav">
+                <ul class="nav__list">
+                    <li><a href="index.html" class="nav__link">Home</a></li>
+                    <li><a href="about.html" class="nav__link">About</a></li>
+                    <li><a href="index.html#services" class="nav__link">Services</a></li>
+                    <li><a href="blog.html" class="nav__link active">Blog</a></li>
+                    <li><a href="affiliate.html" class="nav__link">Affiliate</a></li>
+                    <li><a href="student.html" class="nav__link">Login</a></li>
+                </ul>
+            </nav>
+            <div class="header__actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon moon-icon"></i>
+                    <i class="fas fa-sun sun-icon"></i>
+                </button>
+                <a href="https://calendly.com/nasiiba-coaching/new-meeting" target="_blank" rel="noopener noreferrer"
+                    class="btn btn--gold header__cta">Book Sessions</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="blog-header">
+            <div class="container">
+                <span class="section__label" style="color: var(--gold-light);">LATEST UPDATES</span>
+                <h1>Nasiiba Insights</h1>
+                <p style="font-size: 1.2rem; opacity: 0.8; max-width: 600px; margin: 0 auto;">Expert advice on
+                    leadership, scaling your business, and personal transformation.</p>
+            </div>
+        </section>
+
+        <section class="blog-content">
+            <div class="container">
+                <div class="blog-list">
+                    <!-- Post 1 -->
+                    <article class="blog-post-card" id="post1">
+                        <div class="blog-post-card__image">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&fit=crop"
+                                alt="Growth Mindset">
+                        </div>
+                        <div class="blog-post-card__content">
+                            <span class="blog-post-card__meta">Leadership • March 1, 2026</span>
+                            <h2 class="blog-post-card__title">The Power of Growth Mindset in Business</h2>
+                            <p class="blog-post-card__excerpt">In today's fast-paced world, the ability to adapt and
+                                learn is more critical than ever. We explore how leaders can foster a growth mindset
+                                within their teams...</p>
+                            <a href="#" class="btn btn--navy btn--sm">Read Article</a>
+                        </div>
+                    </article>
+
+                    <!-- Post 2 -->
+                    <article class="blog-post-card" id="post2">
+                        <div class="blog-post-card__image">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&fit=crop"
+                                alt="Scaling">
+                        </div>
+                        <div class="blog-post-card__content">
+                            <span class="blog-post-card__meta">Strategy • February 25, 2026</span>
+                            <h2 class="blog-post-card__title">Strategic Scaling: When to Grow Your Team</h2>
+                            <p class="blog-post-card__excerpt">Scaling too fast can be as dangerous as not scaling at
+                                all. This guide walks you through the key indicators that it's time to expand your
+                                operations...</p>
+                            <a href="#" class="btn btn--navy btn--sm">Read Article</a>
+                        </div>
+                    </article>
+
+                    <!-- Post 3 -->
+                    <article class="blog-post-card" id="post3">
+                        <div class="blog-post-card__image">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&fit=crop"
+                                alt="Management">
+                        </div>
+                        <div class="blog-post-card__content">
+                            <span class="blog-post-card__meta">Coaching • February 18, 2026</span>
+                            <h2 class="blog-post-card__title">Executive Leadership: More Than Just Managing</h2>
+                            <p class="blog-post-card__excerpt">True leadership involves inspiring vision and empowering
+                                others. Learn the coaching techniques that separate elite executives from average
+                                managers...</p>
+                            <a href="#" class="btn btn--navy btn--sm">Read Article</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <img src="images/logo.png" alt="NASIIBA COACHING" class="footer__logo-img">
+                <p class="footer__about">Empowering results-driven coaching and consulting for leaders, executives, and
+                    businesses seeking to achieve competitive advantages in their industries.</p>
+            </div>
+            <div class="footer__links">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="student.html">Login</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer__contact">
+                <h4>GET IN TOUCH</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i><span>info@nasiibacoaching.com</span></li>
+                    <li><i class="fas fa-phone"></i><span>+1 612 450 8300</span></li>
+                    <li><i class="fas fa-map-marker-alt"></i><span>Saint Paul MN, USA</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer__bottom">
+            <p>&copy; 2026 NASIIBA COACHING. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

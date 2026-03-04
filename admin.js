@@ -33,6 +33,7 @@
         if (viewName === 'courses') fetchCourses();
         if (viewName === 'orders') fetchOrders();
         if (viewName === 'reviews') fetchReviews();
+        if (viewName === 'affiliates') fetchAffiliates();
     }
 
     navItems.forEach(item => {
@@ -495,6 +496,35 @@
             `).join('');
         } catch (err) {
             console.error('Error fetching reviews:', err);
+        }
+    }
+
+    async function fetchAffiliates() {
+        const tableBody = document.querySelector('#affiliates-table tbody');
+        if (!tableBody) return;
+
+        try {
+            const { data: affiliates, error } = await db.from('affiliates').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (affiliates.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">No affiliates found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = affiliates.map(aff => `
+                <tr>
+                    <td><strong>${aff.name}</strong></td>
+                    <td>${aff.email}</td>
+                    <td>${aff.whatsapp || 'N/A'}</td>
+                    <td><code>${aff.ref_code}</code></td>
+                    <td>${aff.clicks || 0}</td>
+                    <td>${new Date(aff.created_at).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Error fetching affiliates:', err);
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold);">Error: ${err.message}</td></tr>`;
         }
     }
 
