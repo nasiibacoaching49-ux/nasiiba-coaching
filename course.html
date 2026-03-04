@@ -296,32 +296,58 @@
         /* Mobile Optimization */
         @media (max-width: 768px) {
             .course-banner__title {
-                font-size: 2.2rem;
+                font-size: 1.8rem;
+                /* Slightly smaller for better fit */
+                margin-top: 10px;
             }
 
             .course-banner__inner {
-                padding: 60px 0 40px;
+                padding: 40px 0 20px;
+                /* Reduced padding */
                 text-align: center;
             }
 
             .course-banner__stats {
+                flex-direction: column;
+                /* Stack stats on small mobile */
+                align-items: center;
+                gap: 15px;
+            }
+
+            .stat-box {
+                width: 100%;
                 justify-content: center;
             }
 
             .course-main__inner {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 20px;
             }
 
             .course-sidebar {
                 order: -1;
-                /* Sidebar with enrollment card comes first on mobile */
+                margin-bottom: 20px;
             }
 
             .enrollment-card {
                 position: static;
-                margin-top: -80px;
+                margin-top: -60px;
+                /* Adjusted overlap */
                 z-index: 10;
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+
+            .tabs-nav {
+                overflow-x: auto;
+                /* Allow tab scrolling if too many */
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+
+            .tab-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
         }
 
