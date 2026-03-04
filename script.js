@@ -858,9 +858,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 fetchRelatedCourses();
+
+                // Trigger I18n update after content is loaded
+                if (window.I18n && typeof window.I18n.updatePageContent === 'function') {
+                    window.I18n.updatePageContent();
+                }
             }
         } catch (err) {
             console.error('[Course Details] Error fetching info:', err);
+            const container = document.getElementById('course-details-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="container" style="padding: 100px 20px; text-align: center;">
+                        <h2 style="color: var(--navy);">Something went wrong</h2>
+                        <p style="color: var(--text-light); margin-bottom: 30px;">We encountered an error while loading the course information. Please try again later.</p>
+                        <a href="index.html#courses" class="btn btn--gold">Back to Courses</a>
+                    </div>`;
+            }
         }
     };
 
