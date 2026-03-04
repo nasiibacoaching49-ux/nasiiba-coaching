@@ -377,12 +377,16 @@
             </a>
             <nav class="header__nav" id="nav">
                 <ul class="nav__list">
-                    <li><a href="index.html" class="nav__link">Home</a></li>
-                    <li><a href="index.html#courses" class="nav__link active">Courses</a></li>
-                    <li><a href="about.html" class="nav__link">About</a></li>
-                    <li><a href="blog.html" class="nav__link">Blog</a></li>
-                    <li><a href="affiliate.html" class="nav__link">Affiliate</a></li>
-                    <li><a href="student.html" class="nav__link">Login</a></li>
+                    <li><a href="index.html" class="nav__link" data-i18n="nav_home">Home</a></li>
+                    <li><a href="about.html" class="nav__link nav__link--with-img">
+                            <img src="https://image2url.com/r2/default/images/1772203041874-61593465-eb88-47a7-96e1-5f91a1596acc.jpeg"
+                                alt="About" class="nav__link-img">
+                            <span data-i18n="nav_about">About</span>
+                        </a></li>
+                    <li><a href="index.html#courses" class="nav__link" data-i18n="nav_courses">Courses</a></li>
+                    <li><a href="blog.html" class="nav__link" data-i18n="nav_blog">Blog</a></li>
+                    <li><a href="affiliate.html" class="nav__link" data-i18n="nav_affiliate">Affiliate</a></li>
+                    <li><a href="student.html" class="nav__link" data-i18n="nav_student">Login</a></li>
                 </ul>
             </nav>
             <div class="header__actions">
@@ -390,7 +394,15 @@
                     <i class="fas fa-moon moon-icon"></i>
                     <i class="fas fa-sun sun-icon"></i>
                 </button>
+                <div class="lang-switcher" id="lang-switcher"></div>
+                <a href="https://calendly.com/nasiiba-coaching/new-meeting" target="_blank" rel="noopener noreferrer"
+                    class="btn btn--gold header__cta" data-i18n="header_cta">Book Sessions</a>
             </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 

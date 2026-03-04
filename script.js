@@ -3,28 +3,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburger');
     const nav = document.getElementById('nav');
 
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        nav.classList.toggle('active');
-    });
-
-    // Close mobile nav on link click
-    document.querySelectorAll('.nav__link').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            nav.classList.remove('active');
+    if (hamburger && nav) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
         });
-    });
+
+        // Close mobile nav on link click
+        document.querySelectorAll('.nav__list .nav__link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                nav.classList.remove('active');
+            });
+        });
+    }
 
     // Header scroll effect
     const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)';
-        } else {
-            header.style.boxShadow = 'none';
-        }
-    });
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+    }
 
     // Intersection Observer for reveal animations
     const observerOptions = {
