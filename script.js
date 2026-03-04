@@ -740,6 +740,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     curriculumListEl.innerHTML = '<p>No lessons uploaded yet for this course.</p>';
                 }
+
+                // Fetch Related Courses (Upsells)
+                const fetchRelatedCourses = async () => {
+                    const relatedGridEl = document.getElementById('related-courses-grid');
+                    if (!relatedGridEl) return;
+
+                    const { data: relatedCourses, error: relatedError } = await db.from('courses')
+                        .select('*')
+                        .neq('id', courseId)
+                        .limit(3);
+
+                    if (!relatedError && relatedCourses && relatedCourses.length > 0) {
+                        relatedGridEl.innerHTML = relatedCourses.map(c => `
+                            <article class="course-card reveal">
+                                <div class="course-card__img-container">
+                                    <img src="${c.thumbnail_url || 'images/course-placeholder.jpg'}" alt="${c.title}" class="course-card__img">
+                                    <div class="course-card__overlay">
+                                        <div class="course-card__hover-content">
+                                            <h4 class="course-card__hover-title">${c.title}</h4>
+                                            <p class="course-card__hover-desc">${c.description ? c.description.substring(0, 100) + '...' : ''}</p>
+                                            <div class="course-card__hover-actions">
+                                                <button class="btn btn--primary btn-enroll" 
+                                                        data-course-id="${c.id}" 
+                                                        data-course-title="${c.title}" 
+                                                        data-course-price="${c.price}">
+                                                    Enroll Now
+                                                </button>
+                                                <a href="course.html?id=${c.id}" class="btn btn--outline">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="course-card__content">
+                                    <div class="course-card__meta">
+                                        <span class="course-card__tag">Premium</span>
+                                        <span class="course-card__price">$${c.price}</span>
+                                    </div>
+                                    <h3 class="course-card__title">
+                                        <a href="course.html?id=${c.id}">${c.title}</a>
+                                    </h3>
+                                    <div class="course-card__stats">
+                                        <span><i class="far fa-user"></i> ${c.views_count || 0}</span>
+                                        <span><i class="far fa-star"></i> 5.0</span>
+                                    </div>
+                                </div>
+                            </article>
+                        `).join('');
+
+                        // Observe new elements
+                        if (window.observer) {
+                            relatedGridEl.querySelectorAll('.reveal').forEach(el => window.observer.observe(el));
+                        }
+                    } else {
+                        const section = document.getElementById('related-courses-section');
+                        if (section) section.style.display = 'none';
+                    }
+                };
+
+                fetchRelatedCourses();
             }
         } catch (err) {
             console.error('[Course Details] Error fetching info:', err);
