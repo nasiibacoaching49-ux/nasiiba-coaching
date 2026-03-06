@@ -696,13 +696,14 @@
             `).join('');
         } catch (err) {
             console.error('Error fetching affiliates:', err);
-            if (err.message && err.message.toLowerCase().includes('could not find the table')) {
+            const msg = err.message ? err.message.toLowerCase() : '';
+            if (msg.includes('could not find the table')) {
                 tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold); padding: 40px;">
                     <strong>Setup Required:</strong> The 'affiliates' table is missing from your Supabase database.<br>
                     Please create an 'affiliates' table to start tracking partners.
                 </td></tr>`;
             } else {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold); padding: 40px;">Error: ${err.message}</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold); padding: 40px;">Error: ${err.message || JSON.stringify(err)}</td></tr>`;
             }
         }
     }
