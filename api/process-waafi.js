@@ -1,14 +1,14 @@
 /**
- * Netlify Serverless Function: Process Waafi (EVC Plus / eDahab) Payment
+ * Vercel Serverless Function: Process Waafi (EVC Plus / eDahab) Payment
  * Using WAAFI (ASM) API
  */
-exports.handler = async (event) => {
-    if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, body: 'Method Not Allowed' };
+module.exports = async (req, res) => {
+    if (req.method !== 'POST') {
+        return res.status(405).send('Method Not Allowed');
     }
 
     try {
-        const { amount, phone, courseTitle, orderId } = JSON.parse(event.body);
+        const { amount, phone, courseTitle, orderId } = req.body;
 
         // API Configuration (From environment variables with provided fallbacks)
         const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID || "M0914117";
@@ -44,7 +44,7 @@ exports.handler = async (event) => {
                     referenceId: requestId,
                     amount: formattedAmount,
                     currency: "USD",
-                    description: `Enrollment: ${courseTitle.substring(0, 30)}`
+                    description: `Enrollment: ${(courseTitle || '').substring(0, 30)}`
                 }
             }
         };
@@ -76,23 +76,15 @@ exports.handler = async (event) => {
             description: data.responseMsg || data.description || (data.params ? data.params.description : null)
         };
 
-        console.log('Returning Normalized:', JSON.stringify(normalizedResponse, null, 2));
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify(normalizedResponse)
-        };
+        return res.status(200).json(normalizedResponse);
 
     } catch (error) {
         console.error('Final Waafi Error:', error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                error: error.message,
-                errorCode: '500',
-                description: error.message,
-                details: error.stack
-            })
-        };
+        return res.status(500).json({
+            error: error.message,
+            errorCode: '500',
+            description: error.message,
+            details: error.stack
+        });
     }
 };
