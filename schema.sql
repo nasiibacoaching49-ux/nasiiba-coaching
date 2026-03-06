@@ -83,3 +83,35 @@ CREATE POLICY "Allow admin manage blogs" ON blogs
     FOR ALL 
     USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
 
+-- 7. Affiliates Table
+CREATE TABLE affiliates (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    whatsapp TEXT,
+    ref_code TEXT UNIQUE NOT NULL,
+    payment_method TEXT,
+    payment_details TEXT,
+    clicks INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE affiliates ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public insert affiliates" ON affiliates FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public update affiliates" ON affiliates FOR UPDATE USING (true);
+CREATE POLICY "Allow public read affiliates" ON affiliates FOR SELECT USING (true);
+
+-- 8. Referrals Table
+CREATE TABLE referrals (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    ref_code TEXT REFERENCES affiliates(ref_code) ON DELETE CASCADE,
+    student_name TEXT,
+    course_name TEXT,
+    amount DECIMAL(10, 2),
+    status TEXT DEFAULT 'pending',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE referrals ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public insert referrals" ON referrals FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public read referrals" ON referrals FOR SELECT USING (true);
