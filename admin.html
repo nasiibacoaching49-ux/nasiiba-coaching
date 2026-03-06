@@ -621,32 +621,30 @@
                             style="width: 50px; height: 35px; object-fit: cover; border-radius: 4px; display: none; border: 1px solid var(--gray-200);">
                         <input type="hidden" id="course-thumb-url">
                     </div>
+
+                    <!-- Lessons Section -->
+                    <div class="modal-divider"
+                        style="margin: 25px 0 15px; height: 1px; background: var(--gray-200); position: relative;">
+                        <span
+                            style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); background: #fff; padding-right: 15px; font-weight: 700; font-size: 0.85rem; color: var(--navy); text-transform: uppercase; letter-spacing: 1px;">Course
+                            Lessons</span>
+                    </div>
+
+                    <div id="modal-lessons-list"
+                        style="max-height: 400px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
+                        <!-- Dynamic lesson rows -->
+                    </div>
+
+                    <button type="button" id="btn-modal-add-lesson" class="btn btn--outline btn--sm btn--full"
+                        style="margin-bottom: 20px;">
+                        <i class="fas fa-plus"></i> Add Another Lesson
+                    </button>
+
+                    <button type="submit" class="btn btn--navy btn--full" id="course-save-btn">Save Course &
+                        Lessons</button>
+                </form>
             </div>
         </div>
-
-        <!-- Lessons Section -->
-        <div class="modal-divider"
-            style="margin: 25px 0 15px; height: 1px; background: var(--gray-200); position: relative;">
-            <span
-                style="position: absolute; top: 50%; left: 0; transform: translateY(-50%); background: #fff; padding-right: 15px; font-weight: 700; font-size: 0.85rem; color: var(--navy); text-transform: uppercase; letter-spacing: 1px;">Course
-                Lessons</span>
-        </div>
-
-        <div id="modal-lessons-list"
-            style="max-height: 400px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
-            <!-- Dynamic lesson rows -->
-        </div>
-
-        <button type="button" id="btn-modal-add-lesson" class="btn btn--outline btn--sm btn--full"
-            style="margin-bottom: 20px;">
-            <i class="fas fa-plus"></i> Add Another Lesson
-        </button>
-
-        <button type="submit" class="btn btn--navy btn--full" id="course-save-btn">Save Course &
-            Lessons</button>
-        </form>
-    </div>
-    </div>
     </div>
 
 
