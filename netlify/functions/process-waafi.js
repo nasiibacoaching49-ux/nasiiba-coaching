@@ -1,7 +1,5 @@
-const fetch = require('node-fetch');
-
 /**
- * Netlify Function: Process Waafi (EVC Plus / eDahab) Payment
+ * Netlify Serverless Function: Process Waafi (EVC Plus / eDahab) Payment
  * Using WAAFI (ASM) API
  */
 exports.handler = async (event) => {
@@ -12,10 +10,10 @@ exports.handler = async (event) => {
     try {
         const { amount, phone, courseTitle, orderId } = JSON.parse(event.body);
 
-        // API Configuration (From environment variables)
-        const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID;
-        const API_USER_ID = process.env.WAAFI_API_USER_ID;
-        const API_KEY = process.env.WAAFI_API_KEY;
+        // API Configuration (From environment variables with provided fallbacks)
+        const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID || "M0914117";
+        const API_USER_ID = process.env.WAAFI_API_USER_ID || "1008567";
+        const API_KEY = process.env.WAAFI_API_KEY || "API-s7xzTgLFJY0NfRtxrXwD0NZ9T0";
 
         if (!MERCHANT_UID || !API_USER_ID || !API_KEY) {
             throw new Error('Waafi API configuration missing on server.');
@@ -23,6 +21,9 @@ exports.handler = async (event) => {
 
         const requestId = orderId || `req_${Date.now()}`;
         const timestamp = Date.now().toString();
+
+        const formattedAmount = parseFloat(amount).toFixed(2);
+        const formattedPhone = phone.replace(/\D/g, '').slice(-9);
 
         // Waafi (ASM) API Request Structure
         const waafiBody = {
@@ -37,41 +38,60 @@ exports.handler = async (event) => {
                 apiKey: API_KEY,
                 paymentMethod: "MWALLET_ACCOUNT",
                 payerInfo: {
-                    // Only use 9 digits Somali format
-                    accountNo: phone.length >= 9 ? phone.slice(-9) : phone
+                    accountNo: formattedPhone
                 },
                 transactionInfo: {
-                    amount: amount.toString(),
+                    referenceId: requestId,
+                    amount: formattedAmount,
                     currency: "USD",
-                    description: `Enrollment: ${courseTitle}`
+                    description: `Enrollment: ${courseTitle.substring(0, 30)}`
                 }
             }
         };
 
-        console.log('Requesting Waafi:', JSON.stringify(waafiBody, null, 2));
+        console.log(`[Waafi Request] ID: ${requestId}, Phone: ${formattedPhone}, Amount: ${formattedAmount}`);
 
-        const response = await fetch('https://api.waafi.com/asm', {
+        const response = await fetch('https://api.waafipay.com/asm', {
             method: 'POST',
             body: JSON.stringify(waafiBody),
             headers: { 'Content-Type': 'application/json' }
+        }).catch(err => {
+            console.error('[Waafi Fetch Error]:', err);
+            throw new Error(`Connection to Waafi API failed: ${err.message}`);
         });
 
-        const data = await response.json();
-        console.log('Waafi Response:', JSON.stringify(data, null, 2));
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Waafi Gateway HTTP Error: ${response.status} - ${errorBody}`);
+        }
 
-        // Return the response to frontend
+        const data = await response.json();
+        console.log('Waafi Response Full:', JSON.stringify(data, null, 2));
+
+        // Normalize for frontend (script.js expects errorCode and description)
+        // In Waafi ASM, responseCode '2001' is Success.
+        const normalizedResponse = {
+            ...data,
+            errorCode: data.responseCode === '2001' ? '0' : (data.errorCode || data.responseCode),
+            description: data.responseMsg || data.description || (data.params ? data.params.description : null)
+        };
+
+        console.log('Returning Normalized:', JSON.stringify(normalizedResponse, null, 2));
+
         return {
             statusCode: 200,
-            body: JSON.stringify(data)
+            body: JSON.stringify(normalizedResponse)
         };
 
     } catch (error) {
-        console.error('Waafi Netlify Function Error:', error);
+        console.error('Final Waafi Error:', error);
         return {
             statusCode: 500,
             body: JSON.stringify({
                 error: error.message,
-                hint: "Ensure environment variables WAAFI_MERCHANT_UID, WAAFI_API_USER_ID, and WAAFI_API_KEY are set in Netlify."
+                errorCode: '500',
+                description: error.message,
+                details: error.stack
             })
         };
     }

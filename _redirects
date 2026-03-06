@@ -1,1 +1,2 @@
+/api/*  /.netlify/functions/:splat  200
 /affiliate  /affiliate.html  200

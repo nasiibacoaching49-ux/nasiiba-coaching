@@ -330,10 +330,18 @@
                 }
             }
 
-            // Upsert remaining lessons
-            if (lessonsData.length > 0) {
-                const { error: lessonError } = await db.from('lessons').upsert(lessonsData);
-                if (lessonError) throw lessonError;
+            // Upsert remaining lessons (Split by new vs existing constraints for PostgREST)
+            const newLessons = lessonsData.filter(l => !l.id);
+            const existingLessons = lessonsData.filter(l => l.id);
+
+            if (newLessons.length > 0) {
+                const { error: insertErr } = await db.from('lessons').insert(newLessons);
+                if (insertErr) throw new Error('Lesson Insert Error: ' + insertErr.message);
+            }
+
+            if (existingLessons.length > 0) {
+                const { error: updateErr } = await db.from('lessons').upsert(existingLessons);
+                if (updateErr) throw new Error('Lesson Update Error: ' + updateErr.message);
             }
 
             modalCourse.classList.remove('active');
@@ -688,7 +696,14 @@
             `).join('');
         } catch (err) {
             console.error('Error fetching affiliates:', err);
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold);">Error: ${err.message}</td></tr>`;
+            if (err.message && err.message.toLowerCase().includes('could not find the table')) {
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold); padding: 40px;">
+                    <strong>Setup Required:</strong> The 'affiliates' table is missing from your Supabase database.<br>
+                    Please create an 'affiliates' table to start tracking partners.
+                </td></tr>`;
+            } else {
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gold); padding: 40px;">Error: ${err.message}</td></tr>`;
+            }
         }
     }
 

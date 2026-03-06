@@ -231,7 +231,7 @@
 
             const { error: dbError } = await db.from('affiliates').insert(newAffiliate);
             if (dbError) {
-                errorEl.textContent = 'Auth successful but profile creation failed. Please try logging in or contact support.';
+                errorEl.textContent = 'Auth successful but profile creation failed. Error: ' + dbError.message;
                 submitBtn.disabled = false;
                 return;
             }
