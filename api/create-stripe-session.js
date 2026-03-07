@@ -46,10 +46,8 @@ module.exports = async (req, res) => {
 
     try {
         const session = await stripe.checkout.sessions.create({
-            // automatic_payment_methods enables: Visa, Mastercard, Amex, Apple Pay, Google Pay, etc.
-            automatic_payment_methods: {
-                enabled: true,
-            },
+            // 'card' covers Visa, Mastercard, Amex, etc.
+            payment_method_types: ['card'],
             line_items: [
                 {
                     price_data: {
