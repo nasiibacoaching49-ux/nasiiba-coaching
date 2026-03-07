@@ -7,13 +7,26 @@ module.exports = async (req, res) => {
         return res.status(405).send('Method Not Allowed');
     }
 
-    try {
-        const { amount, phone, courseTitle, orderId } = req.body;
+    let body = req.body;
+    if (typeof body === 'string') {
+        try { body = JSON.parse(body); } catch (e) { console.error('Body parse error:', e); }
+    }
 
+    const { amount, phone, courseTitle, orderId } = body || {};
+
+    if (!amount || isNaN(parseFloat(amount))) {
+        return res.status(400).json({ error: 'Missing or invalid amount parameter.', errorCode: '400' });
+    }
+    if (!phone) {
+        return res.status(400).json({ error: 'Missing phone parameter.', errorCode: '400' });
+    }
+
+    try {
         // API Configuration (From environment variables with provided fallbacks)
-        const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID || "M0914117";
-        const API_USER_ID = process.env.WAAFI_API_USER_ID || "1008567";
-        const API_KEY = process.env.WAAFI_API_KEY || "API-s7xzTgLFJY0NfRtxrXwD0NZ9T0";
+        // Updated credentials from creditials.txt
+        const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID || "M0910183";
+        const API_USER_ID = process.env.WAAFI_API_USER_ID || "1000191";
+        const API_KEY = process.env.WAAFI_API_KEY || "API-2082487209AHX";
 
         if (!MERCHANT_UID || !API_USER_ID || !API_KEY) {
             throw new Error('Waafi API configuration missing on server.');

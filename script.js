@@ -649,6 +649,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
 
                     } else if (activeMethod === 'stripe') {
+                        if (!amount || amount <= 0) {
+                            throw new Error('Course price not found. Please reload the page and try again.');
+                        }
                         const response = await fetch('/api/create-stripe-session', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -661,11 +664,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
 
                         const session = await response.json();
+                        if (!response.ok) {
+                            throw new Error(session.error || 'Could not create Stripe session. Check that Stripe is configured in Vercel.');
+                        }
                         if (session.url) {
                             window.location.href = session.url;
                         } else {
-                            throw new Error('Could not create Stripe session.');
+                            throw new Error(session.error || 'Could not create Stripe session.');
                         }
+
                     } else {
                         alert(`Method ${activeMethod} is not fully implemented yet.`);
                         proceedBtn.disabled = false;
