@@ -607,6 +607,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const amount = parseFloat(coursePrice.textContent.replace(/[^0-9.]/g, '')) || 0;
                 const courseTitleVal = courseTitle.textContent;
 
+                // Guard: ensure course data is loaded before proceeding
+                if (!amount || amount <= 0) {
+                    alert('Course price not loaded yet. Please wait a moment and try again.');
+                    return;
+                }
+                if (!courseTitleVal || courseTitleVal === 'Course Title') {
+                    alert('Course information not loaded yet. Please wait a moment and try again.');
+                    return;
+                }
+
                 proceedBtn.disabled = true;
                 proceedBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
@@ -692,14 +702,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===========================
     // COURSE DETAILS PAGE LOGIC
     // ===========================
+
+    // Helper: wait for supabaseClient to be available (retries up to 5 seconds)
+    const waitForSupabase = async (maxRetries = 10, delayMs = 500) => {
+        for (let i = 0; i < maxRetries; i++) {
+            if (window.supabaseClient) return window.supabaseClient;
+            console.log(`[Course Details] Waiting for Supabase... (attempt ${i + 1}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, delayMs));
+        }
+        return null;
+    };
+
     const initCourseDetails = async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const courseId = urlParams.get('id');
         if (!courseId || !document.getElementById('course-details-container')) return;
 
         try {
-            const db = window.supabaseClient;
-            if (!db) throw new Error('Supabase client not available');
+            const db = await waitForSupabase();
+            if (!db) throw new Error('Supabase client not available after waiting. Please refresh the page.');
 
             const { data: course, error } = await db.from('courses').select('*').eq('id', courseId).single();
 
