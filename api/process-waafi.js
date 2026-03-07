@@ -23,10 +23,9 @@ module.exports = async (req, res) => {
 
     try {
         // API Configuration (From environment variables with provided fallbacks)
-        // Updated credentials from creditials.txt
-        const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID || "M0910183";
-        const API_USER_ID = process.env.WAAFI_API_USER_ID || "1000191";
-        const API_KEY = process.env.WAAFI_API_KEY || "API-2082487209AHX";
+        const MERCHANT_UID = process.env.WAAFI_MERCHANT_UID || "M0914117";
+        const API_USER_ID = process.env.WAAFI_API_USER_ID || "1008567";
+        const API_KEY = process.env.WAAFI_API_KEY || "API-s7xzTgLFJY0NfRtxrXwD0NZ9T0";
 
         if (!MERCHANT_UID || !API_USER_ID || !API_KEY) {
             throw new Error('Waafi API configuration missing on server.');
