@@ -477,11 +477,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const blogGrid = document.getElementById('blog-list-container');
 
         let originalPriceValue = 0;
-        const COUPONS = {
-            'NASIIBA20': 0.20,
-            'WELCOME10': 0.10,
-            'SPECIAL': 0.50
-        };
 
         window.openPaymentModal = (title, priceText) => {
             courseTitle.textContent = title;
@@ -548,19 +543,43 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === paymentModal) closePaymentModal();
         });
 
-        // Coupon Logic
-        applyBtn.addEventListener('click', () => {
+        // Coupon Logic (Dynamic from Supabase)
+        applyBtn.addEventListener('click', async () => {
             const code = couponInput.value.trim().toUpperCase();
-            if (COUPONS[code]) {
-                const discount = originalPriceValue * COUPONS[code];
-                const newPrice = originalPriceValue - discount;
+            if (!code) return;
+
+            applyBtn.disabled = true;
+            applyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            try {
+                const db = window.supabaseClient;
+                if (!db) throw new Error('Database connection issue.');
+
+                const { data: coupon, error } = await db.from('coupons')
+                    .select('*')
+                    .eq('code', code)
+                    .eq('is_active', true)
+                    .single();
+
+                if (error || !coupon) {
+                    throw new Error('Halkaan geli code sax ah.'); // Translated: Enter a valid code here
+                }
+
+                const discountPercent = coupon.discount_percent;
+                const discountAmount = originalPriceValue * (discountPercent / 100);
+                const newPrice = originalPriceValue - discountAmount;
+
                 coursePrice.textContent = '$' + newPrice.toFixed(2);
-                couponMsg.textContent = `Success! ${code} applied (${COUPONS[code] * 100}% off)`;
+                couponMsg.textContent = `Success! ${code} applied (${discountPercent}% off)`;
                 couponMsg.className = 'coupon-msg success';
-            } else {
-                couponMsg.textContent = 'Invalid coupon code.';
+            } catch (err) {
+                console.error('[Coupon] Error:', err);
+                couponMsg.textContent = 'Code-ka aad galisay ma saxno.'; // The code you entered is incorrect
                 couponMsg.className = 'coupon-msg error';
                 coursePrice.textContent = '$' + originalPriceValue.toFixed(2);
+            } finally {
+                applyBtn.disabled = false;
+                applyBtn.innerHTML = 'Apply';
             }
         });
 

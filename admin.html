@@ -324,6 +324,9 @@
             <a href="#orders" class="admin-nav__item" data-view="orders">
                 <i class="fas fa-shopping-cart"></i> Student Orders
             </a>
+            <a href="#coupons" class="admin-nav__item" data-view="coupons">
+                <i class="fas fa-ticket-alt"></i> Discount Coupons
+            </a>
             <a href="#reviews" class="admin-nav__item" data-view="reviews">
                 <i class="fas fa-star"></i> Reviews & Feedback
             </a>
@@ -448,23 +451,60 @@
                 </div>
                 <button class="btn btn--navy" id="btn-add-course"><i class="fas fa-plus"></i> New Course</button>
             </header>
+            <div id="courses-list-container" class="admin-card">
+                <!-- Courses table populated by JS -->
+            </div>
+        </div>
 
-            <div id="courses-container" class="admin-card">
+        <!-- Coupons View -->
+        <div id="view-coupons" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Discount Coupons</h1>
+                    <p>Manage promotional codes and discounts.</p>
+                </div>
+                <button class="btn btn--navy" id="btn-add-coupon"><i class="fas fa-plus"></i> Create Coupon</button>
+            </header>
+            <div class="admin-card">
                 <div class="table-responsive">
-                    <table id="courses-table">
+                    <table id="coupons-table">
                         <thead>
                             <tr>
-                                <th>Thumbnail</th>
-                                <th>Course Title</th>
-                                <th>Price</th>
+                                <th>Code</th>
+                                <th>Discount (%)</th>
+                                <th>Status</th>
                                 <th>Created</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            <!-- Populated by JS -->
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-light);">
+                                    Loading coupons...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
+        </div>
+
+        <div id="courses-container" class="admin-card">
+            <div class="table-responsive">
+                <table id="courses-table">
+                    <thead>
+                        <tr>
+                            <th>Thumbnail</th>
+                            <th>Course Title</th>
+                            <th>Price</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
         </div>
 
 
@@ -884,6 +924,37 @@
                     <div style="margin-top: 30px;">
                         <button type="submit" class="btn btn--navy btn--full" id="gallery-save-btn">Save Gallery
                             Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Coupon Form -->
+    <div id="modal-coupon" class="modal-overlay">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal__close" onclick="closeAdminModal('modal-coupon')"><i class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <h3 class="modal__title" id="coupon-modal-title">Create New Coupon</h3>
+            </div>
+            <div class="modal__body">
+                <form id="coupon-form">
+                    <input type="hidden" id="coupon-id">
+                    <div class="form-group">
+                        <label>Coupon Code (e.g. NASIIBA20)</label>
+                        <input type="text" id="coupon-code-input" placeholder="Enter code" required
+                            style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label>Discount Percentage (1-100)</label>
+                        <input type="number" id="coupon-discount" placeholder="20" min="1" max="100" required>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 10px 0;">
+                        <input type="checkbox" id="coupon-active" checked style="width: auto;">
+                        <label style="margin-bottom: 0;">Is this coupon active?</label>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn btn--navy btn--full" id="coupon-save-btn">Save Coupon</button>
                     </div>
                 </form>
             </div>

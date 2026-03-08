@@ -37,6 +37,7 @@
         if (viewName === 'blogs') fetchBlogs();
         if (viewName === 'testimonials') fetchTestimonials();
         if (viewName === 'galleries') fetchGalleries();
+        if (viewName === 'coupons') fetchCoupons();
     }
 
     navItems.forEach(item => {
@@ -139,6 +140,11 @@
     const manualEnrollForm = document.getElementById('manual-enroll-form');
     const enrollCourseSelect = document.getElementById('enroll-course-id');
 
+    // Coupon UI Elements
+    const modalCoupon = document.getElementById('modal-coupon');
+    const couponForm = document.getElementById('coupon-form');
+    const btnAddCoupon = document.getElementById('btn-add-coupon');
+
     window.closeAdminModal = (modalId) => {
         document.getElementById(modalId).classList.remove('active');
     };
@@ -184,6 +190,51 @@
     }
 
     btnModalAddLesson.addEventListener('click', () => addLessonRow());
+
+    // Coupon Buttons
+    if (btnAddCoupon) {
+        btnAddCoupon.addEventListener('click', () => {
+            document.getElementById('coupon-id').value = '';
+            document.getElementById('coupon-form').reset();
+            document.getElementById('coupon-modal-title').textContent = 'Create New Coupon';
+            modalCoupon.classList.add('active');
+        });
+    }
+
+    if (couponForm) {
+        couponForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('coupon-id').value;
+            const code = document.getElementById('coupon-code-input').value.trim().toUpperCase();
+            const discount = parseInt(document.getElementById('coupon-discount').value);
+            const isActive = document.getElementById('coupon-active').checked;
+
+            const saveBtn = document.getElementById('coupon-save-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const couponData = { code, discount_percent: discount, is_active: isActive };
+                let error;
+
+                if (id) {
+                    ({ error } = await db.from('coupons').update(couponData).eq('id', id));
+                } else {
+                    ({ error } = await db.from('coupons').insert(couponData));
+                }
+
+                if (error) throw error;
+
+                closeAdminModal('modal-coupon');
+                fetchCoupons();
+            } catch (err) {
+                alert('Error saving coupon: ' + err.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Save Coupon';
+            }
+        });
+    }
 
     // Thumbnail Preview handler
     thumbFileInput.addEventListener('change', (e) => {
@@ -1133,5 +1184,55 @@
             console.error('Error fetching blogs:', err);
         }
     }
+
+    async function fetchCoupons() {
+        const tableBody = document.querySelector('#coupons-table tbody');
+        if (!tableBody) return;
+
+        try {
+            const { data: coupons, error } = await db.from('coupons').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (coupons.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No coupons found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = coupons.map(c => `
+                <tr>
+                    <td><strong>${c.code}</strong></td>
+                    <td>${c.discount_percent}%</td>
+                    <td><span class="badge ${c.is_active ? 'badge--success' : 'badge--danger'}">${c.is_active ? 'Active' : 'Inactive'}</span></td>
+                    <td>${new Date(c.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn--sm btn--outline" onclick="editCoupon('${c.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn--sm btn--danger" onclick="deleteCoupon('${c.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Error fetching coupons:', err);
+        }
+    }
+
+    window.editCoupon = async (id) => {
+        const { data: coupon, error } = await db.from('coupons').select('*').eq('id', id).single();
+        if (error || !coupon) return;
+
+        document.getElementById('coupon-id').value = coupon.id;
+        document.getElementById('coupon-code-input').value = coupon.code;
+        document.getElementById('coupon-discount').value = coupon.discount_percent;
+        document.getElementById('coupon-active').checked = coupon.is_active;
+        document.getElementById('coupon-modal-title').textContent = 'Edit Coupon';
+
+        modalCoupon.classList.add('active');
+    };
+
+    window.deleteCoupon = async (id) => {
+        if (confirm('Are you sure you want to delete this coupon?')) {
+            const { error } = await db.from('coupons').delete().eq('id', id);
+            if (!error) fetchCoupons();
+        }
+    };
 
 })();
