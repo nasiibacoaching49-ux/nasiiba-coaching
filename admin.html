@@ -338,9 +338,7 @@
             <a href="#affiliates" class="admin-nav__item" data-view="affiliates">
                 <i class="fas fa-user-friends"></i> Affiliates
             </a>
-            <a href="#blogs" class="admin-nav__item" data-view="blogs">
-                <i class="fas fa-newspaper"></i> Manage Blogs
-            </a>
+
             <a href="#testimonials" class="admin-nav__item" data-view="testimonials">
                 <i class="fas fa-quote-left"></i> Testimonials
             </a>
@@ -581,17 +579,7 @@
             </div>
         </div>
 
-        <!-- Blogs View -->
-        <div id="view-blogs" class="view-content" style="display: none;">
-            <header class="admin-header">
-                <div class="admin-header__title">
-                    <h1>Manage Blogs</h1>
-                    <p>Write, edit, and manage your articles.</p>
-                </div>
-                <button class="btn btn--navy" id="btn-add-blog"><i class="fas fa-plus"></i> New Article</button>
-            </header>
 
-        </div>
         </div>
 
         <!-- Testimonials View -->
@@ -749,72 +737,7 @@
     </div>
 
 
-    <!-- Modal: Blog Form -->
-    <div id="modal-blog" class="modal-overlay">
-        <div class="modal" style="max-width: 800px;">
-            <button class="modal__close" onclick="closeAdminModal('modal-blog')"><i class="fas fa-times"></i></button>
-            <div class="modal__header">
-                <h3 class="modal__title" id="blog-modal-title">New Blog Article</h3>
-            </div>
-            <div class="modal__body">
-                <form id="blog-form">
-                    <input type="hidden" id="blog-id">
-                    <div class="row" style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
-                        <div class="form-group">
-                            <label>Article Title</label>
-                            <input type="text" id="blog-title" placeholder="Enter post title" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="blog-category"
-                                style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200);">
-                                <option value="Leadership">Leadership</option>
-                                <option value="Strategy">Strategy</option>
-                                <option value="Coaching">Coaching</option>
-                                <option value="Success">Success</option>
-                                <option value="General">General</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label>Excerpt (Short summary for the list page)</label>
-                        <textarea id="blog-excerpt" maxlength="250"
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200); height: 80px; font-family: inherit;"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Content (Full article content)</label>
-                        <textarea id="blog-content" required
-                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200); height: 300px; font-family: inherit; font-size: 1rem; line-height: 1.6;"></textarea>
-                        <small style="color: var(--text-light);">Tip: You can use HTML tags for formatting.</small>
-                    </div>
-
-                    <div class="row"
-                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: end;">
-                        <div class="form-group">
-                            <label>Thumbnail Image</label>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="file" id="blog-thumb-file" accept="image/*" style="padding: 5px;">
-                                <img id="blog-thumb-preview" src=""
-                                    style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; display: none; border: 1px solid var(--gray-200);">
-                                <input type="hidden" id="blog-thumb-url">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Author Name</label>
-                            <input type="text" id="blog-author" value="Abdullahi Yusuf">
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 30px;">
-                        <button type="submit" class="btn btn--navy btn--full" id="blog-save-btn">Publish
-                            Article</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal: Manual Enrollment -->
     <div id="modal-manual-enroll" class="modal-overlay">

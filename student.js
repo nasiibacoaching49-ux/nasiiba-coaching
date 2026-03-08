@@ -15,6 +15,28 @@
     const navItems = document.querySelectorAll('.nav-item[data-tab]');
     const dashboardTabs = document.querySelectorAll('.dashboard-tab');
 
+    // Password Visibility Toggle (Event Delegation) - At Top to avoid script-stop issues
+    document.addEventListener('click', function (e) {
+        const toggleBtn = e.target.closest('.password-toggle-btn');
+        if (!toggleBtn) return;
+
+        const targetId = toggleBtn.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        const icon = toggleBtn.querySelector('i');
+
+        if (input) {
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    });
+
     // View Switching
     function showView(viewId) {
         loginView.style.display = viewId === 'login' ? 'block' : 'none';
@@ -70,80 +92,86 @@
     // --- AUTH LOGIC ---
 
     // Registration
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('reg-name').value;
-        const email = document.getElementById('reg-email').value;
-        const whatsapp = document.getElementById('reg-whatsapp').value;
-        const password = document.getElementById('reg-password').value;
+    const registerForm = document.getElementById('register-form');
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const whatsapp = document.getElementById('reg-whatsapp').value;
+            const password = document.getElementById('reg-password').value;
 
-        if (!db) return;
+            if (!db) return;
 
-        const submitBtn = document.getElementById('register-btn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            const submitBtn = document.getElementById('register-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-        try {
-            const { data, error } = await db.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { full_name: name, type: 'student' }
-                }
-            });
+            try {
+                const { data, error } = await db.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: { full_name: name, type: 'student' }
+                    }
+                });
 
-            if (error) throw error;
-            if (!data.user) throw new Error('Registration failed. Please try again.');
+                if (error) throw error;
+                if (!data.user) throw new Error('Registration failed. Please try again.');
 
-            // Create student profile in database
-            const { error: profileError } = await db.from('students').upsert([
-                { id: data.user.id, full_name: name, email: email, whatsapp_number: whatsapp }
-            ]);
+                // Create student profile in database
+                const { error: profileError } = await db.from('students').upsert([
+                    { id: data.user.id, full_name: name, email: email, whatsapp_number: whatsapp }
+                ]);
 
-            if (profileError) console.error('Error creating profile:', profileError);
+                if (profileError) console.error('Error creating profile:', profileError);
 
-            alert('Registration successful! You can now sign in.');
-            showView('login');
-        } catch (err) {
-            console.error('Registration error:', err);
-            alert('Registration failed: ' + err.message);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Create Account <i class="fas fa-user-check"></i>';
-        }
-    });
+                alert('Registration successful! You can now sign in.');
+                showView('login');
+            } catch (err) {
+                console.error('Registration error:', err);
+                alert('Registration failed: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Create Account <i class="fas fa-user-check"></i>';
+            }
+        });
+    }
 
     // Login
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
-        if (!db) return;
+            if (!db) return;
 
-        const submitBtn = document.getElementById('login-btn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+            const submitBtn = document.getElementById('login-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
 
-        try {
-            console.log('Attempting login for:', email);
-            const { data, error } = await db.auth.signInWithPassword({ email, password });
+            try {
+                console.log('Attempting login for:', email);
+                const { data, error } = await db.auth.signInWithPassword({ email, password });
 
-            if (error) {
-                console.error('Supabase Login Error:', error);
-                throw error;
+                if (error) {
+                    console.error('Supabase Login Error:', error);
+                    throw error;
+                }
+
+                console.log('Login successful, data:', data);
+                await checkUser();
+            } catch (err) {
+                console.error('Login Caught Error:', err);
+                alert('Login failed: ' + (err.message.includes('Invalid login credentials') ? 'Invalid email or password.' : err.message));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Sign In <i class="fas fa-sign-in-alt"></i>';
             }
-
-            console.log('Login successful, data:', data);
-            await checkUser();
-        } catch (err) {
-            console.error('Login Caught Error:', err);
-            alert('Login failed: ' + (err.message.includes('Invalid login credentials') ? 'Invalid email or password.' : err.message));
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Sign In <i class="fas fa-sign-in-alt"></i>';
-        }
-    });
+        });
+    }
 
     // --- DASHBOARD DATA ---
 
@@ -348,24 +376,6 @@
         });
     }
 
-    // Password Visibility Toggle
-    document.querySelectorAll('.password-toggle-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const targetId = this.getAttribute('data-target');
-            const input = document.getElementById(targetId);
-            const icon = this.querySelector('i');
-
-            if (input && input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else if (input) {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-    });
 
     // Password Update
     const passwordForm = document.getElementById('password-form');

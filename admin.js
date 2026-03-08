@@ -16,6 +16,28 @@
     const navItems = document.querySelectorAll('.admin-nav__item[data-view]');
     const viewContents = document.querySelectorAll('.view-content');
 
+    // Password Visibility Toggle (Event Delegation) - At Top to avoid script-stop issues
+    document.addEventListener('click', function (e) {
+        const toggleBtn = e.target.closest('.password-toggle-btn');
+        if (!toggleBtn) return;
+
+        const targetId = toggleBtn.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        const icon = toggleBtn.querySelector('i');
+
+        if (input) {
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    });
+
     // View Management
     function showView(viewName) {
         // Update Nav
@@ -34,7 +56,6 @@
         if (viewName === 'orders') fetchOrders();
         if (viewName === 'reviews') fetchReviews();
         if (viewName === 'affiliates') fetchAffiliates();
-        if (viewName === 'blogs') fetchBlogs();
         if (viewName === 'testimonials') fetchTestimonials();
         if (viewName === 'galleries') fetchGalleries();
         if (viewName === 'coupons') fetchCoupons();
@@ -50,31 +71,33 @@
     });
 
     // Authentication
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('admin-email').value;
-        const password = document.getElementById('admin-password').value;
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
 
-        if (!db) return;
+            if (!db) return;
 
-        const submitBtn = document.getElementById('admin-login-btn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-        authError.style.display = 'none';
+            const submitBtn = document.getElementById('admin-login-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            authError.style.display = 'none';
 
-        try {
-            const { data, error } = await db.auth.signInWithPassword({ email, password });
-            if (error) throw error;
+            try {
+                const { data, error } = await db.auth.signInWithPassword({ email, password });
+                if (error) throw error;
 
-            await checkAdmin(data.user);
-        } catch (err) {
-            authError.textContent = err.message;
-            authError.style.display = 'block';
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Sign In';
-        }
-    });
+                await checkAdmin(data.user);
+            } catch (err) {
+                authError.textContent = err.message;
+                authError.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Sign In';
+            }
+        });
+    }
 
     async function checkAdmin(user) {
         if (!user) {
@@ -116,12 +139,6 @@
     const thumbPreview = document.getElementById('thumb-preview');
     const thumbUrlHidden = document.getElementById('course-thumb-url');
 
-    // Blogs UI Elements
-    const modalBlog = document.getElementById('modal-blog');
-    const blogForm = document.getElementById('blog-form');
-    const blogThumbFileInput = document.getElementById('blog-thumb-file');
-    const blogThumbPreview = document.getElementById('blog-thumb-preview');
-    const blogThumbUrlHidden = document.getElementById('blog-thumb-url');
 
     // Testimonials UI Elements
     const modalTestimonial = document.getElementById('modal-testimonial');
@@ -241,53 +258,48 @@
     }
 
     // Thumbnail Preview handler
-    thumbFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                thumbPreview.src = e.target.result;
-                thumbPreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    if (thumbFileInput) {
+        thumbFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    thumbPreview.src = e.target.result;
+                    thumbPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 
-    blogThumbFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                blogThumbPreview.src = e.target.result;
-                blogThumbPreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
 
-    testimonialAvatarFile.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                testimonialAvatarPreview.src = e.target.result;
-                testimonialAvatarPreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    if (testimonialAvatarFile) {
+        testimonialAvatarFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    testimonialAvatarPreview.src = e.target.result;
+                    testimonialAvatarPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 
-    galleryImageFile.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                galleryImagePreview.src = e.target.result;
-                galleryImagePreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    if (galleryImageFile) {
+        galleryImageFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    galleryImagePreview.src = e.target.result;
+                    galleryImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 
     // Helper: Upload Image to Supabase
     async function uploadThumbnail(file) {
@@ -313,23 +325,6 @@
         return publicUrl;
     }
 
-    async function uploadBlogThumbnail(file) {
-        console.log('[Storage] Starting blog thumbnail upload:', file.name);
-        const fileExt = file.name.split('.').pop();
-        const fileName = `blog-${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-        const filePath = `blog-thumbs/${fileName}`;
-
-        const { data, error } = await db.storage
-            .from('thumbnails')
-            .upload(filePath, file);
-
-        if (error) {
-            console.error('[Storage] Blog thumbnail upload error:', error);
-            throw error;
-        }
-
-        return publicUrl;
-    }
 
     async function uploadGenericImage(file, folder = 'general') {
         const fileExt = file.name.split('.').pop();
@@ -350,16 +345,19 @@
     }
 
     // Course Management
-    document.getElementById('btn-add-course').addEventListener('click', () => {
-        document.getElementById('course-modal-title').textContent = 'Add New Course';
-        courseForm.reset();
-        document.getElementById('course-id').value = '';
-        modalLessonsList.innerHTML = '';
-        thumbPreview.style.display = 'none';
-        thumbUrlHidden.value = '';
-        addLessonRow(); // Add first lesson row by default
-        modalCourse.classList.add('active');
-    });
+    const btnAddCourse = document.getElementById('btn-add-course');
+    if (btnAddCourse) {
+        btnAddCourse.addEventListener('click', () => {
+            document.getElementById('course-modal-title').textContent = 'Add New Course';
+            courseForm.reset();
+            document.getElementById('course-id').value = '';
+            modalLessonsList.innerHTML = '';
+            thumbPreview.style.display = 'none';
+            thumbUrlHidden.value = '';
+            addLessonRow(); // Add first lesson row by default
+            modalCourse.classList.add('active');
+        });
+    }
 
     courseForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -470,101 +468,6 @@
         }
     });
 
-    // Blogs Management
-    document.getElementById('btn-add-blog').addEventListener('click', () => {
-        document.getElementById('blog-modal-title').textContent = 'New Blog Article';
-        blogForm.reset();
-        document.getElementById('blog-id').value = '';
-        blogThumbPreview.style.display = 'none';
-        blogThumbUrlHidden.value = '';
-        modalBlog.classList.add('active');
-    });
-
-    blogForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = document.getElementById('blog-save-btn');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
-
-        const id = document.getElementById('blog-id').value;
-        const title = document.getElementById('blog-title').value;
-        const excerpt = document.getElementById('blog-excerpt').value;
-        const content = document.getElementById('blog-content').value;
-        const category = document.getElementById('blog-category').value;
-        const author_name = document.getElementById('blog-author').value;
-
-        try {
-            // Handle Thumbnail
-            let finalThumbUrl = blogThumbUrlHidden.value;
-            const thumbFile = blogThumbFileInput.files[0];
-            if (thumbFile) {
-                finalThumbUrl = await uploadBlogThumbnail(thumbFile);
-            }
-
-            const blogData = {
-                title,
-                excerpt,
-                content,
-                category,
-                author_name,
-                thumbnail_url: finalThumbUrl,
-                updated_at: new Date().toISOString()
-            };
-
-            if (id) {
-                const { error } = await db.from('blogs').update(blogData).eq('id', id);
-                if (error) throw error;
-            } else {
-                const { error } = await db.from('blogs').insert([blogData]);
-                if (error) throw error;
-            }
-
-            modalBlog.classList.remove('active');
-            fetchBlogs();
-            alert('Article saved successfully!');
-        } catch (err) {
-            console.error('Error saving blog:', err);
-            alert('Error saving blog: ' + err.message);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Publish Article';
-        }
-    });
-
-    window.editBlog = async (id) => {
-        try {
-            const { data: blog, error } = await db.from('blogs').select('*').eq('id', id).single();
-            if (error) throw error;
-
-            document.getElementById('blog-id').value = blog.id;
-            document.getElementById('blog-title').value = blog.title;
-            document.getElementById('blog-excerpt').value = blog.excerpt || '';
-            document.getElementById('blog-content').value = blog.content;
-            document.getElementById('blog-category').value = blog.category;
-            document.getElementById('blog-author').value = blog.author_name;
-
-            blogThumbUrlHidden.value = blog.thumbnail_url || '';
-            if (blog.thumbnail_url) {
-                blogThumbPreview.src = blog.thumbnail_url;
-                blogThumbPreview.style.display = 'block';
-            } else {
-                blogThumbPreview.style.display = 'none';
-            }
-
-            document.getElementById('blog-modal-title').textContent = 'Edit Blog Article';
-            modalBlog.classList.add('active');
-        } catch (err) {
-            alert('Error loading blog details: ' + err.message);
-        }
-    };
-
-    window.deleteBlog = async (id) => {
-        if (confirm('Are you sure you want to delete this article?')) {
-            const { error } = await db.from('blogs').delete().eq('id', id);
-            if (!error) fetchBlogs();
-            else alert('Error: ' + error.message);
-        }
-    };
 
     window.editCourse = async (id) => {
         try {
@@ -626,14 +529,17 @@
     };
 
     // Testimonials Management
-    document.getElementById('btn-add-testimonial').addEventListener('click', () => {
-        document.getElementById('testimonial-modal-title').textContent = 'New Testimonial';
-        testimonialForm.reset();
-        document.getElementById('testimonial-id').value = '';
-        testimonialAvatarPreview.style.display = 'none';
-        testimonialAvatarUrlHidden.value = '';
-        modalTestimonial.classList.add('active');
-    });
+    const btnAddTestimonial = document.getElementById('btn-add-testimonial');
+    if (btnAddTestimonial) {
+        btnAddTestimonial.addEventListener('click', () => {
+            document.getElementById('testimonial-modal-title').textContent = 'New Testimonial';
+            testimonialForm.reset();
+            document.getElementById('testimonial-id').value = '';
+            testimonialAvatarPreview.style.display = 'none';
+            testimonialAvatarUrlHidden.value = '';
+            modalTestimonial.classList.add('active');
+        });
+    }
 
     testimonialForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -748,14 +654,17 @@
     }
 
     // Gallery Management
-    document.getElementById('btn-add-gallery').addEventListener('click', () => {
-        document.getElementById('gallery-modal-title').textContent = 'New Gallery Item';
-        galleryForm.reset();
-        document.getElementById('gallery-id').value = '';
-        galleryImagePreview.style.display = 'none';
-        galleryImageUrlHidden.value = '';
-        modalGallery.classList.add('active');
-    });
+    const btnAddGallery = document.getElementById('btn-add-gallery');
+    if (btnAddGallery) {
+        btnAddGallery.addEventListener('click', () => {
+            document.getElementById('gallery-modal-title').textContent = 'New Gallery Item';
+            galleryForm.reset();
+            document.getElementById('gallery-id').value = '';
+            galleryImagePreview.style.display = 'none';
+            galleryImageUrlHidden.value = '';
+            modalGallery.classList.add('active');
+        });
+    }
 
     galleryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1178,35 +1087,6 @@
         }
     };
 
-    async function fetchBlogs() {
-        const tableBody = document.querySelector('#blogs-table tbody');
-        if (!tableBody) return;
-
-        try {
-            const { data: blogs, error } = await db.from('blogs').select('*').order('created_at', { ascending: false });
-            if (error) throw error;
-
-            if (blogs.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No articles found.</td></tr>';
-                return;
-            }
-
-            tableBody.innerHTML = blogs.map(blog => `
-                <tr>
-                    <td><img src="${blog.thumbnail_url || 'https://via.placeholder.com/100x60'}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='https://via.placeholder.com/100x60'"></td>
-                    <td><strong>${blog.title}</strong></td>
-                    <td><span class="badge badge--warning">${blog.category}</span></td>
-                    <td>${new Date(blog.created_at).toLocaleDateString()}</td>
-                    <td>
-                        <button class="btn btn--sm btn--outline" onclick="editBlog('${blog.id}')"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn--sm btn--danger" onclick="deleteBlog('${blog.id}')"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        } catch (err) {
-            console.error('Error fetching blogs:', err);
-        }
-    }
 
     async function fetchCoupons() {
         const tableBody = document.querySelector('#coupons-table tbody');
@@ -1258,23 +1138,5 @@
         }
     };
 
-    // Password Visibility Toggle
-    document.querySelectorAll('.password-toggle-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            const targetId = this.getAttribute('data-target');
-            const input = document.getElementById(targetId);
-            const icon = this.querySelector('i');
-
-            if (input && input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else if (input) {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-    });
 
 })();

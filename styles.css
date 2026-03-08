@@ -1517,6 +1517,12 @@ ul {
     width: 100%;
 }
 
+/* Hide Browser Native Reveal Icon */
+.input-wrapper input::-ms-reveal,
+.input-wrapper input::-ms-clear {
+    display: none;
+}
+
 .password-toggle-btn {
     position: absolute;
     right: 15px;
