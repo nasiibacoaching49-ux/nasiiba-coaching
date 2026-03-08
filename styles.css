@@ -1495,6 +1495,56 @@ ul {
     padding: 30px;
 }
 
+/* Password Toggle Styles */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper i.fas,
+.input-wrapper i.fab {
+    position: absolute;
+    left: 15px;
+    color: var(--gold);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.input-wrapper input {
+    padding-left: 45px !important;
+    padding-right: 45px !important;
+    width: 100%;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+    z-index: 3;
+}
+
+.password-toggle-btn:hover {
+    color: var(--gold);
+}
+
+.dashboard-form .input-wrapper i {
+    color: var(--gold);
+}
+
+[data-theme="dark"] .password-toggle-btn {
+    color: var(--gray-400);
+}
+
 .modal__text {
     font-size: 1rem;
     color: var(--gray-600);

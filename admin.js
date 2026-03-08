@@ -880,6 +880,14 @@
         }
     });
 
+    // Manual Enrollment from Courses View
+    const btnCourseManualEnroll = document.getElementById('btn-course-manual-enroll');
+    if (btnCourseManualEnroll) {
+        btnCourseManualEnroll.addEventListener('click', () => {
+            document.getElementById('btn-manual-enroll').click();
+        });
+    }
+
     manualEnrollForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = document.getElementById('manual-enroll-save-btn');
