@@ -961,7 +961,7 @@
         const tableBody = document.querySelector('#recent-orders-table tbody');
         try {
             const { data: orders, error } = await db.from('orders').select(`
-                id, amount, created_at, status, 
+                id, amount, created_at, status, payment_method,
                 students(full_name),
                 courses(title)
             `).order('created_at', { ascending: false }).limit(5);
@@ -980,7 +980,10 @@
                     <td>${order.courses ? order.courses.title : 'Deleted Course'}</td>
                     <td>$${order.amount}</td>
                     <td>${new Date(order.created_at).toLocaleDateString()}</td>
-                    <td><span class="badge badge--success">${order.status}</span></td>
+                    <td>
+                        <span class="badge badge--success">${order.status}</span>
+                        ${order.payment_method ? `<div style="font-size: 0.7rem; color: var(--text-light); margin-top: 4px;">via ${order.payment_method.replace('_', ' ')}</div>` : ''}
+                    </td>
                 </tr>
             `).join('');
         } catch (err) {
@@ -1022,7 +1025,7 @@
         const tableBody = document.querySelector('#orders-table tbody');
         try {
             const { data: orders, error } = await db.from('orders').select(`
-                id, amount, created_at, status, 
+                id, amount, created_at, status, payment_method,
                 students(full_name, email, whatsapp_number),
                 courses(title)
             `).order('created_at', { ascending: false });
@@ -1045,7 +1048,10 @@
                     <td>${order.courses ? order.courses.title : 'Deleted Course'}</td>
                     <td>$${order.amount}</td>
                     <td>${new Date(order.created_at).toLocaleDateString()}</td>
-                    <td><span class="badge badge--success">${order.status}</span></td>
+                    <td>
+                        <span class="badge badge--success">${order.status}</span>
+                        ${order.payment_method ? `<div style="font-size: 0.7rem; color: var(--text-light); margin-top: 4px;">via ${order.payment_method.replace('_', ' ')}</div>` : ''}
+                    </td>
                 </tr>
             `).join('');
         } catch (err) {
@@ -1242,5 +1248,24 @@
             if (!error) fetchCoupons();
         }
     };
+
+    // Password Visibility Toggle
+    document.querySelectorAll('.password-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+
+            if (input && input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else if (input) {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
 
 })();

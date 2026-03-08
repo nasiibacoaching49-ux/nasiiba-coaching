@@ -46,6 +46,7 @@ CREATE TABLE orders (
     course_id UUID REFERENCES courses(id),
     amount DECIMAL(10, 2),
     status TEXT DEFAULT 'completed', -- Can be 'pending' if using real payment gateway
+    payment_method TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -147,5 +148,20 @@ CREATE POLICY "Allow admin manage testimonials" ON testimonials
     USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
 
 CREATE POLICY "Allow admin manage galleries" ON galleries 
+    FOR ALL 
+    USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
+
+-- 11. Coupons Table
+CREATE TABLE coupons (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    code TEXT UNIQUE NOT NULL,
+    discount_percent INTEGER NOT NULL CHECK (discount_percent > 0 AND discount_percent <= 100),
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE coupons ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read active coupons" ON coupons FOR SELECT USING (is_active = true);
+CREATE POLICY "Allow admin manage coupons" ON coupons 
     FOR ALL 
     USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
