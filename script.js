@@ -224,11 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initDynamicContent() {
         if (!db) return;
         fetchDynamicCourses();
-        // NOTE: fetchDynamicReviews disabled — it replaces static HTML
-        // (which has data-i18n attributes for all 5 languages) with
-        // dynamic DB content that cannot be translated. Static testimonials
-        // are the correct approach for a multi-language site.
-        // fetchDynamicReviews();
+        fetchDynamicTestimonials();
+        fetchDynamicGallery();
     }
 
     async function fetchDynamicCourses() {
@@ -305,53 +302,77 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function fetchDynamicReviews() {
+    async function fetchDynamicTestimonials() {
         const swiperWrapper = document.querySelector('.testimonial-swiper .swiper-wrapper');
         if (!swiperWrapper) return;
 
         try {
-            const { data: reviews, error } = await db.from('reviews')
-                .select(`*, students(full_name)`)
-                .eq('status', 'approved')
+            const { data: testimonials, error } = await db.from('testimonials')
+                .select('*')
                 .order('created_at', { ascending: false });
 
             if (error) {
-                console.warn('[Reviews] Supabase error, keeping static testimonials:', error.message);
+                console.warn('[Testimonials] Supabase error, keeping static content:', error.message);
                 return;
             }
 
-            // Only replace static content if we actually have dynamic reviews
-            if (!reviews || reviews.length === 0) {
-                console.log('[Reviews] No dynamic reviews found, keeping static testimonials.');
+            if (!testimonials || testimonials.length === 0) {
+                console.log('[Testimonials] No dynamic content found, keeping static.');
                 return;
             }
 
-            swiperWrapper.innerHTML = reviews.map(review => `
+            swiperWrapper.innerHTML = testimonials.map(t => `
                 <div class="swiper-slide">
                     <div class="testimonial-card">
                         <div class="testimonial-card__header">
-                            <div class="testimonial-card__avatar-placeholder" style="width:60px; height:60px; background: var(--bg-alt); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--gold);">
-                                ${review.students ? review.students.full_name.charAt(0) : 'S'}
-                            </div>
+                            <img src="${t.avatar_url || 'https://via.placeholder.com/60x60'}" alt="${t.name}" class="testimonial-card__avatar">
                             <div>
-                                <h4 class="testimonial-card__name">${review.students ? review.students.full_name : 'Student'}</h4>
-                                <p class="testimonial-card__role">Verified Student</p>
+                                <h4 class="testimonial-card__name">${t.name}</h4>
+                                <p class="testimonial-card__role">${t.role || 'Verified Student'}</p>
                             </div>
                         </div>
-                        <div class="review-card__rating" style="margin-bottom: 10px; color: var(--gold);">
-                            ${Array(review.rating).fill('<i class="fas fa-star"></i>').join('')}
+                        <div class="testimonial-card__rating">
+                            ${Array(t.rating).fill('<i class="fas fa-star"></i>').join('')}
                         </div>
-                        <p class="testimonial-card__text">"${review.comment}"</p>
+                        <p class="testimonial-card__text">"${t.content}"</p>
                     </div>
                 </div>
             `).join('');
 
-            // Re-init Swiper if it exists
-            if (window.testimonialSwiper) {
-                window.testimonialSwiper.update();
-            }
+            if (window.testimonialSwiper) window.testimonialSwiper.update();
         } catch (err) {
-            console.error('Error loading reviews:', err);
+            console.error('Error loading testimonials:', err);
+        }
+    }
+
+    async function fetchDynamicGallery() {
+        const swiperWrapper = document.querySelector('.gallery-swiper .swiper-wrapper');
+        if (!swiperWrapper) return;
+
+        try {
+            const { data: gallery, error } = await db.from('galleries')
+                .select('*')
+                .eq('is_featured', true)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.warn('[Gallery] Supabase error, keeping static content:', error.message);
+                return;
+            }
+
+            if (!gallery || gallery.length === 0) return;
+
+            swiperWrapper.innerHTML = gallery.map(item => `
+                <div class="swiper-slide">
+                    <div class="gallery-slide-img">
+                        <img src="${item.image_url}" alt="${item.title}">
+                    </div>
+                </div>
+            `).join('');
+
+            if (window.gallerySwiper) window.gallerySwiper.update();
+        } catch (err) {
+            console.error('Error loading gallery:', err);
         }
     }
 
