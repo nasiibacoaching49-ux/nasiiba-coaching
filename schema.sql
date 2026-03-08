@@ -39,6 +39,20 @@ CREATE TABLE reviews (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow students to manage own reviews" ON reviews
+    FOR ALL
+    USING (auth.uid() = student_id);
+
+CREATE POLICY "Allow admin to manage all reviews" ON reviews
+    FOR ALL
+    USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
+
+CREATE POLICY "Allow public to read approved reviews" ON reviews
+    FOR SELECT
+    USING (status = 'approved');
+
 -- 4. Orders Table
 CREATE TABLE orders (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -49,6 +63,20 @@ CREATE TABLE orders (
     payment_method TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow admin to manage all orders" ON orders
+    FOR ALL
+    USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
+
+CREATE POLICY "Allow students to view own orders" ON orders
+    FOR SELECT
+    USING (auth.uid() = student_id);
+
+CREATE POLICY "Allow students to insert own orders" ON orders
+    FOR INSERT
+    WITH CHECK (auth.uid() = student_id);
 
 -- 5. Students Profile (if not already existing with full fields)
 -- The existing code mentions a 'students' table. Ensure it has the right fields.

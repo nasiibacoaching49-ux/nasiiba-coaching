@@ -100,10 +100,12 @@
         }
     }
 
-    logoutBtn.addEventListener('click', async () => {
-        if (db) await db.auth.signOut();
-        window.location.reload();
-    });
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            if (db) await db.auth.signOut();
+            window.location.reload();
+        });
+    }
 
     // Modals
     const modalCourse = document.getElementById('modal-course');
@@ -189,7 +191,9 @@
         modalLessonsList.appendChild(div);
     }
 
-    btnModalAddLesson.addEventListener('click', () => addLessonRow());
+    if (btnModalAddLesson) {
+        btnModalAddLesson.addEventListener('click', () => addLessonRow());
+    }
 
     // Coupon Buttons
     if (btnAddCoupon) {
@@ -865,20 +869,23 @@
     }
 
     // Manual Enrollment
-    document.getElementById('btn-manual-enroll').addEventListener('click', async () => {
-        // Populate courses dropdown
-        try {
-            const { data: courses, error } = await db.from('courses').select('id, title').order('title');
-            if (error) throw error;
+    const btnManualEnroll = document.getElementById('btn-manual-enroll');
+    if (btnManualEnroll) {
+        btnManualEnroll.addEventListener('click', async () => {
+            // Populate courses dropdown
+            try {
+                const { data: courses, error } = await db.from('courses').select('id, title').order('title');
+                if (error) throw error;
 
-            enrollCourseSelect.innerHTML = '<option value="">-- Choose Course --</option>' +
-                courses.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
+                enrollCourseSelect.innerHTML = '<option value="">-- Choose Course --</option>' +
+                    courses.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
 
-            modalManualEnroll.classList.add('active');
-        } catch (err) {
-            alert('Error loading courses: ' + err.message);
-        }
-    });
+                modalManualEnroll.classList.add('active');
+            } catch (err) {
+                alert('Error loading courses: ' + err.message);
+            }
+        });
+    }
 
     // Manual Enrollment from Courses View
     const btnCourseManualEnroll = document.getElementById('btn-course-manual-enroll');
@@ -888,51 +895,53 @@
         });
     }
 
-    manualEnrollForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = document.getElementById('manual-enroll-save-btn');
-        const email = document.getElementById('enroll-student-email').value;
-        const courseId = document.getElementById('enroll-course-id').value;
-        const amount = document.getElementById('enroll-amount').value;
+    if (manualEnrollForm) {
+        manualEnrollForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('manual-enroll-save-btn');
+            const email = document.getElementById('enroll-student-email').value;
+            const courseId = document.getElementById('enroll-course-id').value;
+            const amount = document.getElementById('enroll-amount').value;
 
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enrolling...';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enrolling...';
 
-        try {
-            // 1. Find student by email
-            const { data: student, error: studentError } = await db
-                .from('students')
-                .select('id')
-                .eq('email', email)
-                .single();
+            try {
+                // 1. Find student by email
+                const { data: student, error: studentError } = await db
+                    .from('students')
+                    .select('id')
+                    .eq('email', email)
+                    .single();
 
-            if (studentError || !student) {
-                throw new Error('Student with this email not found. Please ensure they have registered.');
+                if (studentError || !student) {
+                    throw new Error('Student with this email not found. Please ensure they have registered.');
+                }
+
+                // 2. Create Order
+                const { error: orderError } = await db.from('orders').insert([{
+                    student_id: student.id,
+                    course_id: courseId,
+                    amount: parseFloat(amount) || 0,
+                    status: 'completed',
+                    payment_method: 'admin_manual'
+                }]);
+
+                if (orderError) throw orderError;
+
+                alert('Student enrolled successfully!');
+                modalManualEnroll.classList.remove('active');
+                manualEnrollForm.reset();
+                fetchOrders();
+            } catch (err) {
+                console.error('Manual Enrollment Error:', err);
+                alert('Error: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Enroll Student';
             }
-
-            // 2. Create Order
-            const { error: orderError } = await db.from('orders').insert([{
-                student_id: student.id,
-                course_id: courseId,
-                amount: parseFloat(amount) || 0,
-                status: 'completed',
-                payment_method: 'admin_manual'
-            }]);
-
-            if (orderError) throw orderError;
-
-            alert('Student enrolled successfully!');
-            modalManualEnroll.classList.remove('active');
-            manualEnrollForm.reset();
-            fetchOrders();
-        } catch (err) {
-            console.error('Manual Enrollment Error:', err);
-            alert('Error: ' + err.message);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Enroll Student';
-        }
-    });
+        });
+    }
 
     // Data Fetching Functions
     async function fetchStats() {

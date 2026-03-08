@@ -51,15 +51,21 @@
         });
     });
 
-    document.getElementById('to-register').addEventListener('click', (e) => {
-        e.preventDefault();
-        showView('register');
-    });
+    const toRegister = document.getElementById('to-register');
+    if (toRegister) {
+        toRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('register');
+        });
+    }
 
-    document.getElementById('to-login').addEventListener('click', (e) => {
-        e.preventDefault();
-        showView('login');
-    });
+    const toLogin = document.getElementById('to-login');
+    if (toLogin) {
+        toLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('login');
+        });
+    }
 
     // --- AUTH LOGIC ---
 
@@ -309,34 +315,38 @@
     // --- FORM SUBMISSIONS ---
 
     // Profile Update
-    document.getElementById('profile-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('profile-name').value;
-        const whatsapp = document.getElementById('profile-whatsapp').value;
+    const profileForm = document.getElementById('profile-form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('profile-name').value;
+            const whatsapp = document.getElementById('profile-whatsapp').value;
 
-        const submitBtn = e.target.querySelector('button');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            const submitBtn = e.target.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
-        try {
-            const { data: { user } } = await db.auth.getUser();
-            const { error } = await db.from('students').update({
-                full_name: name,
-                whatsapp_number: whatsapp
-            }).eq('id', user.id);
+            try {
+                const { data: { user } } = await db.auth.getUser();
+                const { error } = await db.from('students').update({
+                    full_name: name,
+                    whatsapp_number: whatsapp
+                }).eq('id', user.id);
 
-            if (error) throw error;
+                if (error) throw error;
 
-            // Update UI
-            document.getElementById('dash-user-name').textContent = name;
-            alert('Profile updated successfully!');
-        } catch (err) {
-            alert('Error updating profile: ' + err.message);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Update Profile';
-        }
-    });
+                // Update UI
+                const dashUserName = document.getElementById('dash-user-name');
+                if (dashUserName) dashUserName.textContent = name;
+                alert('Profile updated successfully!');
+            } catch (err) {
+                alert('Error updating profile: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Update Profile';
+            }
+        });
+    }
 
     // Password Visibility Toggle
     document.querySelectorAll('.password-toggle-btn').forEach(btn => {
@@ -358,40 +368,46 @@
     });
 
     // Password Update
-    document.getElementById('password-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const newPass = document.getElementById('new-password').value;
-        const confirmPass = document.getElementById('confirm-password').value;
+    const passwordForm = document.getElementById('password-form');
+    if (passwordForm) {
+        passwordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
 
-        if (newPass !== confirmPass) {
-            alert('Passwords do not match.');
-            return;
-        }
+            if (newPass !== confirmPass) {
+                alert('Passwords do not match.');
+                return;
+            }
 
-        const submitBtn = e.target.querySelector('button');
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            const submitBtn = e.target.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
 
-        try {
-            const { error } = await db.auth.updateUser({ password: newPass });
-            if (error) throw error;
-            alert('Password changed successfully!');
-            e.target.reset();
-        } catch (err) {
-            alert('Error updating password: ' + err.message);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Change Password';
-        }
-    });
+            try {
+                const { error } = await db.auth.updateUser({ password: newPass });
+                if (error) throw error;
+                alert('Password changed successfully!');
+                e.target.reset();
+            } catch (err) {
+                alert('Error updating password: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Change Password';
+            }
+        });
+    }
 
     // Logout
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-        if (db) {
-            await db.auth.signOut();
-            window.location.reload();
-        }
-    });
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            if (db) {
+                await db.auth.signOut();
+                window.location.reload();
+            }
+        });
+    }
 
     // Init
     if (document.readyState === 'loading') {
