@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newPrice = originalPriceValue - discountAmount;
 
                 coursePrice.textContent = '$' + newPrice.toFixed(2);
-                couponMsg.textContent = `Success! ${code} applied (${discountPercent}% off)`;
+                couponMsg.textContent = `Hambalyo! ${code} waa la aqbalay (${discountPercent}% off)`; // Congrats! code accepted
                 couponMsg.className = 'coupon-msg success';
             } catch (err) {
                 console.error('[Coupon] Error:', err);
