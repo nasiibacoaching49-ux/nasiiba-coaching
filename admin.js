@@ -35,6 +35,8 @@
         if (viewName === 'reviews') fetchReviews();
         if (viewName === 'affiliates') fetchAffiliates();
         if (viewName === 'blogs') fetchBlogs();
+        if (viewName === 'testimonials') fetchTestimonials();
+        if (viewName === 'galleries') fetchGalleries();
     }
 
     navItems.forEach(item => {
@@ -118,6 +120,25 @@
     const blogThumbPreview = document.getElementById('blog-thumb-preview');
     const blogThumbUrlHidden = document.getElementById('blog-thumb-url');
 
+    // Testimonials UI Elements
+    const modalTestimonial = document.getElementById('modal-testimonial');
+    const testimonialForm = document.getElementById('testimonial-form');
+    const testimonialAvatarFile = document.getElementById('testimonial-avatar-file');
+    const testimonialAvatarPreview = document.getElementById('testimonial-avatar-preview');
+    const testimonialAvatarUrlHidden = document.getElementById('testimonial-avatar-url');
+
+    // Gallery UI Elements
+    const modalGallery = document.getElementById('modal-gallery');
+    const galleryForm = document.getElementById('gallery-form');
+    const galleryImageFile = document.getElementById('gallery-image-file');
+    const galleryImagePreview = document.getElementById('gallery-image-preview');
+    const galleryImageUrlHidden = document.getElementById('gallery-image-url');
+
+    // Manual Enrollment UI Elements
+    const modalManualEnroll = document.getElementById('modal-manual-enroll');
+    const manualEnrollForm = document.getElementById('manual-enroll-form');
+    const enrollCourseSelect = document.getElementById('enroll-course-id');
+
     window.closeAdminModal = (modalId) => {
         document.getElementById(modalId).classList.remove('active');
     };
@@ -189,6 +210,30 @@
         }
     });
 
+    testimonialAvatarFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                testimonialAvatarPreview.src = e.target.result;
+                testimonialAvatarPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    galleryImageFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                galleryImagePreview.src = e.target.result;
+                galleryImagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
     // Helper: Upload Image to Supabase
     async function uploadThumbnail(file) {
         console.log('[Storage] Starting thumbnail upload:', file.name);
@@ -227,6 +272,20 @@
             console.error('[Storage] Blog thumbnail upload error:', error);
             throw error;
         }
+
+        return publicUrl;
+    }
+
+    async function uploadGenericImage(file, folder = 'general') {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+        const filePath = `${folder}/${fileName}`;
+
+        const { data, error } = await db.storage
+            .from('thumbnails')
+            .upload(filePath, file);
+
+        if (error) throw error;
 
         const { data: { publicUrl } } = db.storage
             .from('thumbnails')
@@ -511,6 +570,311 @@
         }
     };
 
+    // Testimonials Management
+    document.getElementById('btn-add-testimonial').addEventListener('click', () => {
+        document.getElementById('testimonial-modal-title').textContent = 'New Testimonial';
+        testimonialForm.reset();
+        document.getElementById('testimonial-id').value = '';
+        testimonialAvatarPreview.style.display = 'none';
+        testimonialAvatarUrlHidden.value = '';
+        modalTestimonial.classList.add('active');
+    });
+
+    testimonialForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('testimonial-save-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        const id = document.getElementById('testimonial-id').value;
+        const name = document.getElementById('testimonial-name').value;
+        const role = document.getElementById('testimonial-role').value;
+        const rating = document.getElementById('testimonial-rating').value;
+        const content = document.getElementById('testimonial-content').value;
+
+        try {
+            let finalAvatarUrl = testimonialAvatarUrlHidden.value;
+            const avatarFile = testimonialAvatarFile.files[0];
+            if (avatarFile) {
+                finalAvatarUrl = await uploadGenericImage(avatarFile, 'avatars');
+            }
+
+            const testimonialData = {
+                name,
+                role,
+                rating: parseInt(rating),
+                content,
+                avatar_url: finalAvatarUrl
+            };
+
+            if (id) {
+                const { error } = await db.from('testimonials').update(testimonialData).eq('id', id);
+                if (error) throw error;
+            } else {
+                const { error } = await db.from('testimonials').insert([testimonialData]);
+                if (error) throw error;
+            }
+
+            modalTestimonial.classList.remove('active');
+            fetchTestimonials();
+            alert('Testimonial saved successfully!');
+        } catch (err) {
+            console.error('Error saving testimonial:', err);
+            alert('Error saving testimonial: ' + err.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Save Testimonial';
+        }
+    });
+
+    window.editTestimonial = async (id) => {
+        try {
+            const { data: t, error } = await db.from('testimonials').select('*').eq('id', id).single();
+            if (error) throw error;
+
+            document.getElementById('testimonial-id').value = t.id;
+            document.getElementById('testimonial-name').value = t.name;
+            document.getElementById('testimonial-role').value = t.role || 'Student';
+            document.getElementById('testimonial-rating').value = t.rating || 5;
+            document.getElementById('testimonial-content').value = t.content;
+
+            testimonialAvatarUrlHidden.value = t.avatar_url || '';
+            if (t.avatar_url) {
+                testimonialAvatarPreview.src = t.avatar_url;
+                testimonialAvatarPreview.style.display = 'block';
+            } else {
+                testimonialAvatarPreview.style.display = 'none';
+            }
+
+            document.getElementById('testimonial-modal-title').textContent = 'Edit Testimonial';
+            modalTestimonial.classList.add('active');
+        } catch (err) {
+            alert('Error loading testimonial: ' + err.message);
+        }
+    };
+
+    window.deleteTestimonial = async (id) => {
+        if (confirm('Delete this testimonial?')) {
+            const { error } = await db.from('testimonials').delete().eq('id', id);
+            if (!error) fetchTestimonials();
+            else alert('Error: ' + error.message);
+        }
+    };
+
+    async function fetchTestimonials() {
+        const tableBody = document.querySelector('#testimonials-table tbody');
+        if (!tableBody) return;
+
+        try {
+            const { data: testimonials, error } = await db.from('testimonials').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (testimonials.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">No testimonials found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = testimonials.map(t => `
+                <tr>
+                    <td><img src="${t.avatar_url || 'images/avatar-placeholder.png'}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+                    <td><strong>${t.name}</strong></td>
+                    <td>${t.role}</td>
+                    <td>${'★'.repeat(t.rating)}</td>
+                    <td>${new Date(t.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn--sm btn--outline" onclick="editTestimonial('${t.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn--sm btn--danger" onclick="deleteTestimonial('${t.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Error fetching testimonials:', err);
+        }
+    }
+
+    // Gallery Management
+    document.getElementById('btn-add-gallery').addEventListener('click', () => {
+        document.getElementById('gallery-modal-title').textContent = 'New Gallery Item';
+        galleryForm.reset();
+        document.getElementById('gallery-id').value = '';
+        galleryImagePreview.style.display = 'none';
+        galleryImageUrlHidden.value = '';
+        modalGallery.classList.add('active');
+    });
+
+    galleryForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('gallery-save-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        const id = document.getElementById('gallery-id').value;
+        const title = document.getElementById('gallery-title').value;
+        const category = document.getElementById('gallery-category').value;
+        const is_featured = document.getElementById('gallery-featured').checked;
+
+        try {
+            let finalImageUrl = galleryImageUrlHidden.value;
+            const imageFile = galleryImageFile.files[0];
+            if (imageFile) {
+                finalImageUrl = await uploadGenericImage(imageFile, 'gallery');
+            }
+
+            if (!finalImageUrl) throw new Error('Please select an image.');
+
+            const galleryData = {
+                title,
+                category,
+                is_featured,
+                image_url: finalImageUrl
+            };
+
+            if (id) {
+                const { error } = await db.from('galleries').update(galleryData).eq('id', id);
+                if (error) throw error;
+            } else {
+                const { error } = await db.from('galleries').insert([galleryData]);
+                if (error) throw error;
+            }
+
+            modalGallery.classList.remove('active');
+            fetchGalleries();
+            alert('Gallery item saved successfully!');
+        } catch (err) {
+            console.error('Error saving gallery item:', err);
+            alert('Error saving gallery item: ' + err.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Save Gallery Item';
+        }
+    });
+
+    window.editGallery = async (id) => {
+        try {
+            const { data: g, error } = await db.from('galleries').select('*').eq('id', id).single();
+            if (error) throw error;
+
+            document.getElementById('gallery-id').value = g.id;
+            document.getElementById('gallery-title').value = g.title;
+            document.getElementById('gallery-category').value = g.category || 'Academy';
+            document.getElementById('gallery-featured').checked = g.is_featured || false;
+
+            galleryImageUrlHidden.value = g.image_url || '';
+            if (g.image_url) {
+                galleryImagePreview.src = g.image_url;
+                galleryImagePreview.style.display = 'block';
+            } else {
+                galleryImagePreview.style.display = 'none';
+            }
+
+            document.getElementById('gallery-modal-title').textContent = 'Edit Gallery Item';
+            modalGallery.classList.add('active');
+        } catch (err) {
+            alert('Error loading gallery item: ' + err.message);
+        }
+    };
+
+    window.deleteGallery = async (id) => {
+        if (confirm('Delete this gallery item?')) {
+            const { error } = await db.from('galleries').delete().eq('id', id);
+            if (!error) fetchGalleries();
+            else alert('Error: ' + error.message);
+        }
+    };
+
+    async function fetchGalleries() {
+        const tableBody = document.querySelector('#galleries-table tbody');
+        if (!tableBody) return;
+
+        try {
+            const { data: items, error } = await db.from('galleries').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (items.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">No gallery items found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = items.map(g => `
+                <tr>
+                    <td><img src="${g.image_url}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
+                    <td><strong>${g.title}</strong></td>
+                    <td><span class="badge badge--warning">${g.category}</span></td>
+                    <td>${g.is_featured ? '<i class="fas fa-check-circle" style="color: var(--gold);"></i>' : '-'}</td>
+                    <td>${new Date(g.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn--sm btn--outline" onclick="editGallery('${g.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn--sm btn--danger" onclick="deleteGallery('${g.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Error fetching galleries:', err);
+        }
+    }
+
+    // Manual Enrollment
+    document.getElementById('btn-manual-enroll').addEventListener('click', async () => {
+        // Populate courses dropdown
+        try {
+            const { data: courses, error } = await db.from('courses').select('id, title').order('title');
+            if (error) throw error;
+
+            enrollCourseSelect.innerHTML = '<option value="">-- Choose Course --</option>' +
+                courses.map(c => `<option value="${c.id}">${c.title}</option>`).join('');
+
+            modalManualEnroll.classList.add('active');
+        } catch (err) {
+            alert('Error loading courses: ' + err.message);
+        }
+    });
+
+    manualEnrollForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('manual-enroll-save-btn');
+        const email = document.getElementById('enroll-student-email').value;
+        const courseId = document.getElementById('enroll-course-id').value;
+        const amount = document.getElementById('enroll-amount').value;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enrolling...';
+
+        try {
+            // 1. Find student by email
+            const { data: student, error: studentError } = await db
+                .from('students')
+                .select('id')
+                .eq('email', email)
+                .single();
+
+            if (studentError || !student) {
+                throw new Error('Student with this email not found. Please ensure they have registered.');
+            }
+
+            // 2. Create Order
+            const { error: orderError } = await db.from('orders').insert([{
+                student_id: student.id,
+                course_id: courseId,
+                amount: parseFloat(amount) || 0,
+                status: 'completed',
+                payment_method: 'admin_manual'
+            }]);
+
+            if (orderError) throw orderError;
+
+            alert('Student enrolled successfully!');
+            modalManualEnroll.classList.remove('active');
+            manualEnrollForm.reset();
+            fetchOrders();
+        } catch (err) {
+            console.error('Manual Enrollment Error:', err);
+            alert('Error: ' + err.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Enroll Student';
+        }
+    });
+
     // Data Fetching Functions
     async function fetchStats() {
         if (!db) return;
@@ -600,7 +964,7 @@
         try {
             const { data: orders, error } = await db.from('orders').select(`
                 id, amount, created_at, status, 
-                students(full_name),
+                students(full_name, email, whatsapp_number),
                 courses(title)
             `).order('created_at', { ascending: false });
 
@@ -614,7 +978,11 @@
             tableBody.innerHTML = orders.map(order => `
                 <tr>
                     <td>#${order.id.slice(0, 8)}</td>
-                    <td>${order.students ? order.students.full_name : 'Guest'}</td>
+                    <td>
+                        <div><strong>${order.students ? order.students.full_name : 'Guest'}</strong></div>
+                        <div style="font-size: 0.75rem; color: var(--text-light);">${order.students ? order.students.email : ''}</div>
+                        <div style="font-size: 0.75rem; color: var(--gold);">${order.students ? (order.students.whatsapp_number || '') : ''}</div>
+                    </td>
                     <td>${order.courses ? order.courses.title : 'Deleted Course'}</td>
                     <td>$${order.amount}</td>
                     <td>${new Date(order.created_at).toLocaleDateString()}</td>

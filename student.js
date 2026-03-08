@@ -150,6 +150,8 @@
         const { data: { user }, error: userError } = await db.auth.getUser();
         if (userError) console.error('getUser Error:', userError);
 
+        const params = new URLSearchParams(window.location.search);
+
         if (user) {
             console.log('User session active:', user.id);
             try {
@@ -164,11 +166,49 @@
                     fetchCertificates(user.id);
 
                     // Handle dynamic tab selection from URL
-                    const params = new URLSearchParams(window.location.search);
                     const targetTab = params.get('tab');
                     if (targetTab) {
                         const tabBtn = document.querySelector(`.nav-item[data-tab="${targetTab}"]`);
                         if (tabBtn) tabBtn.click();
+                    }
+
+                    // Handle Payment Success Redirects
+                    const sessionId = params.get('session_id');
+                    const paymentStatus = params.get('payment');
+
+                    if (sessionId || paymentStatus === 'success') {
+                        console.log('[Payment] Success detected, processing enrollment...');
+                        try {
+                            const courseId = params.get('courseId');
+                            if (courseId) {
+                                const { data: existingOrder } = await db.from('orders')
+                                    .select('*')
+                                    .eq('student_id', user.id)
+                                    .eq('course_id', courseId)
+                                    .eq('status', 'completed')
+                                    .single();
+
+                                if (!existingOrder) {
+                                    // Create the order manually if it doesn't exist
+                                    const { error: orderErr } = await db.from('orders').insert([{
+                                        student_id: user.id,
+                                        course_id: courseId,
+                                        amount: 10,
+                                        status: 'completed',
+                                        payment_method: sessionId ? 'stripe' : 'waafi'
+                                    }]);
+
+                                    if (!orderErr) {
+                                        console.log('[Payment] Manual order created successfully.');
+                                        fetchStudentCourses(user.id);
+                                    }
+                                }
+                            }
+                            // Clear URL params to avoid re-processing
+                            window.history.replaceState({}, document.title, window.location.pathname + (targetTab ? `?tab=${targetTab}` : ''));
+                        } catch (pErr) {
+                            console.error('[Payment] Error processing enrollment:', pErr);
+                        }
                     }
                 } else {
                     console.warn('No student profile found for user UID');
@@ -181,7 +221,6 @@
                 showView('login');
             }
         } else {
-            const params = new URLSearchParams(window.location.search);
             if (params.get('view') === 'register' || window.location.hash === '#register') {
                 showView('register');
             } else {

@@ -112,6 +112,40 @@ CREATE TABLE referrals (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-ALTER TABLE referrals ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public insert referrals" ON referrals FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public read referrals" ON referrals FOR SELECT USING (true);
+-- 9. Testimonials Table
+CREATE TABLE testimonials (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    role TEXT DEFAULT 'Student',
+    content TEXT NOT NULL,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5) DEFAULT 5,
+    avatar_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 10. Galleries Table
+CREATE TABLE galleries (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    category TEXT DEFAULT 'Academy',
+    is_featured BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS for new tables
+ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
+ALTER TABLE galleries ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access
+CREATE POLICY "Allow public read access testimonials" ON testimonials FOR SELECT USING (true);
+CREATE POLICY "Allow public read access galleries" ON galleries FOR SELECT USING (true);
+
+-- Allow admin manage access
+CREATE POLICY "Allow admin manage testimonials" ON testimonials 
+    FOR ALL 
+    USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');
+
+CREATE POLICY "Allow admin manage galleries" ON galleries 
+    FOR ALL 
+    USING (auth.jwt() ->> 'email' = 'info@nasiibacoaching.com');

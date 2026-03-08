@@ -333,6 +333,12 @@
             <a href="#blogs" class="admin-nav__item" data-view="blogs">
                 <i class="fas fa-newspaper"></i> Manage Blogs
             </a>
+            <a href="#testimonials" class="admin-nav__item" data-view="testimonials">
+                <i class="fas fa-quote-left"></i> Testimonials
+            </a>
+            <a href="#galleries" class="admin-nav__item" data-view="galleries">
+                <i class="fas fa-images"></i> Galleries
+            </a>
         </nav>
         <div class="admin-sidebar__footer">
             <button id="admin-logout" class="admin-nav__item"
@@ -472,6 +478,8 @@
                     <h1>Student Orders</h1>
                     <p>Track all course purchases and enrollments.</p>
                 </div>
+                <button class="btn btn--navy" id="btn-manual-enroll"><i class="fas fa-user-plus"></i> Manual
+                    Enrollment</button>
             </header>
             <div class="admin-card">
                 <div class="table-responsive">
@@ -534,15 +542,59 @@
                 <button class="btn btn--navy" id="btn-add-blog"><i class="fas fa-plus"></i> New Article</button>
             </header>
 
-            <div id="blogs-container" class="admin-card">
+        </div>
+        </div>
+
+        <!-- Testimonials View -->
+        <div id="view-testimonials" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Testimonials</h1>
+                    <p>Manage student success stories and reviews.</p>
+                </div>
+                <button class="btn btn--navy" id="btn-add-testimonial"><i class="fas fa-plus"></i> New
+                    Testimonial</button>
+            </header>
+
+            <div id="testimonials-container" class="admin-card">
                 <div class="table-responsive">
-                    <table id="blogs-table">
+                    <table id="testimonials-table">
                         <thead>
                             <tr>
-                                <th>Thumbnail</th>
+                                <th>Avatar</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Rating</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galleries View -->
+        <div id="view-galleries" class="view-content" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header__title">
+                    <h1>Galleries</h1>
+                    <p>Manage course and academy photos.</p>
+                </div>
+                <button class="btn btn--navy" id="btn-add-gallery"><i class="fas fa-plus"></i> New Gallery Item</button>
+            </header>
+
+            <div id="galleries-container" class="admin-card">
+                <div class="table-responsive">
+                    <table id="galleries-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
                                 <th>Title</th>
                                 <th>Category</th>
-                                <th>Date</th>
+                                <th>Featured</th>
+                                <th>Created</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -709,6 +761,129 @@
                     <div style="margin-top: 30px;">
                         <button type="submit" class="btn btn--navy btn--full" id="blog-save-btn">Publish
                             Article</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Manual Enrollment -->
+    <div id="modal-manual-enroll" class="modal-overlay">
+        <div class="modal" style="max-width: 500px;">
+            <button class="modal__close" onclick="closeAdminModal('modal-manual-enroll')"><i
+                    class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <h3 class="modal__title">Manual Enrollment</h3>
+            </div>
+            <div class="modal__body">
+                <form id="manual-enroll-form">
+                    <div class="form-group">
+                        <label>Student Email</label>
+                        <input type="email" id="enroll-student-email" placeholder="Enter student email" required>
+                        <p style="font-size: 0.75rem; color: var(--text-light); margin-top: 5px;">Student must have a
+                            registered account.</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Course</label>
+                        <select id="enroll-course-id" required
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200);">
+                            <option value="">-- Choose Course --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Order Amount ($)</label>
+                        <input type="number" id="enroll-amount" value="0.00" step="0.01">
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn btn--navy btn--full" id="manual-enroll-save-btn">Enroll
+                            Student</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Testimonial Form -->
+    <div id="modal-testimonial" class="modal-overlay">
+        <div class="modal" style="max-width: 600px;">
+            <button class="modal__close" onclick="closeAdminModal('modal-testimonial')"><i
+                    class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <h3 class="modal__title" id="testimonial-modal-title">New Testimonial</h3>
+            </div>
+            <div class="modal__body">
+                <form id="testimonial-form">
+                    <input type="hidden" id="testimonial-id">
+                    <div class="form-group">
+                        <label>Student Name</label>
+                        <input type="text" id="testimonial-name" placeholder="Enter student name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" id="testimonial-role" value="Student">
+                    </div>
+                    <div class="form-group">
+                        <label>Rating (1-5)</label>
+                        <input type="number" id="testimonial-rating" min="1" max="5" value="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Testimonial Content</label>
+                        <textarea id="testimonial-content" required
+                            style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--gray-200); height: 120px; font-family: inherit; font-size: 1rem; line-height: 1.6;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Avatar / Profile Image</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="file" id="testimonial-avatar-file" accept="image/*" style="padding: 5px;">
+                            <img id="testimonial-avatar-preview" src=""
+                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; display: none; border: 1px solid var(--gray-200);">
+                            <input type="hidden" id="testimonial-avatar-url">
+                        </div>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn btn--navy btn--full" id="testimonial-save-btn">Save
+                            Testimonial</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Gallery Form -->
+    <div id="modal-gallery" class="modal-overlay">
+        <div class="modal" style="max-width: 600px;">
+            <button class="modal__close" onclick="closeAdminModal('modal-gallery')"><i
+                    class="fas fa-times"></i></button>
+            <div class="modal__header">
+                <h3 class="modal__title" id="gallery-modal-title">New Gallery Item</h3>
+            </div>
+            <div class="modal__body">
+                <form id="gallery-form">
+                    <input type="hidden" id="gallery-id">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="gallery-title" placeholder="Enter image title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="gallery-category" value="Academy">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 10px 0;">
+                        <input type="checkbox" id="gallery-featured" style="width: auto;">
+                        <label style="margin-bottom: 0;">Featured in homepage gallery?</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Gallery Image</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="file" id="gallery-image-file" accept="image/*" style="padding: 5px;">
+                            <img id="gallery-image-preview" src=""
+                                style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; display: none; border: 1px solid var(--gray-200);">
+                            <input type="hidden" id="gallery-image-url">
+                        </div>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn btn--navy btn--full" id="gallery-save-btn">Save Gallery
+                            Item</button>
                     </div>
                 </form>
             </div>
