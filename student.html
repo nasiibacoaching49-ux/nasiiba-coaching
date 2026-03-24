@@ -85,8 +85,18 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="form-group" style="text-align: right; margin-top: -10px; margin-bottom: 20px;">
+                            <a href="#" id="to-forgot" style="font-size: 0.85rem; color: var(--gold); text-decoration: none;">Forgot Password?</a>
+                        </div>
                         <button type="submit" class="btn btn--navy btn--full" id="login-btn">
                             Sign In <i class="fas fa-sign-in-alt"></i>
+                        </button>
+                        
+                        <div class="auth-divider"><span>OR</span></div>
+                        
+                        <button type="button" class="btn btn--outline btn--full google-signin-btn">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width: 18px; margin-right: 10px;">
+                            Continue with Google
                         </button>
                     </form>
 
@@ -138,10 +148,43 @@
                         <button type="submit" class="btn btn--navy btn--full" id="register-btn">
                             Create Account <i class="fas fa-user-check"></i>
                         </button>
+
+                        <div class="auth-divider"><span>OR</span></div>
+                        
+                        <button type="button" class="btn btn--outline btn--full google-signin-btn">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width: 18px; margin-right: 10px;">
+                            Continue with Google
+                        </button>
                     </form>
 
                     <p class="auth-card__footer">
-                        Already have an account? <a href="#" id="to-login">Sign in instead</a>
+                        Already have an account? <a href="#" id="to-login-from-reg">Sign in instead</a>
+                    </p>
+                </div>
+
+                <!-- Forgot Password View -->
+                <div id="forgot-view" style="display: none;">
+                    <div class="auth-card__header">
+                        <i class="fas fa-key auth-card__icon"></i>
+                        <h1 class="auth-card__title">Reset Password</h1>
+                        <p class="auth-card__subtitle">Enter your email address and we'll send you a link to reset your password.</p>
+                    </div>
+
+                    <form id="forgot-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="forgot-email">Email Address</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="forgot-email" required placeholder="name@example.com">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn--navy btn--full" id="forgot-btn">
+                            Send Reset Link <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+
+                    <p class="auth-card__footer">
+                        Remembered your password? <a href="#" id="to-login-from-forgot">Back to login</a>
                     </p>
                 </div>
 

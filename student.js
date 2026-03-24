@@ -11,6 +11,7 @@
     // View & Tab Elements
     const loginView = document.getElementById('login-view');
     const registerView = document.getElementById('register-view');
+    const forgotView = document.getElementById('forgot-view');
     const dashboardView = document.getElementById('dashboard-view');
     const navItems = document.querySelectorAll('.nav-item[data-tab]');
     const dashboardTabs = document.querySelectorAll('.dashboard-tab');
@@ -41,6 +42,7 @@
     function showView(viewId) {
         loginView.style.display = viewId === 'login' ? 'block' : 'none';
         registerView.style.display = viewId === 'register' ? 'block' : 'none';
+        forgotView.style.display = viewId === 'forgot' ? 'block' : 'none';
         dashboardView.style.display = viewId === 'dashboard' ? 'block' : 'none';
 
         // Adjust container width for dashboard
@@ -86,6 +88,30 @@
         toLogin.addEventListener('click', (e) => {
             e.preventDefault();
             showView('login');
+        });
+    }
+
+    const toLoginFromReg = document.getElementById('to-login-from-reg');
+    if (toLoginFromReg) {
+        toLoginFromReg.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('login');
+        });
+    }
+
+    const toLoginFromForgot = document.getElementById('to-login-from-forgot');
+    if (toLoginFromForgot) {
+        toLoginFromForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('login');
+        });
+    }
+
+    const toForgot = document.getElementById('to-forgot');
+    if (toForgot) {
+        toForgot.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView('forgot');
         });
     }
 
@@ -172,6 +198,57 @@
             }
         });
     }
+
+    // Forgot Password
+    const forgotForm = document.getElementById('forgot-form');
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+
+            if (!db) return;
+
+            const submitBtn = document.getElementById('forgot-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            try {
+                const { error } = await db.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/student.html?view=dashboard&tab=security',
+                });
+
+                if (error) throw error;
+                alert('Password reset link sent! Please check your email.');
+                showView('login');
+            } catch (err) {
+                console.error('Forgot password error:', err);
+                alert('Error: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Send Reset Link <i class="fas fa-paper-plane"></i>';
+            }
+        });
+    }
+
+    // Google Sign-In
+    const googleBtns = document.querySelectorAll('.google-signin-btn');
+    googleBtns.forEach(btn => {
+        btn.addEventListener('click', async () => {
+            if (!db) return;
+            try {
+                const { error } = await db.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/student.html'
+                    }
+                });
+                if (error) throw error;
+            } catch (err) {
+                console.error('Google Sign-In Error:', err);
+                alert('Sign-in failed: ' + err.message);
+            }
+        });
+    });
 
     // --- DASHBOARD DATA ---
 

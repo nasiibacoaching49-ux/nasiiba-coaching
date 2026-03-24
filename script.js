@@ -591,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon.classList.add('active');
 
                 const method = icon.getAttribute('data-method');
-                if (method === 'evc' || method === 'edahab') {
+                if (method === 'evc' || method === 'zaad' || method === 'sahal') {
                     phoneInputSection.style.display = 'block';
                 } else {
                     phoneInputSection.style.display = 'none';
@@ -651,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 proceedBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
                 try {
-                    if (activeMethod === 'evc' || activeMethod === 'edahab') {
+                    if (activeMethod === 'evc' || activeMethod === 'zaad' || activeMethod === 'sahal') {
                         const phone = document.getElementById('payer-phone').value.trim();
                         if (!phone || phone.length < 9) {
                             alert('Please enter a valid Somali phone number (9 digits).');
