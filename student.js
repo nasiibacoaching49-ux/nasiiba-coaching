@@ -1,12 +1,7 @@
-/**
- * Nasiiba Coaching — Student Portal Logic
- * Handles student registration, login, and full dashboard features.
- */
-
 (function () {
     'use strict';
 
-    const db = window.supabaseClient;
+    let db = window.supabaseClient;
 
     // View & Tab Elements
     const loginView = document.getElementById('login-view');
@@ -16,368 +11,243 @@
     const navItems = document.querySelectorAll('.nav-item[data-tab]');
     const dashboardTabs = document.querySelectorAll('.dashboard-tab');
 
-    // Password Visibility Toggle (Event Delegation) - At Top to avoid script-stop issues
-    document.addEventListener('click', function (e) {
-        const toggleBtn = e.target.closest('.password-toggle-btn');
-        if (!toggleBtn) return;
+    // Password Visibility Toggle Logic
+    function initPasswordToggles() {
+        console.log('[Auth] Initializing password toggles...');
+        document.addEventListener('click', function (e) {
+            const toggleBtn = e.target.closest('.password-toggle-btn');
+            if (!toggleBtn) return;
 
-        const targetId = toggleBtn.getAttribute('data-target');
-        const input = document.getElementById(targetId);
-        const icon = toggleBtn.querySelector('i');
+            e.preventDefault(); // Prevent accidental form submit
+            const targetId = toggleBtn.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = toggleBtn.querySelector('i');
 
-        if (input) {
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+            if (input) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
             } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                console.error('[Auth] Password input not found for ID:', targetId);
             }
-        }
-    });
+        });
+    }
 
     // View Switching
     function showView(viewId) {
-        loginView.style.display = viewId === 'login' ? 'block' : 'none';
-        registerView.style.display = viewId === 'register' ? 'block' : 'none';
-        forgotView.style.display = viewId === 'forgot' ? 'block' : 'none';
-        dashboardView.style.display = viewId === 'dashboard' ? 'block' : 'none';
+        if (loginView) loginView.style.display = viewId === 'login' ? 'block' : 'none';
+        if (registerView) registerView.style.display = viewId === 'register' ? 'block' : 'none';
+        if (forgotView) forgotView.style.display = viewId === 'forgot' ? 'block' : 'none';
+        if (dashboardView) dashboardView.style.display = viewId === 'dashboard' ? 'block' : 'none';
 
         // Adjust container width for dashboard
         const authContainer = document.getElementById('auth-container');
-        if (viewId === 'dashboard') {
-            authContainer.style.maxWidth = '1000px';
-            authContainer.style.padding = '0';
-            authContainer.style.background = 'transparent';
-            authContainer.style.boxShadow = 'none';
-        } else {
-            authContainer.style.maxWidth = '500px';
-            authContainer.style.padding = '40px';
-            authContainer.style.background = '';
-            authContainer.style.boxShadow = '';
+        if (authContainer) {
+            if (viewId === 'dashboard') {
+                authContainer.style.maxWidth = '1000px';
+                authContainer.style.padding = '0';
+                authContainer.style.background = 'transparent';
+                authContainer.style.boxShadow = 'none';
+            } else {
+                authContainer.style.maxWidth = '500px';
+                authContainer.style.padding = '40px';
+                authContainer.style.background = '';
+                authContainer.style.boxShadow = '';
+            }
         }
     }
 
-    // Tab Switching
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const tabId = item.getAttribute('data-tab');
+    // --- AUTH LISTENERS ---
 
-            // Update Active Nav
-            navItems.forEach(nav => nav.classList.remove('active'));
-            item.classList.add('active');
-
-            // Update Active Tab
-            dashboardTabs.forEach(tab => tab.classList.remove('active'));
-            document.getElementById(`tab-${tabId}`).classList.add('active');
+    function initAuthListeners() {
+        // Tab Switching
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tabId = item.getAttribute('data-tab');
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                dashboardTabs.forEach(tab => tab.classList.remove('active'));
+                const targetTab = document.getElementById(`tab-${tabId}`);
+                if (targetTab) targetTab.classList.add('active');
+            });
         });
-    });
 
-    const toRegister = document.getElementById('to-register');
-    if (toRegister) {
-        toRegister.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('register');
-        });
-    }
+        const toRegister = document.getElementById('to-register');
+        if (toRegister) toRegister.addEventListener('click', (e) => { e.preventDefault(); showView('register'); });
 
-    const toLogin = document.getElementById('to-login');
-    if (toLogin) {
-        toLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('login');
-        });
-    }
+        const toLogin = document.getElementById('to-login');
+        if (toLogin) toLogin.addEventListener('click', (e) => { e.preventDefault(); showView('login'); });
 
-    const toLoginFromReg = document.getElementById('to-login-from-reg');
-    if (toLoginFromReg) {
-        toLoginFromReg.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('login');
-        });
-    }
+        const toLoginFromReg = document.getElementById('to-login-from-reg');
+        if (toLoginFromReg) toLoginFromReg.addEventListener('click', (e) => { e.preventDefault(); showView('login'); });
 
-    const toLoginFromForgot = document.getElementById('to-login-from-forgot');
-    if (toLoginFromForgot) {
-        toLoginFromForgot.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('login');
-        });
-    }
+        const toLoginFromForgot = document.getElementById('to-login-from-forgot');
+        if (toLoginFromForgot) toLoginFromForgot.addEventListener('click', (e) => { e.preventDefault(); showView('login'); });
 
-    const toForgot = document.getElementById('to-forgot');
-    if (toForgot) {
-        toForgot.addEventListener('click', (e) => {
-            e.preventDefault();
-            showView('forgot');
-        });
-    }
+        const toForgot = document.getElementById('to-forgot');
+        if (toForgot) toForgot.addEventListener('click', (e) => { e.preventDefault(); showView('forgot'); });
 
-    // --- AUTH LOGIC ---
+        // Registration
+        const registerForm = document.getElementById('register-form');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!db) db = window.supabaseClient;
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const whatsapp = document.getElementById('reg-whatsapp').value;
+                const password = document.getElementById('reg-password').value;
 
-    // Registration
-    const registerForm = document.getElementById('register-form');
-    if (registerForm) {
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('reg-name').value;
-            const email = document.getElementById('reg-email').value;
-            const whatsapp = document.getElementById('reg-whatsapp').value;
-            const password = document.getElementById('reg-password').value;
+                const submitBtn = document.getElementById('register-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-            if (!db) return;
-
-            const submitBtn = document.getElementById('register-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-
-            try {
-                const { data, error } = await db.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: { full_name: name, type: 'student' }
-                    }
-                });
-
-                if (error) throw error;
-                if (!data.user) throw new Error('Registration failed. Please try again.');
-
-                // Create student profile in database
-                const { error: profileError } = await db.from('students').upsert([
-                    { id: data.user.id, full_name: name, email: email, whatsapp_number: whatsapp }
-                ]);
-
-                if (profileError) console.error('Error creating profile:', profileError);
-
-                alert('Registration successful! You can now sign in.');
-                showView('login');
-            } catch (err) {
-                console.error('Registration error:', err);
-                alert('Registration failed: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Create Account <i class="fas fa-user-check"></i>';
-            }
-        });
-    }
-
-    // Login
-    const loginForm = document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-
-            if (!db) return;
-
-            const submitBtn = document.getElementById('login-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-
-            try {
-                console.log('Attempting login for:', email);
-                const { data, error } = await db.auth.signInWithPassword({ email, password });
-
-                if (error) {
-                    console.error('Supabase Login Error:', error);
-                    throw error;
+                try {
+                    const { data, error } = await db.auth.signUp({
+                        email, password, options: { data: { full_name: name, type: 'student' } }
+                    });
+                    if (error) throw error;
+                    await db.from('students').upsert([{ id: data.user.id, full_name: name, email: email, whatsapp_number: whatsapp }]);
+                    alert('Registration successful! You can now sign in.');
+                    showView('login');
+                } catch (err) {
+                    alert('Registration failed: ' + err.message);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Create Account <i class="fas fa-user-check"></i>';
                 }
+            });
+        }
 
-                console.log('Login successful, data:', data);
-                await checkUser();
-            } catch (err) {
-                console.error('Login Caught Error:', err);
-                alert('Login failed: ' + (err.message.includes('Invalid login credentials') ? 'Invalid email or password.' : err.message));
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Sign In <i class="fas fa-sign-in-alt"></i>';
-            }
+        // Login
+        const loginForm = document.getElementById('login-form');
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!db) db = window.supabaseClient;
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                const submitBtn = document.getElementById('login-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+                try {
+                    const { error } = await db.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    await checkUser();
+                } catch (err) {
+                    alert('Login failed: ' + err.message);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Sign In <i class="fas fa-sign-in-alt"></i>';
+                }
+            });
+        }
+
+        // Forgot Password
+        const forgotForm = document.getElementById('forgot-form');
+        if (forgotForm) {
+            forgotForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (!db) db = window.supabaseClient;
+                const email = document.getElementById('forgot-email').value;
+
+                const submitBtn = document.getElementById('forgot-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                try {
+                    const { error } = await db.auth.resetPasswordForEmail(email, {
+                        redirectTo: window.location.origin + '/student.html?view=dashboard&tab=security',
+                    });
+                    if (error) throw error;
+                    alert('Password reset link sent! Please check your email.');
+                    showView('login');
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Reset Link <i class="fas fa-paper-plane"></i>';
+                }
+            });
+        }
+
+        // Google Sign-In
+        const googleBtns = document.querySelectorAll('.google-signin-btn');
+        googleBtns.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (!db) db = window.supabaseClient;
+                try {
+                    const { error } = await db.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: { redirectTo: window.location.origin + '/student.html' }
+                    });
+                    if (error) throw error;
+                } catch (err) {
+                    alert('Sign-in failed: ' + err.message);
+                }
+            });
         });
     }
-
-    // Forgot Password
-    const forgotForm = document.getElementById('forgot-form');
-    if (forgotForm) {
-        forgotForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgot-email').value;
-
-            if (!db) return;
-
-            const submitBtn = document.getElementById('forgot-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-
-            try {
-                const { error } = await db.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.origin + '/student.html?view=dashboard&tab=security',
-                });
-
-                if (error) throw error;
-                alert('Password reset link sent! Please check your email.');
-                showView('login');
-            } catch (err) {
-                console.error('Forgot password error:', err);
-                alert('Error: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Send Reset Link <i class="fas fa-paper-plane"></i>';
-            }
-        });
-    }
-
-    // Google Sign-In
-    const googleBtns = document.querySelectorAll('.google-signin-btn');
-    googleBtns.forEach(btn => {
-        btn.addEventListener('click', async () => {
-            if (!db) return;
-            try {
-                const { error } = await db.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.origin + '/student.html'
-                    }
-                });
-                if (error) throw error;
-            } catch (err) {
-                console.error('Google Sign-In Error:', err);
-                alert('Sign-in failed: ' + err.message);
-            }
-        });
-    });
 
     // --- DASHBOARD DATA ---
 
     async function checkUser() {
-        if (!db) {
-            console.error('Supabase client (db) not found');
-            return;
-        }
-        console.log('Checking auth state...');
-        const { data: { user }, error: userError } = await db.auth.getUser();
-        if (userError) console.error('getUser Error:', userError);
+        if (!db) db = window.supabaseClient;
+        if (!db) return;
 
-        const params = new URLSearchParams(window.location.search);
-
+        const { data: { user } } = await db.auth.getUser();
         if (user) {
-            console.log('User session active:', user.id);
             try {
-                const { data: profile, error: profileError } = await db.from('students').select('*').eq('id', user.id).single();
-                if (profileError) console.error('Profile DB Error:', profileError);
-
+                const { data: profile } = await db.from('students').select('*').eq('id', user.id).single();
                 if (profile) {
-                    console.log('Profile loaded for:', profile.full_name);
                     populateDashboard(profile);
                     showView('dashboard');
                     fetchStudentCourses(user.id);
-                    fetchCertificates(user.id);
-
-                    // Handle dynamic tab selection from URL
-                    const targetTab = params.get('tab');
-                    if (targetTab) {
-                        const tabBtn = document.querySelector(`.nav-item[data-tab="${targetTab}"]`);
-                        if (tabBtn) tabBtn.click();
-                    }
-
-                    // Handle Payment Success Redirects
-                    const sessionId = params.get('session_id');
-                    const paymentStatus = params.get('payment');
-
-                    if (sessionId || paymentStatus === 'success') {
-                        console.log('[Payment] Success detected, processing enrollment...');
-                        try {
-                            const courseId = params.get('courseId');
-                            if (courseId) {
-                                const { data: existingOrder } = await db.from('orders')
-                                    .select('*')
-                                    .eq('student_id', user.id)
-                                    .eq('course_id', courseId)
-                                    .eq('status', 'completed')
-                                    .single();
-
-                                if (!existingOrder) {
-                                    // Create the order manually if it doesn't exist
-                                    const { error: orderErr } = await db.from('orders').insert([{
-                                        student_id: user.id,
-                                        course_id: courseId,
-                                        amount: 10,
-                                        status: 'completed',
-                                        payment_method: sessionId ? 'stripe' : 'waafi'
-                                    }]);
-
-                                    if (!orderErr) {
-                                        console.log('[Payment] Manual order created successfully.');
-                                        fetchStudentCourses(user.id);
-                                    }
-                                }
-                            }
-                            // Clear URL params to avoid re-processing
-                            window.history.replaceState({}, document.title, window.location.pathname + (targetTab ? `?tab=${targetTab}` : ''));
-                        } catch (pErr) {
-                            console.error('[Payment] Error processing enrollment:', pErr);
-                        }
-                    }
                 } else {
-                    console.warn('No student profile found for user UID');
-                    alert('Authenticated but profile not found. If you just registered, please try logging in again.');
                     await db.auth.signOut();
                     showView('login');
                 }
             } catch (err) {
-                console.error('Error fetching profile:', err);
-                showView('login');
+                console.error('Check user error:', err);
             }
         } else {
-            if (params.get('view') === 'register' || window.location.hash === '#register') {
-                showView('register');
-            } else {
-                showView('login');
-            }
+            const params = new URLSearchParams(window.location.search);
+            showView(params.get('view') === 'register' ? 'register' : 'login');
         }
     }
 
     function populateDashboard(profile) {
-        document.getElementById('dash-welcome').textContent = `Welcome back, ${profile.full_name}!`;
-        document.getElementById('dash-user-name').textContent = profile.full_name;
-        document.getElementById('user-avatar-initials').textContent = profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        const welcome = document.getElementById('dash-welcome');
+        if (welcome) welcome.textContent = `Welcome back, ${profile.full_name}!`;
+        const nameDisplay = document.getElementById('dash-user-name');
+        if (nameDisplay) nameDisplay.textContent = profile.full_name;
 
-        // Populate profile form
         if (document.getElementById('profile-name')) document.getElementById('profile-name').value = profile.full_name;
         if (document.getElementById('profile-whatsapp')) document.getElementById('profile-whatsapp').value = profile.whatsapp_number || '';
         if (document.getElementById('profile-email')) document.getElementById('profile-email').value = profile.email;
-
-        // Show admin link if email matches (robust check)
-        const ADMIN_EMAIL = 'info@nasiibacoaching.com'.toLowerCase().trim();
-        const userEmail = (profile.email || '').toLowerCase().trim();
-        const adminLink = document.getElementById('admin-link');
-
-        if (userEmail === ADMIN_EMAIL && adminLink) {
-            console.log('[Admin] Admin user detected, showing panel link.');
-            adminLink.style.display = 'flex';
-        }
     }
 
     async function fetchStudentCourses(studentId) {
         const grid = document.getElementById('enrolled-courses-grid');
-        const countEl = document.getElementById('dash-courses-count');
+        if (!grid) return;
         grid.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Loading courses...</p>';
 
         try {
-            const { data: orders, error } = await db.from('orders')
+            const { data: orders } = await db.from('orders')
                 .select(`course_id, courses(*)`)
                 .eq('student_id', studentId)
                 .eq('status', 'completed');
 
-            if (error) throw error;
-
-            countEl.textContent = orders ? orders.length : '0';
-
             if (!orders || orders.length === 0) {
-                grid.innerHTML = '<p class="empty-msg">No active courses found. <a href="index.html#courses" style="color: var(--gold);">Browse Academy</a></p>';
+                grid.innerHTML = '<p class="empty-msg">No active courses found.</p>';
                 return;
             }
 
@@ -386,121 +256,30 @@
                 if (!course) return '';
                 return `
                     <div class="dashboard-course-card">
-                        <div class="course-card__image">
-                            <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}">
-                        </div>
+                        <img src="${course.thumbnail_url || 'https://via.placeholder.com/400x250'}" alt="${course.title}">
                         <div class="course-card__body">
-                            <h3 class="course-card__title" style="font-size: 1rem; color: #fff;">${course.title}</h3>
-                            <div class="course-progress" style="margin-top: 10px;">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; color: rgba(255,255,255,0.6);">
-                                    <span>Course Progress</span>
-                                    <span>0%</span>
-                                </div>
-                                <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
-                                    <div style="width: 0%; height: 100%; background: var(--gold);"></div>
-                                </div>
-                            </div>
-                            <a href="course-player.html?courseId=${course.id}" class="btn btn--gold btn--sm btn--full" style="margin-top: 15px; color: #0c1b33;">Continue <i class="fas fa-play" style="font-size: 0.7rem;"></i></a>
+                            <h3>${course.title}</h3>
+                            <a href="course-player.html?courseId=${course.id}" class="btn btn--gold btn--sm btn--full">Continue</a>
                         </div>
                     </div>
                 `;
             }).join('');
         } catch (err) {
-            console.error('Error fetching courses:', err);
-            grid.innerHTML = '<p style="color: var(--gold);">Error loading courses.</p>';
+            grid.innerHTML = '<p>Error loading courses.</p>';
         }
     }
 
-    async function fetchCertificates(studentId) {
-        // Placeholder for certificate logic
-        const countEl = document.getElementById('dash-certs-count');
-        countEl.textContent = '0';
-    }
-
-    // --- FORM SUBMISSIONS ---
-
-    // Profile Update
-    const profileForm = document.getElementById('profile-form');
-    if (profileForm) {
-        profileForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('profile-name').value;
-            const whatsapp = document.getElementById('profile-whatsapp').value;
-
-            const submitBtn = e.target.querySelector('button');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-
-            try {
-                const { data: { user } } = await db.auth.getUser();
-                const { error } = await db.from('students').update({
-                    full_name: name,
-                    whatsapp_number: whatsapp
-                }).eq('id', user.id);
-
-                if (error) throw error;
-
-                // Update UI
-                const dashUserName = document.getElementById('dash-user-name');
-                if (dashUserName) dashUserName.textContent = name;
-                alert('Profile updated successfully!');
-            } catch (err) {
-                alert('Error updating profile: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Update Profile';
-            }
-        });
-    }
-
-
-    // Password Update
-    const passwordForm = document.getElementById('password-form');
-    if (passwordForm) {
-        passwordForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const newPass = document.getElementById('new-password').value;
-            const confirmPass = document.getElementById('confirm-password').value;
-
-            if (newPass !== confirmPass) {
-                alert('Passwords do not match.');
-                return;
-            }
-
-            const submitBtn = e.target.querySelector('button');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-
-            try {
-                const { error } = await db.auth.updateUser({ password: newPass });
-                if (error) throw error;
-                alert('Password changed successfully!');
-                e.target.reset();
-            } catch (err) {
-                alert('Error updating password: ' + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Change Password';
-            }
-        });
-    }
-
-    // Logout
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-            if (db) {
-                await db.auth.signOut();
-                window.location.reload();
-            }
-        });
-    }
-
-    // Init
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', checkUser);
-    } else {
+    // --- INIT ---
+    function init() {
+        initPasswordToggles();
+        initAuthListeners();
         checkUser();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
 
 })();

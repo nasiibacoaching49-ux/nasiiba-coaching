@@ -35,8 +35,7 @@ module.exports = async (req, res) => {
         const timestamp = Date.now().toString();
 
         const formattedAmount = parseFloat(amount).toFixed(2);
-        const rawPhone = phone.replace(/\D/g, '').slice(-9);
-        const formattedPhone = '252' + rawPhone;
+        const formattedPhone = phone.replace(/\D/g, '').slice(-9);
 
         // Waafi (ASM) API Request Structure
         const waafiBody = {
