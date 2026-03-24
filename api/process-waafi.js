@@ -36,14 +36,14 @@ module.exports = async (req, res) => {
 
         const formattedAmount = parseFloat(amount).toFixed(2);
         const rawPhone = phone.replace(/\D/g, '');
-        // Support multiple input formats: 61XXXXXXX, 252XXXXXXX, 06XXXXXXXX
+        // Optimized formatting for Waafi ASM:
+        // Some merchants require 252 prefix, some require just the 9 digits.
+        // We'll prioritize the 9-digit format (61XXXXXXX) as it's often more reliable for local providers.
         let formattedPhone;
-        if (rawPhone.startsWith('252') && rawPhone.length >= 12) {
-            formattedPhone = rawPhone; // Already has country code
-        } else if (rawPhone.startsWith('0')) {
-            formattedPhone = '252' + rawPhone.substring(1); // Remove leading 0, add 252
+        if (rawPhone.length >= 9) {
+            formattedPhone = rawPhone.slice(-9); // Always take the last 9 digits (61XXXXXXX)
         } else {
-            formattedPhone = '252' + rawPhone.slice(-9); // Take last 9 digits, add 252
+            formattedPhone = rawPhone;
         }
 
         // Waafi (ASM) API Request Structure
@@ -62,8 +62,8 @@ module.exports = async (req, res) => {
                     accountNo: formattedPhone
                 },
                 transactionInfo: {
-                    referenceId: requestId,
-                    invoiceId: `INV-${Date.now()}`,
+                    referenceId: `REF-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+                    invoiceId: `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
                     amount: formattedAmount,
                     currency: "USD",
                     description: `Enrollment: ${(courseTitle || '').substring(0, 30)}`

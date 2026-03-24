@@ -1498,23 +1498,25 @@ ul {
 /* Password Toggle Styles */
 .input-wrapper {
     position: relative;
-    display: flex;
-    align-items: center;
+    width: 100%;
 }
 
 .input-wrapper > i.fas,
 .input-wrapper > i.fab {
     position: absolute;
     left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--gold);
     pointer-events: none;
     z-index: 2;
 }
 
 .input-wrapper input {
+    width: 100%;
     padding-left: 45px !important;
     padding-right: 45px !important;
-    width: 100%;
+    display: block;
 }
 
 /* Hide Browser Native Reveal Icon */
