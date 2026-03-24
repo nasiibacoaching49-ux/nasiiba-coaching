@@ -1502,8 +1502,8 @@ ul {
     align-items: center;
 }
 
-.input-wrapper i.fas,
-.input-wrapper i.fab {
+.input-wrapper > i.fas,
+.input-wrapper > i.fab {
     position: absolute;
     left: 15px;
     color: var(--gold);
@@ -1525,18 +1525,25 @@ ul {
 
 .password-toggle-btn {
     position: absolute;
-    right: 15px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     color: var(--text-light);
     cursor: pointer;
-    padding: 0;
+    padding: 5px;
     font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: color 0.3s ease;
-    z-index: 3;
+    z-index: 5;
+    pointer-events: all;
+}
+
+.password-toggle-btn i {
+    pointer-events: none;
 }
 
 .password-toggle-btn:hover {

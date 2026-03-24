@@ -35,7 +35,16 @@ module.exports = async (req, res) => {
         const timestamp = Date.now().toString();
 
         const formattedAmount = parseFloat(amount).toFixed(2);
-        const formattedPhone = phone.replace(/\D/g, '').slice(-9);
+        const rawPhone = phone.replace(/\D/g, '');
+        // Support multiple input formats: 61XXXXXXX, 252XXXXXXX, 06XXXXXXXX
+        let formattedPhone;
+        if (rawPhone.startsWith('252') && rawPhone.length >= 12) {
+            formattedPhone = rawPhone; // Already has country code
+        } else if (rawPhone.startsWith('0')) {
+            formattedPhone = '252' + rawPhone.substring(1); // Remove leading 0, add 252
+        } else {
+            formattedPhone = '252' + rawPhone.slice(-9); // Take last 9 digits, add 252
+        }
 
         // Waafi (ASM) API Request Structure
         const waafiBody = {
