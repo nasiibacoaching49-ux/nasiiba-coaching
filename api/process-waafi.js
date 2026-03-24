@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
         try { body = JSON.parse(body); } catch (e) { console.error('Body parse error:', e); }
     }
 
-    const { amount, phone, courseTitle, orderId } = body || {};
+    const { amount, phone, courseTitle, orderId, paymentMethod } = body || {};
 
     if (!amount || isNaN(parseFloat(amount))) {
         return res.status(400).json({ error: 'Missing or invalid amount parameter.', errorCode: '400' });
@@ -63,6 +63,7 @@ module.exports = async (req, res) => {
                 },
                 transactionInfo: {
                     referenceId: requestId,
+                    invoiceId: `INV-${Date.now()}`,
                     amount: formattedAmount,
                     currency: "USD",
                     description: `Enrollment: ${(courseTitle || '').substring(0, 30)}`

@@ -666,7 +666,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             body: JSON.stringify({
                                 amount: amount,
                                 phone: phone,
-                                courseTitle: courseTitleVal
+                                courseTitle: courseTitleVal,
+                                paymentMethod: activeMethod
                             })
                         });
 
@@ -681,9 +682,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             window.location.href = 'student.html?tab=courses';
                         } else {
                             // Specific Waafi error handling
-                            const errorMsg = result.description || result.error || 'Payment declined or account issue.';
+                            const errorMsg = result.description || result.params?.description || result.responseMsg || result.error || 'Payment declined or account issue.';
                             if (errorMsg.toLowerCase().includes('balance') || errorMsg.toLowerCase().includes('insufficient')) {
                                 throw new Error('haraaga xisaabtada kuguma filna');
+                            }
+                            if (errorMsg.includes('RCS_TRANSACTION_FAILED')) {
+                                throw new Error('Transaction failed. Please check your phone number is correct and your mobile money account is active. If the problem persists, contact support.');
                             }
                             throw new Error(`Waafi Error: ${errorMsg}`);
                         }

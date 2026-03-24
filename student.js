@@ -274,6 +274,22 @@
         initPasswordToggles();
         initAuthListeners();
         checkUser();
+
+        // Handle Auth State Changes (Google Sign-In redirect & Recovery)
+        if (db) {
+            db.auth.onAuthStateChange(async (event, session) => {
+                console.log('[Auth] Event:', event);
+                if (event === 'SIGNED_IN' && session) {
+                    await checkUser();
+                } else if (event === 'PASSWORD_RECOVERY') {
+                    showView('dashboard');
+                    // Force switch to security tab
+                    const securityNavItem = document.querySelector('.nav-item[data-tab="security"]');
+                    if (securityNavItem) securityNavItem.click();
+                    alert('You have been redirected for password recovery. Please update your password now.');
+                }
+            });
+        }
     }
 
     if (document.readyState === 'loading') {
