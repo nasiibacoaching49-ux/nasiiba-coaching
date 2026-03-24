@@ -31,8 +31,7 @@ module.exports = async (req, res) => {
             throw new Error('Waafi API configuration missing on server.');
         }
 
-        const requestId = orderId || `req_${Date.now()}`;
-        const timestamp = Date.now().toString();
+        // Request ID and Timestamp moved to the formatting section below for clarity
 
         const formattedAmount = parseFloat(amount).toFixed(2);
         const rawPhone = phone.replace(/\D/g, '');
