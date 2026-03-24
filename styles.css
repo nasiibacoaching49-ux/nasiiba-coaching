@@ -1492,13 +1492,12 @@ ul {
 }
 
 .modal__body {
-    padding: 30px;
-}
-
 /* Password Toggle Styles */
 .input-wrapper {
-    position: relative;
-    width: 100%;
+    position: relative !important;
+    width: 100% !important;
+    margin: 8px 0;
+    display: block !important;
 }
 
 .input-wrapper > i.fas,
@@ -1507,27 +1506,30 @@ ul {
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gold);
+    color: var(--gray-400);
+    z-index: 5;
     pointer-events: none;
-    z-index: 2;
+    font-size: 0.9rem;
 }
 
 .input-wrapper input {
-    width: 100%;
+    width: 100% !important;
     padding: 12px 45px 12px 45px !important;
-    border: 1.5px solid var(--gray-200);
-    border-radius: var(--radius-md);
-    background: var(--white);
+    border: 1.5px solid var(--gray-200) !important;
+    border-radius: var(--radius-md) !important;
+    background: var(--white) !important;
     font-family: var(--font-primary);
     font-size: 0.9375rem;
     transition: all var(--transition);
-    display: block;
+    display: block !important;
+    box-sizing: border-box !important;
+    height: 48px !important;
 }
 
 .input-wrapper input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.1);
+    outline: none !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 4px rgba(212, 160, 23, 0.1) !important;
 }
 
 /* Hide Browser Native Reveal Icon */
@@ -1537,26 +1539,27 @@ ul {
 }
 
 .password-toggle-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-light);
-    cursor: pointer;
-    padding: 5px;
-    font-size: 1rem;
-    display: flex;
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: var(--gray-500) !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    font-size: 1rem !important;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    transition: color 0.3s ease;
-    z-index: 5;
-    pointer-events: all;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+    width: 36px !important;
+    height: 36px !important;
 }
 
 .password-toggle-btn i {
-    pointer-events: none;
+    pointer-events: none !important;
 }
 
 .password-toggle-btn:hover {
