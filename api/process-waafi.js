@@ -36,21 +36,18 @@ module.exports = async (req, res) => {
 
         const formattedAmount = parseFloat(amount).toFixed(2);
         const rawPhone = phone.replace(/\D/g, '');
-        // Optimized formatting for Waafi ASM:
-        // Some merchants require 252 prefix, some require just the 9 digits.
-        // We'll prioritize the 9-digit format (61XXXXXXX) as it's often more reliable for local providers.
-        let formattedPhone;
-        if (rawPhone.length >= 9) {
-            formattedPhone = rawPhone.slice(-9); // Always take the last 9 digits (61XXXXXXX)
-        } else {
-            formattedPhone = rawPhone;
-        }
+        // Strict 12-digit format for Hormuud/Telesom/Golis: 252 + last 9 digits
+        const formattedPhone = '252' + rawPhone.slice(-9);
+
+        // Purely numeric IDs for legacy operator compatibility
+        const numericTimestamp = Date.now().toString();
+        const shortNumericId = numericTimestamp.slice(-12); // Use last 12 digits for compactness
 
         // Waafi (ASM) API Request Structure
         const waafiBody = {
             schemaVersion: "1.0",
-            requestId: requestId,
-            timestamp: timestamp,
+            requestId: shortNumericId,
+            timestamp: numericTimestamp,
             channelName: "WEB",
             serviceName: "API_PURCHASE",
             serviceParams: {
@@ -62,11 +59,11 @@ module.exports = async (req, res) => {
                     accountNo: formattedPhone
                 },
                 transactionInfo: {
-                    referenceId: `REF-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-                    invoiceId: `INV-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+                    referenceId: shortNumericId,
+                    invoiceId: shortNumericId,
                     amount: formattedAmount,
                     currency: "USD",
-                    description: `Enrollment: ${(courseTitle || '').substring(0, 30)}`
+                    description: `Enroll: ${(courseTitle || '').substring(0, 20)}`
                 }
             }
         };
