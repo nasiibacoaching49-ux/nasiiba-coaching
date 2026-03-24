@@ -36,18 +36,18 @@ module.exports = async (req, res) => {
 
         const formattedAmount = parseFloat(amount).toFixed(2);
         const rawPhone = phone.replace(/\D/g, '');
-        // Strict 12-digit format for Hormuud/Telesom/Golis: 252 + last 9 digits
-        const formattedPhone = '252' + rawPhone.slice(-9);
+        // Reverting to original 9-digit format (61XXXXXXX)
+        const formattedPhone = rawPhone.slice(-9);
 
-        // Purely numeric IDs for legacy operator compatibility
-        const numericTimestamp = Date.now().toString();
-        const shortNumericId = numericTimestamp.slice(-12); // Use last 12 digits for compactness
+        // Reverting to original requestId structure
+        const requestId = orderId || `req_${Date.now()}`;
+        const timestamp = Date.now().toString();
 
         // Waafi (ASM) API Request Structure
         const waafiBody = {
             schemaVersion: "1.0",
-            requestId: shortNumericId,
-            timestamp: numericTimestamp,
+            requestId: requestId,
+            timestamp: timestamp,
             channelName: "WEB",
             serviceName: "API_PURCHASE",
             serviceParams: {
@@ -59,11 +59,10 @@ module.exports = async (req, res) => {
                     accountNo: formattedPhone
                 },
                 transactionInfo: {
-                    referenceId: shortNumericId,
-                    invoiceId: shortNumericId,
+                    referenceId: requestId,
                     amount: formattedAmount,
                     currency: "USD",
-                    description: `Enroll: ${(courseTitle || '').substring(0, 20)}`
+                    description: `Enroll: ${(courseTitle || '').substring(0, 30)}`
                 }
             }
         };
